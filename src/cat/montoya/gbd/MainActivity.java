@@ -14,6 +14,9 @@ import android.widget.Toast;
 import cat.montoya.gbd.dao.GameDAO;
 import cat.montoya.gbd.dao.IGameDAO;
 
+/*
+ * Game List Activity
+ */
 public class MainActivity extends Activity {
 	
 	private IGameDAO gameDAO;
