@@ -1,10 +1,13 @@
 package cat.montoya.gbd.entity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Game {
+public class Game implements Serializable {
 
+	private static final long serialVersionUID = 4201325637415361928L;
+	
 	private Long id;
 	private String name = "Game name";
 	private String[] help = { "How to play" };
