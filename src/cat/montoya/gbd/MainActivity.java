@@ -1,5 +1,6 @@
 package cat.montoya.gbd;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +15,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
+import cat.montoya.gbd.dao.GameDAO;
 import cat.montoya.gbd.dao.IGameDAO;
 import cat.montoya.gbd.entity.Game;
 import cat.montoya.gbd.listadapter.GameLazyListAdapter;
@@ -21,7 +23,8 @@ import cat.montoya.gbd.listadapter.GameLazyListAdapter;
 /*
  * Game List Activity
  */
-public class MainActivity extends Activity  implements OnItemLongClickListener,OnItemClickListener{
+public class MainActivity extends Activity implements OnItemLongClickListener,
+		OnItemClickListener {
 
 	private IGameDAO gameDAO;
 
@@ -30,22 +33,23 @@ public class MainActivity extends Activity  implements OnItemLongClickListener,O
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
+		gameDAO = new GameDAO(getRootFolder());
+
 		ListView lv = (ListView) findViewById(R.id.gameList);
-		lv.setAdapter(new GameLazyListAdapter(this, getMockGames()));
+		lv.setAdapter(new GameLazyListAdapter(this, gameDAO.getGameList()));
 		lv.setOnItemLongClickListener(this);
 		lv.setOnItemClickListener(this);
 
 	}
 
-	private List<Game> getMockGames() {
-		Game g1 = new Game(), g2 = new Game(), g3 = new Game(), g4 = new Game();
-		List<Game> games = new ArrayList<Game>();
-		games.add(g1);
-		games.add(g2);
-		games.add(g3);
-		games.add(g4);
-		return games;
+	private File getRootFolder() {
+		File folder = getExternalFilesDir(null);
+		if (folder == null)
+			folder = getFilesDir();
+		return folder;
 	}
+
+	
 
 	private boolean checkExternalStorageAvailableP() {
 		boolean mExternalStorageAvailable = false;
@@ -76,24 +80,27 @@ public class MainActivity extends Activity  implements OnItemLongClickListener,O
 	}
 
 	@Override
-	public void onItemClick(AdapterView<?> parent, View view,
-			int position, long id) {
-		Toast.makeText(getApplicationContext(), "Clickon element"+id,
+	public void onItemClick(AdapterView<?> parent, View view, int position,
+			long id) {
+		Toast.makeText(getApplicationContext(), "Clickon element" + id,
 				Toast.LENGTH_LONG).show();
-		
+
 		Intent i = new Intent(this, GameActivity.class);
+//		i.putExtra("game", gameDAO.getGame(id));
 		startActivity(i);
-		
+
 	}
 
 	@Override
 	public boolean onItemLongClick(AdapterView<?> parent, View view,
 			int position, long id) {
-		
-		Toast.makeText(getApplicationContext(), "LongPress element"+id, Toast.LENGTH_LONG).show();
+
+		Toast.makeText(getApplicationContext(), "LongPress element" + id,
+				Toast.LENGTH_LONG).show();
 		Intent i = new Intent(this, MaintenanceActivity.class);
+//		i.putExtra("game", gameDAO.getGame(id));
 		startActivity(i);
-		
+
 		return false;
 	}
 

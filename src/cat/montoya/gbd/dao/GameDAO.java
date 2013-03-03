@@ -53,7 +53,21 @@ public class GameDAO implements IGameDAO {
 	@Override
 	public List<Game> getGameList() {
 		// TODO Auto-generated method stub
-		return null;
+		return getMockGames();
+	}
+	
+	/**
+	 * Delete this
+	 * @return
+	 */
+	private List<Game> getMockGames() {
+		Game g1 = new Game(), g2 = new Game(), g3 = new Game(), g4 = new Game();
+		List<Game> games = new ArrayList<Game>();
+		games.add(g1);
+		games.add(g2);
+		games.add(g3);
+		games.add(g4);
+		return games;
 	}
 
 }
