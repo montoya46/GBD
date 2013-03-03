@@ -1,53 +1,50 @@
 package cat.montoya.gbd;
 
-import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.Menu;
 import android.view.View;
-import android.widget.TextView;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
+import android.widget.ListView;
 import android.widget.Toast;
-import cat.montoya.gbd.dao.GameDAO;
 import cat.montoya.gbd.dao.IGameDAO;
+import cat.montoya.gbd.entity.Game;
+import cat.montoya.gbd.listadapter.GameLazyListAdapter;
 
 /*
  * Game List Activity
  */
-public class MainActivity extends Activity {
-	
+public class MainActivity extends Activity  implements OnItemLongClickListener,OnItemClickListener{
+
 	private IGameDAO gameDAO;
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {		
+	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-				
 		setContentView(R.layout.activity_main);
-		
-		Context context = getApplicationContext();
-		CharSequence text = "Hello toast!";
-		int duration = Toast.LENGTH_SHORT;
 
-		if (checkExternalStorageAvailableP()){
-			text = "Access to external storage";
-		}else {
-			text = "No Access to external storage";
-		}
-		Toast toast = Toast.makeText(context, text, duration);
-		toast.show();
-		
-		File folder = getExternalFilesDir(null);
-		if (folder == null)
-		folder = getFilesDir();
-		
-		gameDAO = new GameDAO(folder);
-		
-		TextView tv = (TextView) findViewById(R.id.textView1);
-		tv.setText(folder.getAbsolutePath());
+		ListView lv = (ListView) findViewById(R.id.gameList);
+		lv.setAdapter(new GameLazyListAdapter(this, getMockGames()));
+		lv.setOnItemLongClickListener(this);
+		lv.setOnItemClickListener(this);
 
+	}
+
+	private List<Game> getMockGames() {
+		Game g1 = new Game(), g2 = new Game(), g3 = new Game(), g4 = new Game();
+		List<Game> games = new ArrayList<Game>();
+		games.add(g1);
+		games.add(g2);
+		games.add(g3);
+		games.add(g4);
+		return games;
 	}
 
 	private boolean checkExternalStorageAvailableP() {
@@ -77,16 +74,27 @@ public class MainActivity extends Activity {
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
-	
-	public void editGame(View v){
-		Intent i = new Intent(this, MaintenanceActivity.class);
-		startActivity(i);
-	}
-	
-	public void playGame(View v){
+
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view,
+			int position, long id) {
+		Toast.makeText(getApplicationContext(), "Clickon element"+id,
+				Toast.LENGTH_LONG).show();
+		
 		Intent i = new Intent(this, GameActivity.class);
 		startActivity(i);
+		
 	}
-	
-	
+
+	@Override
+	public boolean onItemLongClick(AdapterView<?> parent, View view,
+			int position, long id) {
+		
+		Toast.makeText(getApplicationContext(), "LongPress element"+id, Toast.LENGTH_LONG).show();
+		Intent i = new Intent(this, MaintenanceActivity.class);
+		startActivity(i);
+		
+		return false;
+	}
+
 }
