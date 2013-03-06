@@ -49,8 +49,6 @@ public class MainActivity extends Activity implements OnItemLongClickListener,
 		return folder;
 	}
 
-	
-
 	private boolean checkExternalStorageAvailableP() {
 		boolean mExternalStorageAvailable = false;
 		boolean mExternalStorageWriteable = false;
@@ -86,7 +84,7 @@ public class MainActivity extends Activity implements OnItemLongClickListener,
 				Toast.LENGTH_LONG).show();
 
 		Intent i = new Intent(this, GameActivity.class);
-//		i.putExtra("game", gameDAO.getGame(id));
+		// i.putExtra("game", gameDAO.getGame(id));
 		startActivity(i);
 
 	}
@@ -98,10 +96,16 @@ public class MainActivity extends Activity implements OnItemLongClickListener,
 		Toast.makeText(getApplicationContext(), "LongPress element" + id,
 				Toast.LENGTH_LONG).show();
 		Intent i = new Intent(this, MaintenanceActivity.class);
-//		i.putExtra("game", gameDAO.getGame(id));
+		// i.putExtra("game", gameDAO.getGame(id));
 		startActivity(i);
 
 		return false;
+	}
+
+	public void createDummyGames(View v) {
+
+		// gameDAO.setGame(game);
+
 	}
 
 }

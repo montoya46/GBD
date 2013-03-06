@@ -1,6 +1,7 @@
 package cat.montoya.gbd.dao;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,13 +42,31 @@ public class GameDAO implements IGameDAO {
 		game.setHelp(new String[] { "Manual del Joc Dummy" });
 		game.setId(1l);
 		game.setName("Dummy Game");
+		
+		
 		return game;
 	}
 
 	@Override
 	public Game setGame(Game game) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		if (game.getId() == null){
+			
+			
+		}
+
+		try {
+			File f = new File(rootFolder, String.valueOf(game.getId()));
+			if (f.exists())
+				f.delete();
+		
+			f.createNewFile();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		
+		return game;
 	}
 
 	@Override
