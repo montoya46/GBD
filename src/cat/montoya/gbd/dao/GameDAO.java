@@ -2,10 +2,13 @@ package cat.montoya.gbd.dao;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
 import android.graphics.Color;
+import android.database.sqlite.*;
+
 import cat.montoya.gbd.entity.Chip;
 import cat.montoya.gbd.entity.Chip.ChipType;
 import cat.montoya.gbd.entity.Dice;
@@ -59,7 +62,7 @@ public class GameDAO implements IGameDAO {
 			File f = new File(rootFolder, String.valueOf(game.getId()));
 			if (f.exists())
 				f.delete();
-		
+			
 			f.createNewFile();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -87,6 +90,24 @@ public class GameDAO implements IGameDAO {
 		games.add(g3);
 		games.add(g4);
 		return games;
+	}
+
+	@Override
+	public Game deleteGame(Long id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void saveGame(Long id, Date d, String description) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Game loadGame(Long id) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
