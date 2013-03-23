@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.graphics.Color;
+import android.content.Context;
+import android.database.SQLException;
 import android.database.sqlite.*;
 
 import cat.montoya.gbd.entity.Chip;
@@ -18,6 +20,20 @@ import cat.montoya.gbd.entity.Game;
 public class GameDAO implements IGameDAO {
 
 	private File rootFolder;
+	private SQLiteDatabase database;
+	private GameHelper dbHelper;
+	
+	public GameDAO(Context context) {
+	    dbHelper = new GameHelper(context);
+	}
+	
+	public void open() throws SQLException {
+	    database = dbHelper.getWritableDatabase();
+	}
+
+	public void close() {
+		dbHelper.close();
+	}
 
 	public GameDAO(File rootFolder) {
 		super();
