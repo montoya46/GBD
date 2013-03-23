@@ -2,9 +2,9 @@ package cat.montoya.gbd.dao;
 
 import android.provider.BaseColumns;
 
-public class GameReaderContract {
+public class GameContract {
 	
-	private GameReaderContract(){ }
+	private GameContract(){ }
 	
 	public static abstract class Game implements BaseColumns {
 		public static final String TABLE_NAME = "Game";
