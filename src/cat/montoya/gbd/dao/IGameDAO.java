@@ -20,7 +20,7 @@ public interface IGameDAO {
 	/*
 	 * Elimina el juego
 	 * */
-	Game deleteGame(Long id);
+	void deleteGame(Long id);
 		
 	/*
 	 * Guarda el juego

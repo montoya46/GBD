@@ -8,6 +8,7 @@ import java.util.List;
 
 import android.graphics.Color;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.*;
 
@@ -19,7 +20,6 @@ import cat.montoya.gbd.entity.Game;
 
 public class GameDAO implements IGameDAO {
 
-	private File rootFolder;
 	private SQLiteDatabase database;
 	private GameHelper dbHelper;
 	
@@ -35,83 +35,76 @@ public class GameDAO implements IGameDAO {
 		dbHelper.close();
 	}
 
-	public GameDAO(File rootFolder) {
-		super();
-		this.rootFolder = rootFolder;
-	}
-
 	@Override
 	public Game getGame(Long id) {
-		// TODO Auto-generated method stub
-		Game game = new Game();
-		game.setBoardThumbnailURL("");
-		game.setBoardURL("");
-		List<Chip> chips = new ArrayList<Chip>();
-		Chip chip = new Chip();
-		chip.setColor(Color.BLUE);
-		chip.setSize(10);
-		chip.setType(ChipType.CIRCLE);
-		chips.add(chip);
-		game.setChips(chips);
-		List<Dice> dices = new ArrayList<Dice>();
-		Dice dice = new Dice();
-		dice.setType(DiceType.NUMERIC);
-		dices.add(dice);
-		game.setDices(dices);
-		game.setHelp(new String[] { "Manual del Joc Dummy" });
-		game.setId(1l);
-		game.setName("Dummy Game");
+		dbHelper.getReadableDatabase();
 		
+		String[] projection = {
+			GameContract.Game._ID,
+			GameContract.Game.COLUMN_NAME_NAME,
+			GameContract.Game.COLUMN_NAME_BOARD_URL,
+			GameContract.Game.COLUMN_NAME_BOARD_THUMBNAIL_URL
+		};
 		
-		return game;
+		String selection = GameContract.Game._ID + " = ?";
+		String[] selectionArgs = { id.toString() };
+		String orderBy = GameContract.Game.COLUMN_NAME_NAME + " DESC";
+		
+		Cursor c = database.query(GameContract.Game.TABLE_NAME, projection, selection, selectionArgs, null, null, orderBy);
+		
+		//TODO: Queda pendiente obtener las fichas y los dados
+		
+		if(c != null){
+			c.moveToFirst();
+			Game g = new Game();
+			g.setId(c.getLong(c.getColumnIndexOrThrow(GameContract.Game._ID)));
+			g.setName(c.getString(c.getColumnIndexOrThrow(GameContract.Game.COLUMN_NAME_NAME)));
+			g.setBoardURL(c.getString(c.getColumnIndexOrThrow(GameContract.Game.COLUMN_NAME_BOARD_URL)));
+			g.setBoardThumbnailURL(c.getString(c.getColumnIndexOrThrow(GameContract.Game.COLUMN_NAME_BOARD_THUMBNAIL_URL)));
+			return g;
+		}
+			
+		return null;
 	}
 
 	@Override
 	public Game setGame(Game game) {
-		
-		if (game.getId() == null){
-			
-			
-		}
-
-		try {
-			File f = new File(rootFolder, String.valueOf(game.getId()));
-			if (f.exists())
-				f.delete();
-			
-			f.createNewFile();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		
-		return game;
+		return null;
 	}
 
 	@Override
 	public List<Game> getGameList() {
-		// TODO Auto-generated method stub
-		return getMockGames();
-	}
-	
-	/**
-	 * Delete this
-	 * @return
-	 */
-	private List<Game> getMockGames() {
-		Game g1 = new Game(), g2 = new Game(), g3 = new Game(), g4 = new Game();
+		dbHelper.getReadableDatabase();
 		List<Game> games = new ArrayList<Game>();
-		games.add(g1);
-		games.add(g2);
-		games.add(g3);
-		games.add(g4);
+		
+		String[] projection = {
+			GameContract.Game._ID,
+			GameContract.Game.COLUMN_NAME_NAME,
+			GameContract.Game.COLUMN_NAME_BOARD_URL,
+			GameContract.Game.COLUMN_NAME_BOARD_THUMBNAIL_URL
+		};
+		
+		String orderBy = GameContract.Game.COLUMN_NAME_NAME + " DESC";
+		
+		Cursor c = database.query(GameContract.Game.TABLE_NAME, projection, null, null, null, null, orderBy);
+		
+		if(c != null){
+			c.moveToFirst();
+			while (!c.isAfterLast()) {
+		      Game game = CursorToGame(c);
+		      games.add(game);
+		      c.moveToNext();
+		    }
+		}
+		
 		return games;
 	}
 
 	@Override
-	public Game deleteGame(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+	public void deleteGame(Long id) {
+		String selection = GameContract.Game._ID + " = ?";
+		String[] selectionArgs = { id.toString() };
+		database.delete(GameContract.Game.TABLE_NAME, selection, selectionArgs);
 	}
 
 	@Override
@@ -126,4 +119,12 @@ public class GameDAO implements IGameDAO {
 		return null;
 	}
 
+	private Game CursorToGame(Cursor c){
+		Game g = new Game();
+		g.setId(c.getLong(c.getColumnIndexOrThrow(GameContract.Game._ID)));
+		g.setName(c.getString(c.getColumnIndexOrThrow(GameContract.Game.COLUMN_NAME_NAME)));
+		g.setBoardURL(c.getString(c.getColumnIndexOrThrow(GameContract.Game.COLUMN_NAME_BOARD_URL)));
+		g.setBoardThumbnailURL(c.getString(c.getColumnIndexOrThrow(GameContract.Game.COLUMN_NAME_BOARD_THUMBNAIL_URL)));
+		return g;
+	}
 }
