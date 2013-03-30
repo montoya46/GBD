@@ -118,7 +118,11 @@ public class GameDAO implements IGameDAO {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
+	/*
+	 * Metodo para devolver la entidad a partir de la fila
+	 * a la que apunta el cursor.
+	 * */
 	private Game CursorToGame(Cursor c){
 		Game g = new Game();
 		g.setId(c.getLong(c.getColumnIndexOrThrow(GameContract.Game._ID)));
