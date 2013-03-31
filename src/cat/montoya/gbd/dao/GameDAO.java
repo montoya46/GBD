@@ -120,7 +120,7 @@ public class GameDAO implements IGameDAO {
 	}
 	
 	/*
-	 * Metodo para devolver la entidad a partir de la fila
+	 * Método para devolver la entidad a partir de la fila
 	 * a la que apunta el cursor.
 	 * */
 	private Game CursorToGame(Cursor c){
