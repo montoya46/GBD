@@ -5,12 +5,13 @@ import android.graphics.Color;
 public class Chip {
 
 	public static enum ChipType {
-		CIRCLE, RECT;
+		CIRCLE, RECTANGLE;
 	}
-
+	
+	private int Id;
 	private ChipType type = ChipType.CIRCLE;
-	private int size = 0;
 	private int color = Color.RED;
+	private String Descripcion;
 
 	public ChipType getType() {
 		return type;
@@ -20,20 +21,28 @@ public class Chip {
 		this.type = type;
 	}
 
-	public int getSize() {
-		return size;
-	}
-
-	public void setSize(int size) {
-		this.size = size;
-	}
-
 	public int getColor() {
 		return color;
 	}
 
 	public void setColor(int color) {
 		this.color = color;
+	}
+
+	public int getId() {
+		return Id;
+	}
+
+	public void setId(int id) {
+		Id = id;
+	}
+
+	public String getDescripcion() {
+		return Descripcion;
+	}
+
+	public void setDescripcion(String descripcion) {
+		Descripcion = descripcion;
 	}
 
 }

@@ -34,7 +34,7 @@ public class GameContract {
 		public static final String TABLE_NAME = "Game_Chips";
 		public static final String COLUMN_NAME_ID_GAME = "IdGame";
 		public static final String COLUMN_NAME_ID_CHIP_TYPE = "IdChipType";
-		public static final String COLUMN_NAME_RGBD_COLOR = "RGB_Color";
+		public static final String COLUMN_NAME_COLOR = "Color";
 	}
 	
 	public static abstract class Master_Dice implements BaseColumns {

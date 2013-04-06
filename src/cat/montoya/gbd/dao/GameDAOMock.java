@@ -34,13 +34,12 @@ public class GameDAOMock implements IGameDAO {
 		List<Chip> chips = new ArrayList<Chip>();
 		Chip chip = new Chip();
 		chip.setColor(Color.BLUE);
-		chip.setSize(10);
 		chip.setType(ChipType.CIRCLE);
 		chips.add(chip);
 		game.setChips(chips);
 		List<Dice> dices = new ArrayList<Dice>();
 		Dice dice = new Dice();
-		dice.setType(DiceType.NUMERIC);
+		dice.setType(DiceType.POKER);
 		dices.add(dice);
 		game.setDices(dices);
 		game.setHelp(new String[] { "Manual del Joc Dummy" });

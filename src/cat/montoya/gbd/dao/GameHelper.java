@@ -56,7 +56,7 @@ public class GameHelper extends SQLiteOpenHelper {
         		GameContract.Game_Chips._ID + " INTEGER PRIMARY KEY autoincrement," +
         		GameContract.Game_Chips.COLUMN_NAME_ID_GAME + INTEGER_TYPE + NOT_NULL + COMMA_SEP +
         		GameContract.Game_Chips.COLUMN_NAME_ID_CHIP_TYPE + INTEGER_TYPE + NOT_NULL + COMMA_SEP +
-        		GameContract.Game_Chips.COLUMN_NAME_RGBD_COLOR + TEXT_TYPE + NOT_NULL + COMMA_SEP +
+        		GameContract.Game_Chips.COLUMN_NAME_COLOR + INTEGER_TYPE + NOT_NULL + COMMA_SEP +
         		FOREIGN_KEY + " (" + GameContract.Game_Chips.COLUMN_NAME_ID_GAME  + " )" + REFERENCES 
         		+ GameContract.Game.TABLE_NAME + " (" +  GameContract.Game._ID  + " )" +
         		FOREIGN_KEY + " (" + GameContract.Game_Chips.COLUMN_NAME_ID_CHIP_TYPE  + " )" + REFERENCES 
@@ -99,10 +99,10 @@ public class GameHelper extends SQLiteOpenHelper {
 		
 		//Insertamos los datos maestros para MASTER_CHIP y MASTER_DICE
 		//En las tablas maestras el campo estado es 1 si esta activo y 0 si esta inactivo (no existe el tipo boolean en sql lite)
-		db.execSQL("INSERT INTO " + GameContract.Master_Chip.TABLE_NAME +  " VALUES(1, 'Circulo', 1);");
-		db.execSQL("INSERT INTO " + GameContract.Master_Chip.TABLE_NAME +  " VALUES(2, 'Cuadrado', 1);");
-		db.execSQL("INSERT INTO " + GameContract.Master_Dice.TABLE_NAME +  " VALUES(1, 'seis caras', 1);");
-		db.execSQL("INSERT INTO " + GameContract.Master_Dice.TABLE_NAME +  " VALUES(2, 'poker', 1);");
+		db.execSQL("INSERT INTO " + GameContract.Master_Chip.TABLE_NAME +  " VALUES(1, 'CIRCLE', 1);");
+		db.execSQL("INSERT INTO " + GameContract.Master_Chip.TABLE_NAME +  " VALUES(2, 'RECTANGLE', 1);");
+		db.execSQL("INSERT INTO " + GameContract.Master_Dice.TABLE_NAME +  " VALUES(1, 'STANDARD', 1);");
+		db.execSQL("INSERT INTO " + GameContract.Master_Dice.TABLE_NAME +  " VALUES(2, 'POKER', 1);");
 	}
 
 	@Override
