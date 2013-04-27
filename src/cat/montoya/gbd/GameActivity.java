@@ -55,7 +55,7 @@ public class GameActivity extends SimpleBaseGameActivity implements
 
 	@Override
 	public EngineOptions onCreateEngineOptions() {
-		//Comentari El que parte la boc a!!!
+		//Comentari El que te focka!!!
 		this.mZoomCamera = new ZoomCamera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT);
 		
 		final EngineOptions engineOptions = new EngineOptions(true,
