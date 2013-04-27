@@ -55,8 +55,9 @@ public class GameActivity extends SimpleBaseGameActivity implements
 
 	@Override
 	public EngineOptions onCreateEngineOptions() {
+		//Comentari Raul!!!
 		this.mZoomCamera = new ZoomCamera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT);
-
+		
 		final EngineOptions engineOptions = new EngineOptions(true,
 				ScreenOrientation.LANDSCAPE_FIXED, new RatioResolutionPolicy(
 						CAMERA_WIDTH, CAMERA_HEIGHT), this.mZoomCamera);
