@@ -95,7 +95,8 @@ public class MainActivity extends Activity implements OnItemLongClickListener,
 
 		switch (item.getItemId()) {
 		case R.id.action_add_game:
-			Intent i = new Intent(this, MaintenanceActivity.class);
+			//Intent i = new Intent(this, MaintenanceActivity.class);
+			Intent i = new Intent(this, GameDetail.class);
 			startActivity(i);
 			return true;
 		case R.id.action_settings:

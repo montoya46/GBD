@@ -12,5 +12,8 @@
     <string name="action_play_game">Play Game</string>
     <string name="action_edit_game">Edit Game</string>
     <string name="action_delete_game">Delete Game</string>
+    <string name="title_activity_game_detail">GameDetail</string>
+    <string name="Game_Detail_Title">Titulo</string>
+    <string name="Game_Detail_Help">¿Como jugar?</string>
 
 </resources>
