@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -28,6 +29,7 @@ public class MainActivity extends Activity implements OnItemLongClickListener,
 		OnItemClickListener {
 
 	private IGameDAO gameDAO;
+	private ActionMode mActionMode;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -40,10 +42,8 @@ public class MainActivity extends Activity implements OnItemLongClickListener,
 		ListView lv = (ListView) findViewById(R.id.gameList);
 		lv.setAdapter(new GameLazyListAdapter(this, gameDAO.getGameList(),
 				folder));
-		// lv.setOnItemLongClickListener(this);
-		 lv.setOnItemClickListener(this);
-
-		registerForContextMenu(lv);
+		lv.setOnItemLongClickListener(this);
+		lv.setOnItemClickListener(this);
 
 	}
 
@@ -70,7 +70,50 @@ public class MainActivity extends Activity implements OnItemLongClickListener,
 	public boolean onItemLongClick(AdapterView<?> parent, View view,
 			int position, long id) {
 
-		return false;
+		if (mActionMode != null) {
+			return false;
+		}
+
+		mActionMode = startActionMode(new ActionMode.Callback() {
+
+			@Override
+			public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+				MenuInflater inflater = mode.getMenuInflater();
+				inflater.inflate(R.menu.onlongclickmenu, menu);
+				return true;
+			}
+
+			@Override
+			public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+				switch (item.getItemId()) {
+				case R.id.action_edit_game:
+					mode.finish();
+					return true;
+				case R.id.action_play_game:
+					mode.finish();
+					return true;
+				case R.id.action_delete_game:
+					mode.finish();
+					return true;
+				default:
+					return false;
+				}
+			}
+
+			@Override
+			public void onDestroyActionMode(ActionMode mode) {
+				mActionMode = null;
+
+			}
+
+			@Override
+			public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+
+				return false;
+			}
+		});
+
+		return true;
 	}
 
 	public void createDummyGames(View v) {
@@ -95,7 +138,7 @@ public class MainActivity extends Activity implements OnItemLongClickListener,
 
 		switch (item.getItemId()) {
 		case R.id.action_add_game:
-			//Intent i = new Intent(this, MaintenanceActivity.class);
+			// Intent i = new Intent(this, MaintenanceActivity.class);
 			Intent i = new Intent(this, GameDetail.class);
 			startActivity(i);
 			return true;
@@ -104,31 +147,6 @@ public class MainActivity extends Activity implements OnItemLongClickListener,
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
-		}
-
-	}
-
-	@Override
-	public void onCreateContextMenu(ContextMenu menu, View v,
-			ContextMenuInfo menuInfo) {
-		super.onCreateContextMenu(menu, v, menuInfo);
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.onlongclickmenu, menu);
-	}
-
-	@Override
-	public boolean onContextItemSelected(MenuItem item) {
-		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item
-				.getMenuInfo();
-		switch (item.getItemId()) {
-		case R.id.action_edit_game:
-			return true;
-		case R.id.action_play_game:
-			return true;
-		case R.id.action_delete_game:
-			return true;
-		default:
-			return super.onContextItemSelected(item);
 		}
 	}
 

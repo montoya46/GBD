@@ -1,10 +1,10 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
         android:id="@+id/action_play_game"
         android:enabled="true"
         android:orderInCategory="100"
-        android:showAsAction="never"
+        android:showAsAction="ifRoom|withText"
         android:title="@string/action_play_game"
         android:visible="true"
         android:icon="@android:drawable/btn_plus"/>
@@ -12,15 +12,17 @@
         android:id="@+id/action_edit_game"
         android:enabled="true"
         android:orderInCategory="50"
-        android:showAsAction="never"
+        android:showAsAction="ifRoom|withText"
         android:title="@string/action_edit_game"
-        android:visible="true"/>
+        android:visible="true"
+        android:icon="@drawable/ic_launcher"/>
     <item
         android:id="@+id/action_delete_game"
         android:enabled="true"
         android:orderInCategory="25"
-        android:showAsAction="never"
+        android:showAsAction="ifRoom|withText"
         android:title="@string/action_delete_game"
-        android:visible="true"/>
+        android:visible="true"
+        android:icon="@drawable/ic_launcher"/>
 
 </menu>
