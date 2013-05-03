@@ -28,24 +28,25 @@ public final class R {
         public static final int list_selector=0x7f020004;
     }
     public static final class id {
-        public static final int action_add_game=0x7f080010;
-        public static final int action_delete_game=0x7f080013;
-        public static final int action_edit_game=0x7f080012;
-        public static final int action_play_game=0x7f080011;
-        public static final int action_settings=0x7f08000f;
+        public static final int action_add_game=0x7f080011;
+        public static final int action_delete_game=0x7f080014;
+        public static final int action_edit_game=0x7f080013;
+        public static final int action_play_game=0x7f080012;
+        public static final int action_settings=0x7f080010;
         public static final int button1=0x7f080005;
         public static final int buttonx1=0x7f080006;
         public static final int buttonx2=0x7f080007;
+        public static final int edDescripcion=0x7f080003;
         public static final int edTitulo=0x7f080001;
-        public static final int editText1=0x7f080003;
-        public static final int editText2=0x7f08000b;
+        public static final int editText1=0x7f08000a;
+        public static final int editText2=0x7f08000c;
         public static final int gameBoard=0x7f080008;
         public static final int gameList=0x7f080004;
-        public static final int image=0x7f08000c;
-        public static final int imageView1=0x7f08000e;
-        public static final int text=0x7f08000d;
+        public static final int image=0x7f08000d;
+        public static final int imageView1=0x7f08000f;
+        public static final int text=0x7f08000e;
         public static final int textView1=0x7f080009;
-        public static final int textView2=0x7f08000a;
+        public static final int textView2=0x7f08000b;
         public static final int tvComoJugar=0x7f080002;
         public static final int tvTitulo=0x7f080000;
     }
@@ -90,17 +91,6 @@ public final class R {
             res/values-vXX/styles.xml, while customizations related to
             backward-compatibility can go here.
         
-
-        Base application theme for API 11+. This theme completely replaces
-        AppBaseTheme from res/values/styles.xml on API 11+ devices.
-    
- API 11 theme customizations can go here. 
-
-        Base application theme for API 14+. This theme completely replaces
-        AppBaseTheme from BOTH res/values/styles.xml and
-        res/values-v11/styles.xml on API 14+ devices.
-    
- API 14 theme customizations can go here. 
          */
         public static final int AppBaseTheme=0x7f060000;
         /**  Application theme. 

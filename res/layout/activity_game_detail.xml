@@ -10,39 +10,39 @@
 
     <TextView
         android:id="@+id/tvTitulo"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/Game_Detail_Title" />
+        android:text="@string/Game_Detail_Title" 
+        android:textSize="22sp"
+        android:textStyle="bold"/>
 
     <EditText
         android:id="@+id/edTitulo"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/tvTitulo"
-        android:layout_marginLeft="10dp"
-        android:layout_toRightOf="@+id/tvComoJugar"
+        android:layout_below="@+id/tvTitulo"
         android:ems="10" 
         android:inputType="text">
     </EditText>
 
     <TextView
         android:id="@+id/tvComoJugar"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/tvTitulo"
-        android:layout_below="@+id/tvTitulo"
-        android:layout_marginTop="25dp"
-        android:text="@string/Game_Detail_Help" />
+        android:layout_below="@+id/edTitulo"
+        android:text="@string/Game_Detail_Help" 
+        android:textSize="22sp"
+        android:textStyle="bold"/>
 
     <EditText
-        android:id="@+id/editText1"
-        android:layout_width="wrap_content"
+        android:id="@+id/edDescripcion"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/tvComoJugar"
-        android:layout_toRightOf="@+id/tvComoJugar"
-        android:layout_marginLeft="10dp"
+        android:layout_below="@+id/tvComoJugar"
         android:ems="10"
-        android:inputType="textMultiLine" >
+        android:inputType="textMultiLine" 
+        android:lines="5"
+        android:maxLength="250">
 
         <requestFocus />
     </EditText>
