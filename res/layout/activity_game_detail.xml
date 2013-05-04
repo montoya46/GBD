@@ -1,12 +1,18 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+  	android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+<RelativeLayout 
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".GameDetail" >
+    tools:context=".GameDetail" 
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true">
 
     <TextView
         android:id="@+id/tvTitulo"
@@ -16,13 +22,23 @@
         android:textSize="22sp"
         android:textStyle="bold"/>
 
+    <View
+        android:id="@+id/vwLineaTitulo"
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/tvTitulo"
+        android:background="@android:color/black" />
+    
     <EditText
         android:id="@+id/edTitulo"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvTitulo"
+        android:layout_below="@+id/vwLineaTitulo"
         android:ems="10" 
-        android:inputType="text">
+        android:inputType="text"
+        android:layout_marginTop="20dp"
+        android:hint="@string/Game_Detail_Title_Hint">
     </EditText>
 
     <TextView
@@ -32,19 +48,115 @@
         android:layout_below="@+id/edTitulo"
         android:text="@string/Game_Detail_Help" 
         android:textSize="22sp"
+        android:layout_marginTop="20dp"
         android:textStyle="bold"/>
 
+    <View
+        android:id="@+id/vwLineaComoJugar"
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/tvComoJugar"
+        android:background="@android:color/black" />
+    
     <EditText
         android:id="@+id/edDescripcion"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvComoJugar"
+        android:layout_below="@+id/vwLineaComoJugar"
         android:ems="10"
         android:inputType="textMultiLine" 
         android:lines="5"
+        android:layout_marginTop="20dp"
+        android:hint="@string/Game_Detail_Help_Hint"
         android:maxLength="250">
-
-        <requestFocus />
     </EditText>
 
+    <TextView
+        android:id="@+id/tvAddTablero"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/edDescripcion"
+        android:text="@string/Game_Detail_Tablero" 
+        android:textSize="22sp"
+        android:layout_marginTop="20dp"
+        android:textStyle="bold"/>
+
+    <View
+        android:id="@+id/vwAddTablero"
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/tvAddTablero"
+        android:background="@android:color/black" />
+    
+    <ImageButton
+        android:id="@+id/ibGallery"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/vwAddTablero"
+        android:layout_marginTop="20dp"
+        android:contentDescription="@string/Game_Detail_GalleryAcces"
+        android:src="@drawable/picture" />
+    
+    <TextView
+        android:id="@+id/tvDescripcionGaleria"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/vwAddTablero"
+        android:layout_toRightOf="@+id/ibGallery"
+        android:layout_marginTop="40dp"
+        android:text="@string/Game_Detail_GalleryAccesDescripcion" 
+        android:textSize="14sp"
+        android:textStyle="bold"/>
+    
+    <ImageButton
+        android:id="@+id/ibCamera"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ibGallery"
+        android:layout_marginTop="20dp"
+        android:contentDescription="@string/Game_Detail_CameraAcces"
+        android:src="@drawable/camera" />
+    
+    <TextView
+        android:id="@+id/tvDescripcionCamara"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ibGallery"
+        android:layout_toRightOf="@+id/ibCamera"
+        android:layout_marginTop="40dp"
+        android:text="@string/Game_Detail_CameraAccesDescripcion" 
+        android:textSize="14sp"
+        android:textStyle="bold"/>
+
+    <ImageView
+        android:id="@+id/ibPreview"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_below="@+id/ibCamera"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="20dp"
+        android:src="@android:color/darker_gray" 
+        android:contentDescription="@string/Game_Detail_ImagePreview" />
+    
+     <TextView
+        android:id="@+id/tvAddDados"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ibPreview"
+        android:text="@string/Game_Detail_Tablero" 
+        android:textSize="22sp"
+        android:layout_marginTop="20dp"
+        android:textStyle="bold"/>
+
+    <View
+        android:id="@+id/vwAddDados"
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/tvAddDados"
+        android:background="@android:color/black" />
+    
 </RelativeLayout>
+</ScrollView>
