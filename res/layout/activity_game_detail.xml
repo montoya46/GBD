@@ -1,7 +1,9 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
   	android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+    android:layout_height="fill_parent"
+    android:background="#E5E5E5"
+    >
 
 <RelativeLayout 
     android:layout_width="fill_parent"
@@ -90,57 +92,86 @@
         android:layout_below="@+id/tvAddTablero"
         android:background="@android:color/black" />
     
-    <ImageButton
-        android:id="@+id/ibGallery"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/vwAddTablero"
-        android:layout_marginTop="20dp"
-        android:contentDescription="@string/Game_Detail_GalleryAcces"
-        android:src="@drawable/picture" />
-    
-    <TextView
-        android:id="@+id/tvDescripcionGaleria"
+    <LinearLayout android:orientation="horizontal"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/vwAddTablero"
-        android:layout_toRightOf="@+id/ibGallery"
-        android:layout_marginTop="40dp"
-        android:text="@string/Game_Detail_GalleryAccesDescripcion" 
-        android:textSize="14sp"
-        android:textStyle="bold"/>
+	    android:layout_height="wrap_content"
+	    android:layout_below="@+id/vwAddTablero"
+	    android:layout_marginTop="20dp"
+	    android:id="@+id/lyTablero"
+	    >
+	    
+        <RelativeLayout 
+            android:background="@android:color/white" 
+            android:layout_width="250dp"
+	    	android:layout_height="wrap_content"
+	    	android:layout_marginLeft="10dp"
+	    	android:layout_marginRight="10dp"
+	    	android:layout_marginTop="10dp"
+	    	android:layout_marginBottom="10dp"
+	    	android:id="@+id/rlGaleria">
+                        
+            <ImageView
+		        android:id="@+id/ibGallery"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_alignParentLeft="true"
+		        android:contentDescription="@string/Game_Detail_GalleryAcces"
+		        android:src="@drawable/picture" 
+		        />
     
-    <ImageButton
-        android:id="@+id/ibCamera"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/ibGallery"
-        android:layout_marginTop="20dp"
-        android:contentDescription="@string/Game_Detail_CameraAcces"
-        android:src="@drawable/camera" />
+		    <TextView
+		        android:id="@+id/tvDescripcionGaleria"
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content"
+		        android:layout_centerInParent="true"
+		        android:layout_marginRight="5dp"
+		        android:text="@string/Game_Detail_GalleryAccesDescripcion" 
+		        android:textSize="14sp"
+		        android:gravity="right"
+		        android:textStyle="bold"/>
+        </RelativeLayout>
+        <RelativeLayout 
+            android:background="@android:color/white" 
+            android:layout_width="250dp"
+	    	android:layout_height="wrap_content"
+	    	android:layout_marginLeft="10dp"
+	    	android:layout_marginRight="10dp"
+	    	android:layout_marginTop="10dp"
+	    	android:layout_marginBottom="10dp"
+	    	android:id="@+id/rlCamera">
+                  
+            <ImageView
+		        android:id="@+id/ibCamera"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_alignParentLeft="true"
+		        android:contentDescription="@string/Game_Detail_CameraAcces"
+		        android:src="@drawable/camera" />
+		    
+		    <TextView
+		        android:id="@+id/tvDescripcionCamara"
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content"
+		        android:layout_centerInParent="true"
+		        android:layout_marginRight="5dp"
+		        android:text="@string/Game_Detail_CameraAccesDescripcion" 
+		        android:textSize="14sp"
+     		   	android:gravity="right"
+		        android:textStyle="bold"/>
+        </RelativeLayout>
+    </LinearLayout>
     
-    <TextView
-        android:id="@+id/tvDescripcionCamara"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/ibGallery"
-        android:layout_toRightOf="@+id/ibCamera"
-        android:layout_marginTop="40dp"
-        android:text="@string/Game_Detail_CameraAccesDescripcion" 
-        android:textSize="14sp"
-        android:textStyle="bold"/>
-
     <ImageView
         android:id="@+id/ibPreview"
         android:layout_width="300dp"
         android:layout_height="300dp"
-        android:layout_below="@+id/ibCamera"
+        android:layout_below="@+id/lyTablero"
         android:layout_centerInParent="true"
         android:layout_marginTop="20dp"
         android:src="@android:color/darker_gray" 
         android:contentDescription="@string/Game_Detail_ImagePreview" />
     
-     <TextView
+    <TextView
         android:id="@+id/tvAddDados"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -157,6 +188,7 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/tvAddDados"
         android:background="@android:color/black" />
+    
     
 </RelativeLayout>
 </ScrollView>
