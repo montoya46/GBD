@@ -69,7 +69,7 @@ public class ImageAdapter extends BaseAdapter {
 			Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
 			image.setImageBitmap(myBitmap);
 		} else {
-			image.setImageResource(R.drawable.ic_launcher);
+			image.setImageResource(R.drawable.parchis);
 		}
 
 		text.setText("item " + position + " - " + game.getName());

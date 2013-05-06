@@ -81,12 +81,10 @@ public class GameDAOMock implements IGameDAO {
 	 * @return
 	 */
 	private List<Game> getMockGames() {
-		Game g1 = new Game(), g2 = new Game(), g3 = new Game(), g4 = new Game();
 		List<Game> games = new ArrayList<Game>();
-		games.add(g1);
-		games.add(g2);
-		games.add(g3);
-		games.add(g4);
+		for (int i = 0; i < 20; i++) {
+			games.add(new Game());
+		}
 		return games;
 	}
 
