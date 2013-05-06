@@ -18,7 +18,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="cat.montoya.gbd.MainActivity"
+            android:name="cat.montoya.gbd.GameGridViewActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -37,6 +37,10 @@
         <activity
             android:name="cat.montoya.gbd.GameDetail"
             android:label="@string/title_activity_game_detail" >
+        </activity>
+        <activity
+            android:name="cat.montoya.gbd.MainActivity"
+            android:label="@string/app_name" >
         </activity>
     </application>
 

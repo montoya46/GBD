@@ -1,4 +1,4 @@
-package cat.montoya.gbd.listadapter;
+package cat.montoya.gbd.adapters;
 
 import java.io.File;
 import java.util.List;

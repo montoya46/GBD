@@ -18,15 +18,14 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
+import cat.montoya.gbd.adapters.GameLazyListAdapter;
 import cat.montoya.gbd.dao.GameDAOMock;
 import cat.montoya.gbd.dao.IGameDAO;
-import cat.montoya.gbd.listadapter.GameLazyListAdapter;
 
 /*
  * Game List Activity
  */
-public class MainActivity extends Activity implements OnItemLongClickListener,
-		OnItemClickListener {
+public class MainActivity extends Activity implements OnItemLongClickListener, OnItemClickListener {
 
 	private IGameDAO gameDAO;
 	private ActionMode mActionMode;
@@ -40,8 +39,7 @@ public class MainActivity extends Activity implements OnItemLongClickListener,
 		gameDAO = new GameDAOMock(folder);
 
 		ListView lv = (ListView) findViewById(R.id.gameList);
-		lv.setAdapter(new GameLazyListAdapter(this, gameDAO.getGameList(),
-				folder));
+		lv.setAdapter(new GameLazyListAdapter(this, gameDAO.getGameList(), folder));
 		lv.setOnItemLongClickListener(this);
 		lv.setOnItemClickListener(this);
 
@@ -55,10 +53,8 @@ public class MainActivity extends Activity implements OnItemLongClickListener,
 	}
 
 	@Override
-	public void onItemClick(AdapterView<?> parent, View view, int position,
-			long id) {
-		Toast.makeText(getApplicationContext(), "Clickon element" + id,
-				Toast.LENGTH_LONG).show();
+	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+		Toast.makeText(getApplicationContext(), "Clickon element" + id, Toast.LENGTH_LONG).show();
 
 		Intent i = new Intent(this, GameActivity.class);
 		// i.putExtra("game", gameDAO.getGame(id));
@@ -67,8 +63,7 @@ public class MainActivity extends Activity implements OnItemLongClickListener,
 	}
 
 	@Override
-	public boolean onItemLongClick(AdapterView<?> parent, View view,
-			int position, long id) {
+	public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 
 		if (mActionMode != null) {
 			return false;
@@ -87,6 +82,7 @@ public class MainActivity extends Activity implements OnItemLongClickListener,
 			public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
 				switch (item.getItemId()) {
 				case R.id.action_edit_game:
+					openMaintenanceActivity();
 					mode.finish();
 					return true;
 				case R.id.action_play_game:
@@ -145,9 +141,17 @@ public class MainActivity extends Activity implements OnItemLongClickListener,
 		case R.id.action_settings:
 			// Falta la activity amb les opcions
 			return true;
+		case R.id.action_changeview:
+			startActivity(new Intent(this, GameGridViewActivity.class));
+			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
+	}
+
+	public void openMaintenanceActivity() {
+		Intent i = new Intent(this, GameDetail.class);
+		startActivity(i);
 	}
 
 }
