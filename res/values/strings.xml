@@ -25,4 +25,22 @@
 	<string name="Game_Detail_GalleryAccesDescripcion">Añadir tablero desde galería.</string>
 	<string name="Game_Detail_CameraAccesDescripcion">Añadir tablero desde cámara.</string>
 	<string name="Game_Detail_Dados">Añadir dados</string>
+	<string name="Game_Detail_Fichas">Añadir fichas</string>
+	
+	<string name="tvNumeroDices">Nº: </string>
+	<string name="tvTipoDices">Tipo: </string>
+	<string name="ibNewDice">Tipo dado</string>
+	<string name="tvNumeroChips">Nº: </string>
+	<string name="tvTipoChips">Tipo: </string>
+	<string name="ibNewChip">Tipo ficha</string>
+	<string name="tvColor">Color</string>
+	
+	<string-array name="number_dices_array">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </string-array>
+    
 </resources>

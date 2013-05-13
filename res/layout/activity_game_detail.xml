@@ -40,7 +40,8 @@
         android:ems="10" 
         android:inputType="text"
         android:layout_marginTop="20dp"
-        android:hint="@string/Game_Detail_Title_Hint">
+        android:hint="@string/Game_Detail_Title_Hint"
+        android:background="@android:color/white">
     </EditText>
 
     <TextView
@@ -71,7 +72,8 @@
         android:lines="5"
         android:layout_marginTop="20dp"
         android:hint="@string/Game_Detail_Help_Hint"
-        android:maxLength="250">
+        android:maxLength="250"
+        android:background="@android:color/white">
     </EditText>
 
     <TextView
@@ -176,7 +178,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/ibPreview"
-        android:text="@string/Game_Detail_Tablero" 
+        android:text="@string/Game_Detail_Dados" 
         android:textSize="22sp"
         android:layout_marginTop="20dp"
         android:textStyle="bold"/>
@@ -188,7 +190,135 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/tvAddDados"
         android:background="@android:color/black" />
+
+    <TextView
+        android:id="@+id/tvNumeroDices"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+		android:layout_below="@+id/vwAddDados"
+        android:layout_marginTop="30dp"
+        android:text="@string/tvNumeroDices" 
+        android:textSize="14sp"
+        android:textStyle="bold" />
     
+    <Spinner
+	    android:id="@+id/numer_dices"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content" 
+	    android:layout_below="@+id/vwAddDados"
+	    android:layout_toRightOf="@+id/tvNumeroDices"
+	    android:layout_marginLeft="10dp"
+	    android:layout_marginTop="20dp" />
+    
+    <TextView
+        android:id="@+id/tvTipoDices"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+		android:layout_below="@+id/vwAddDados"
+        android:layout_marginTop="30dp"
+        android:layout_toRightOf="@+id/numer_dices"
+        android:layout_marginLeft="10dp"
+        android:text="@string/tvTipoDices" 
+        android:textSize="14sp"
+        android:textStyle="bold" />
+    
+    <ImageView
+        android:id="@+id/ibNewDice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/vwAddDados"
+        android:layout_toRightOf="@+id/tvTipoDices"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/dice1"
+        android:contentDescription="@string/ibNewDice" />
+    
+    
+    
+    
+    <TextView
+        android:id="@+id/tvAddChips"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ibNewDice"
+        android:text="@string/Game_Detail_Fichas" 
+        android:textSize="22sp"
+        android:layout_marginTop="20dp"
+        android:textStyle="bold"/>
+
+    <View
+        android:id="@+id/vwAddChips"
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/tvAddChips"
+        android:background="@android:color/black" />
+    
+    
+    
+    <TextView
+        android:id="@+id/tvNumeroFichas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+		android:layout_below="@+id/vwAddChips"
+        android:layout_marginTop="30dp"
+        android:text="@string/tvNumeroChips" 
+        android:textSize="14sp"
+        android:textStyle="bold" />
+    
+    <Spinner
+	    android:id="@+id/numer_chips"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content" 
+	    android:layout_below="@+id/vwAddChips"
+	    android:layout_toRightOf="@+id/tvNumeroFichas"
+	    android:layout_marginLeft="10dp"
+	    android:layout_marginTop="20dp" />
+    
+    <TextView
+        android:id="@+id/tvTipoFichas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+		android:layout_below="@+id/vwAddChips"
+        android:layout_marginTop="30dp"
+        android:layout_toRightOf="@+id/numer_chips"
+        android:layout_marginLeft="10dp"
+        android:text="@string/tvTipoChips" 
+        android:textSize="14sp"
+        android:textStyle="bold" />
+    
+    <ImageView
+        android:id="@+id/ibNewChip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/vwAddChips"
+        android:layout_toRightOf="@+id/tvTipoFichas"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="10dp"
+        android:src="@drawable/circulo"
+        android:contentDescription="@string/ibNewChip" />
+    
+    <TextView
+        android:id="@+id/tvColor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+		android:layout_below="@+id/vwAddChips"
+        android:layout_marginTop="30dp"
+        android:layout_toRightOf="@+id/ibNewChip"
+        android:layout_marginLeft="10dp"
+        android:text="@string/tvTipoChips" 
+        android:textSize="14sp"
+        android:textStyle="bold" />
+    
+    <RelativeLayout 
+        			android:layout_width="30dp" 
+        			android:layout_height="30dp"
+        			android:layout_below="@+id/vwAddChips" 
+        			android:layout_toRightOf="@+id/tvColor"
+        			android:layout_marginTop="20dp"
+        			android:layout_marginLeft="10dp"
+        			android:background="@android:color/holo_red_light">
+        
+    </RelativeLayout>
     
 </RelativeLayout>
 </ScrollView>
