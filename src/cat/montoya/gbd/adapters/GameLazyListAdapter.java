@@ -66,7 +66,7 @@ public class GameLazyListAdapter extends BaseAdapter {
 
 		View vi = convertView;
 		if (convertView == null)
-			vi = inflater.inflate(R.layout.game_list_item, null);
+			vi = inflater.inflate(R.layout.activity_games_listview_item, null);
 
 		TextView text = (TextView) vi.findViewById(R.id.text);
 		ImageView image = (ImageView) vi.findViewById(R.id.image);

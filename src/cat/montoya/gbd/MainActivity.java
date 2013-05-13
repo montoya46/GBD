@@ -33,7 +33,7 @@ public class MainActivity extends Activity implements OnItemLongClickListener, O
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+		setContentView(R.layout.activity_games_listview);
 
 		File folder = getRootFolder();
 		gameDAO = new GameDAOMock(folder);
@@ -137,12 +137,14 @@ public class MainActivity extends Activity implements OnItemLongClickListener, O
 			// Intent i = new Intent(this, MaintenanceActivity.class);
 			Intent i = new Intent(this, GameDetail.class);
 			startActivity(i);
+			finish();
 			return true;
 		case R.id.action_settings:
 			// Falta la activity amb les opcions
 			return true;
 		case R.id.action_changeview:
 			startActivity(new Intent(this, GameGridViewActivity.class));
+			finish();
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);

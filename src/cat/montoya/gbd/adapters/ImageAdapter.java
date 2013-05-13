@@ -59,7 +59,7 @@ public class ImageAdapter extends BaseAdapter {
 
 		View vi = convertView;
 		if (convertView == null)
-			vi = inflater.inflate(R.layout.game_grid_item, null);
+			vi = inflater.inflate(R.layout.activity_games_gridview_item, null);
 
 		TextView text = (TextView) vi.findViewById(R.id.editText1);
 		ImageView image = (ImageView) vi.findViewById(R.id.imageView1);
@@ -69,7 +69,7 @@ public class ImageAdapter extends BaseAdapter {
 			Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
 			image.setImageBitmap(myBitmap);
 		} else {
-			image.setImageResource(R.drawable.parchis);
+			image.setImageResource(R.drawable.parchis_tn);
 		}
 
 		text.setText("item " + position + " - " + game.getName());
