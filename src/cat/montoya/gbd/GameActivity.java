@@ -7,6 +7,8 @@ import org.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
 import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.scene.IOnSceneTouchListener;
 import org.andengine.entity.scene.Scene;
+import org.andengine.entity.scene.background.Background;
+import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.util.FPSLogger;
 import org.andengine.input.touch.TouchEvent;
@@ -16,10 +18,17 @@ import org.andengine.input.touch.detector.PinchZoomDetector.IPinchZoomDetectorLi
 import org.andengine.input.touch.detector.ScrollDetector;
 import org.andengine.input.touch.detector.ScrollDetector.IScrollDetectorListener;
 import org.andengine.input.touch.detector.SurfaceScrollDetector;
+import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
+import org.andengine.opengl.texture.atlas.bitmap.BuildableBitmapTextureAtlas;
+import org.andengine.opengl.texture.atlas.bitmap.source.IBitmapTextureAtlasSource;
+import org.andengine.opengl.texture.atlas.buildable.builder.BlackPawnTextureAtlasBuilder;
+import org.andengine.opengl.texture.atlas.buildable.builder.ITextureAtlasBuilder.TextureAtlasBuilderException;
 import org.andengine.opengl.texture.region.ITextureRegion;
+import org.andengine.opengl.texture.region.TiledTextureRegion;
 import org.andengine.ui.activity.SimpleBaseGameActivity;
+import org.andengine.util.debug.Debug;
 
 import android.widget.Toast;
 
@@ -50,6 +59,9 @@ public class GameActivity extends SimpleBaseGameActivity implements IOnSceneTouc
 	// Image gameboard
 	private BitmapTextureAtlas mBackgroundTexture;
 	private ITextureRegion mBackgroundTextureRegion;
+	
+	private BuildableBitmapTextureAtlas mBitmapTextureAtlas;
+	private TiledTextureRegion mDiceTextureRegion;
 
 	// ===========================================================
 	// Constructors
@@ -65,7 +77,6 @@ public class GameActivity extends SimpleBaseGameActivity implements IOnSceneTouc
 
 	@Override
 	public EngineOptions onCreateEngineOptions() {
-		// Comentari jooooo !!!
 		this.mZoomCamera = new ZoomCamera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT);
 
 		final EngineOptions engineOptions = new EngineOptions(true, ScreenOrientation.LANDSCAPE_FIXED, new RatioResolutionPolicy(CAMERA_WIDTH, CAMERA_HEIGHT),
@@ -96,6 +107,18 @@ public class GameActivity extends SimpleBaseGameActivity implements IOnSceneTouc
 		this.mBackgroundTexture = new BitmapTextureAtlas(this.getTextureManager(), 1866, 1860);
 		this.mBackgroundTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mBackgroundTexture, this, "parchis.jpg", 0, 0);
 		this.mBackgroundTexture.load();
+		
+		this.mBitmapTextureAtlas = new BuildableBitmapTextureAtlas(this.getTextureManager(), 1024, 256, TextureOptions.NEAREST);
+		this.mDiceTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.mBitmapTextureAtlas, this, "dice1.jpg", 6, 1);
+		
+		
+		try {
+			this.mBitmapTextureAtlas.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0, 0, 1));
+			this.mBitmapTextureAtlas.load();
+		} catch (TextureAtlasBuilderException e) {
+			Debug.e(e);
+		}
+				
 
 	}
 
@@ -106,8 +129,7 @@ public class GameActivity extends SimpleBaseGameActivity implements IOnSceneTouc
 		this.mScene = new Scene();
 		this.mScene.setOnAreaTouchTraversalFrontToBack();
 
-		// this.mScene.setBackground(new Background(0.09804f, 0.6274f,
-		// 0.8784f));
+		 this.mScene.setBackground(new Background(0.09804f, 0.6274f, 0.8784f));
 		this.mScene.setBackgroundEnabled(false);
 		this.mScene.attachChild(new Sprite(0, 0, this.mBackgroundTextureRegion, this.getVertexBufferObjectManager()));
 
@@ -124,15 +146,26 @@ public class GameActivity extends SimpleBaseGameActivity implements IOnSceneTouc
 			final Rectangle rect4 = this.makeColoredRectangle(100, 1500, 1, 1, 0);
 		}
 
-		// final Entity rectangleGroup = new Entity(CAMERA_WIDTH / 2,
-		// CAMERA_HEIGHT / 2);
-
-		// rectangleGroup.attachChild(rect1);
-		// rectangleGroup.attachChild(rect2);
-		// rectangleGroup.attachChild(rect3);
-		// rectangleGroup.attachChild(rect4);
-
-		// this.mScene.attachChild(rect1);
+		final AnimatedSprite dice = new AnimatedSprite(0, 0, this.mDiceTextureRegion, this.getVertexBufferObjectManager()){
+			@Override
+			public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
+				if (this.isAnimationRunning()){
+					int stop = (int) (Math.random()*6);
+					stop--;
+					if (stop <= 5 && stop >=0){
+						this.stopAnimation(stop);
+					}else {
+						this.stopAnimation();
+					}
+				}else{
+					this.animate(250);
+				}
+				return super.onAreaTouched(pSceneTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
+			}
+		};
+		this.mScene.attachChild(dice);
+		this.mScene.registerTouchArea(dice);
+		
 
 		return this.mScene;
 	}
