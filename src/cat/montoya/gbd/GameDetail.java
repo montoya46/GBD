@@ -23,9 +23,11 @@ public class GameDetail extends Activity {
 		// Apply the adapter to the spinner
 		spinner.setAdapter(adapter);
 		
-		
 		Spinner spinnerChips = (Spinner) findViewById(R.id.numer_chips);
 		spinnerChips.setAdapter(adapter);
+		
+		Spinner spinnerSize = (Spinner) findViewById(R.id.number_size);
+		spinnerSize.setAdapter(adapter);
 	}
 
 	@Override
