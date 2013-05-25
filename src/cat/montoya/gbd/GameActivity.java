@@ -1,5 +1,9 @@
 package cat.montoya.gbd;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.andengine.engine.camera.SmoothCamera;
 import org.andengine.engine.camera.ZoomCamera;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
@@ -8,8 +12,6 @@ import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.scene.IOnSceneTouchListener;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
-import org.andengine.entity.sprite.AnimatedSprite;
-import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.util.FPSLogger;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.input.touch.controller.MultiTouch;
@@ -18,27 +20,22 @@ import org.andengine.input.touch.detector.PinchZoomDetector.IPinchZoomDetectorLi
 import org.andengine.input.touch.detector.ScrollDetector;
 import org.andengine.input.touch.detector.ScrollDetector.IScrollDetectorListener;
 import org.andengine.input.touch.detector.SurfaceScrollDetector;
-import org.andengine.opengl.texture.TextureOptions;
-import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
-import org.andengine.opengl.texture.atlas.bitmap.BuildableBitmapTextureAtlas;
-import org.andengine.opengl.texture.atlas.bitmap.source.IBitmapTextureAtlasSource;
-import org.andengine.opengl.texture.atlas.buildable.builder.BlackPawnTextureAtlasBuilder;
-import org.andengine.opengl.texture.atlas.buildable.builder.ITextureAtlasBuilder.TextureAtlasBuilderException;
-import org.andengine.opengl.texture.region.ITextureRegion;
-import org.andengine.opengl.texture.region.TiledTextureRegion;
 import org.andengine.ui.activity.SimpleBaseGameActivity;
-import org.andengine.util.debug.Debug;
 
+import android.graphics.Point;
+import android.view.Display;
 import android.widget.Toast;
+import cat.montoya.gbd.game.elements.DiceAnimatedSprite;
+import cat.montoya.gbd.game.elements.GameBoardSprite;
 
 public class GameActivity extends SimpleBaseGameActivity implements IOnSceneTouchListener, IScrollDetectorListener, IPinchZoomDetectorListener {
 	// ===========================================================
 	// Constants
 	// ===========================================================
 
-	private static final int CAMERA_WIDTH = 2560;
-	private static final int CAMERA_HEIGHT = 1600;
+	private static int CAMERA_WIDTH = 800;
+	private static int CAMERA_HEIGHT = 600;
 
 	private static final int LAYER_COUNT = 3;
 
@@ -56,12 +53,9 @@ public class GameActivity extends SimpleBaseGameActivity implements IOnSceneTouc
 	private PinchZoomDetector mPinchZoomDetector;
 	private float mPinchZoomStartedCameraZoomFactor;
 
-	// Image gameboard
-	private BitmapTextureAtlas mBackgroundTexture;
-	private ITextureRegion mBackgroundTextureRegion;
-	
-	private BuildableBitmapTextureAtlas mBitmapTextureAtlas;
-	private TiledTextureRegion mDiceTextureRegion;
+	// Game elements
+	private GameBoardSprite gameBoardSprite;
+	private List<DiceAnimatedSprite> dices = new ArrayList<DiceAnimatedSprite>();
 
 	// ===========================================================
 	// Constructors
@@ -77,7 +71,16 @@ public class GameActivity extends SimpleBaseGameActivity implements IOnSceneTouc
 
 	@Override
 	public EngineOptions onCreateEngineOptions() {
+
+		Display display = getWindowManager().getDefaultDisplay();
+		Point size = new Point();
+		display.getSize(size);
+		GameActivity.CAMERA_WIDTH = size.x;
+		GameActivity.CAMERA_HEIGHT = size.y;
+
 		this.mZoomCamera = new ZoomCamera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT);
+//		this.mZoomCamera.setZoomFactor(0.2f);
+//		this.mZoomCamera.setCenter(0, 0);
 
 		final EngineOptions engineOptions = new EngineOptions(true, ScreenOrientation.LANDSCAPE_FIXED, new RatioResolutionPolicy(CAMERA_WIDTH, CAMERA_HEIGHT),
 				this.mZoomCamera);
@@ -104,22 +107,8 @@ public class GameActivity extends SimpleBaseGameActivity implements IOnSceneTouc
 	public void onCreateResources() {
 
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
-		this.mBackgroundTexture = new BitmapTextureAtlas(this.getTextureManager(), 1866, 1860);
-		this.mBackgroundTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mBackgroundTexture, this, "parchis.jpg", 0, 0);
-		this.mBackgroundTexture.load();
-		
-		this.mBitmapTextureAtlas = new BuildableBitmapTextureAtlas(this.getTextureManager(), 1024, 256, TextureOptions.NEAREST);
-		this.mDiceTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.mBitmapTextureAtlas, this, "dice1.jpg", 6, 1);
-		
-		
-		try {
-			this.mBitmapTextureAtlas.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0, 0, 1));
-			this.mBitmapTextureAtlas.load();
-		} catch (TextureAtlasBuilderException e) {
-			Debug.e(e);
-		}
-				
-
+		this.gameBoardSprite = GameBoardSprite.getInstance(this, "parchis.jpg", 1866, 1860);
+		this.dices.add(DiceAnimatedSprite.getInstance(this));
 	}
 
 	@Override
@@ -129,9 +118,13 @@ public class GameActivity extends SimpleBaseGameActivity implements IOnSceneTouc
 		this.mScene = new Scene();
 		this.mScene.setOnAreaTouchTraversalFrontToBack();
 
-		 this.mScene.setBackground(new Background(0.09804f, 0.6274f, 0.8784f));
+		this.mScene.setBackground(new Background(0.09804f, 0.6274f, 0.8784f));
 		this.mScene.setBackgroundEnabled(false);
-		this.mScene.attachChild(new Sprite(0, 0, this.mBackgroundTextureRegion, this.getVertexBufferObjectManager()));
+		this.mScene.attachChild(this.gameBoardSprite);
+		
+		//TODO aki calculem la posicio que hem de enfocar segons la imatge del gameboard
+		this.mZoomCamera.setZoomFactor(0.2f);
+		this.mZoomCamera.setCenter(0,0);
 
 		this.mScrollDetector = new SurfaceScrollDetector(this);
 		this.mPinchZoomDetector = new PinchZoomDetector(this);
@@ -146,25 +139,10 @@ public class GameActivity extends SimpleBaseGameActivity implements IOnSceneTouc
 			final Rectangle rect4 = this.makeColoredRectangle(100, 1500, 1, 1, 0);
 		}
 
-		final AnimatedSprite dice = new AnimatedSprite(0, 0, this.mDiceTextureRegion, this.getVertexBufferObjectManager()){
-			@Override
-			public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
-				if (this.isAnimationRunning()){
-					int stop = (int) (Math.random()*6);
-					stop--;
-					if (stop <= 5 && stop >=0){
-						this.stopAnimation(stop);
-					}else {
-						this.stopAnimation();
-					}
-				}else{
-					this.animate(250);
-				}
-				return super.onAreaTouched(pSceneTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
-			}
-		};
-		this.mScene.attachChild(dice);
-		this.mScene.registerTouchArea(dice);
+		for (DiceAnimatedSprite dice : dices) {
+			this.mScene.attachChild(dice);
+			this.mScene.registerTouchArea(dice);
+		}
 		
 
 		return this.mScene;
