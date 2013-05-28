@@ -20,8 +20,7 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.GridView;
 import android.widget.Toast;
 
-public class GameGridViewActivity extends Activity implements
-		OnItemLongClickListener, OnItemClickListener {
+public class GameGridViewActivity extends Activity implements OnItemLongClickListener, OnItemClickListener {
 
 	private IGameDAO gameDAO;
 	private ActionMode mActionMode;
@@ -35,8 +34,7 @@ public class GameGridViewActivity extends Activity implements
 		gameDAO = new GameDAOMock(folder);
 
 		GridView gridview = (GridView) findViewById(R.id.gamegridview);
-		gridview.setAdapter(new ImageAdapter(this, gameDAO.getGameList(),
-				folder));
+		gridview.setAdapter(new ImageAdapter(this, gameDAO.getGameList(), folder));
 
 		gridview.setOnItemLongClickListener(this);
 		gridview.setOnItemClickListener(this);
@@ -55,12 +53,11 @@ public class GameGridViewActivity extends Activity implements
 		Intent i = new Intent(this, GameActivity.class);
 		// i.putExtra("game", gameDAO.getGame(id));
 		startActivity(i);
-		
+
 	}
 
 	@Override
-	public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int arg2,
-			long arg3) {
+	public boolean onItemLongClick(AdapterView<?> parent, View view, int position, final long id) {
 		if (mActionMode != null) {
 			return false;
 		}
@@ -76,9 +73,10 @@ public class GameGridViewActivity extends Activity implements
 
 			@Override
 			public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+				
 				switch (item.getItemId()) {
 				case R.id.action_edit_game:
-					openMaintenanceActivity();
+					openMaintenanceActivity(id);
 					mode.finish();
 					return true;
 				case R.id.action_play_game:
@@ -107,43 +105,46 @@ public class GameGridViewActivity extends Activity implements
 
 		return true;
 	}
-	
-	public void openMaintenanceActivity() {
+
+	public void openMaintenanceActivity(Long id) {
 		Intent i = new Intent(this, GameDetail.class);
+		if (id != null)
+			i.putExtra("id", id);
+		
 		startActivity(i);
 	}
 
 	// *******************************************************************
-		// *********************** Menu Actions ******************************
-		// *******************************************************************
+	// *********************** Menu Actions ******************************
+	// *******************************************************************
 
-		@Override
-		public boolean onCreateOptionsMenu(Menu menu) {
-			// Inflate the menu; this adds items to the action bar if it is present.
-			getMenuInflater().inflate(R.menu.main, menu);
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.main, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+
+		switch (item.getItemId()) {
+		case R.id.action_add_game:
+			// Intent i = new Intent(this, MaintenanceActivity.class);
+			Intent i = new Intent(this, GameDetail.class);
+			startActivity(i);
+			finish();
 			return true;
+		case R.id.action_settings:
+			// Falta la activity amb les opcions
+			return true;
+		case R.id.action_changeview:
+			startActivity(new Intent(this, MainActivity.class));
+			finish();
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
 		}
+	}
 
-		@Override
-		public boolean onOptionsItemSelected(MenuItem item) {
-
-			switch (item.getItemId()) {
-			case R.id.action_add_game:
-				// Intent i = new Intent(this, MaintenanceActivity.class);
-				Intent i = new Intent(this, GameDetail.class);
-				startActivity(i);
-				finish();
-				return true;
-			case R.id.action_settings:
-				// Falta la activity amb les opcions
-				return true;
-			case R.id.action_changeview:
-				startActivity(new Intent(this, MainActivity.class));
-				finish();
-				return true;
-			default:
-				return super.onOptionsItemSelected(item);
-			}
-		}
-	
 }
