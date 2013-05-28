@@ -34,9 +34,6 @@ public class DiceAnimatedSprite extends AnimatedSprite {
 
 	public static DiceAnimatedSprite getInstance(BaseGameActivity bga) {
 
-		// TiledTextureRegion mDiceTextureRegion =
-		// BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBitmapTextureAtlas,
-		// bga, DICE1_JPG, COLUMNS, ROWS);
 		if (DiceAnimatedSprite.mDiceTextureRegion == null) {
 			BuildableBitmapTextureAtlas mBitmapTextureAtlas = new BuildableBitmapTextureAtlas(bga.getTextureManager(), WIDTH, HEIGHT, TextureOptions.NEAREST);
 			DiceAnimatedSprite.mDiceTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBitmapTextureAtlas, bga, DICE1_JPG, COLUMNS,

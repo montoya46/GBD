@@ -7,6 +7,8 @@ import org.andengine.engine.camera.ZoomCamera;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
+import org.andengine.entity.modifier.LoopEntityModifier;
+import org.andengine.entity.modifier.RotationModifier;
 import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.scene.IOnSceneTouchListener;
 import org.andengine.entity.scene.Scene;
@@ -67,6 +69,8 @@ public class GameActivity extends SimpleBaseGameActivity implements IOnSceneTouc
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
+	
+	private boolean rotated = false;
 
 	@Override
 	public EngineOptions onCreateEngineOptions() {
@@ -138,6 +142,22 @@ public class GameActivity extends SimpleBaseGameActivity implements IOnSceneTouc
 			final Rectangle rect3 = this.makeColoredRectangle(1500, 1500, 0, 0, 1);
 			final Rectangle rect4 = this.makeColoredRectangle(100, 1500, 1, 1, 0);
 		}
+		
+		
+		final Rectangle rect = new Rectangle(-90, 0, 90, 90, this.getVertexBufferObjectManager()){
+			
+			@Override
+			public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
+				rotate();
+				return true;
+			}
+
+		};
+		
+		rect.setColor(1,1,1);
+
+		this.mScene.attachChild(rect);
+		this.mScene.registerTouchArea(rect);
 
 		for (DiceAnimatedSprite dice : dices) {
 			this.mScene.attachChild(dice);
@@ -146,6 +166,13 @@ public class GameActivity extends SimpleBaseGameActivity implements IOnSceneTouc
 		
 
 		return this.mScene;
+	}
+	
+	private void rotate() {
+		if (!this.rotated){
+			this.rotated=true;
+//			this.gameBoardSprite.registerEntityModifier(new LoopEntityModifier(new RotationModifier(1, 1, 45)));
+		}
 	}
 
 	/**
