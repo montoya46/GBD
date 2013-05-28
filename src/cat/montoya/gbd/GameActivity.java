@@ -3,7 +3,6 @@ package cat.montoya.gbd;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.andengine.engine.camera.SmoothCamera;
 import org.andengine.engine.camera.ZoomCamera;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
@@ -109,6 +108,7 @@ public class GameActivity extends SimpleBaseGameActivity implements IOnSceneTouc
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
 		this.gameBoardSprite = GameBoardSprite.getInstance(this, "parchis.jpg", 1866, 1860);
 		this.dices.add(DiceAnimatedSprite.getInstance(this));
+		this.dices.add(DiceAnimatedSprite.getInstance(this));
 	}
 
 	@Override
@@ -122,9 +122,9 @@ public class GameActivity extends SimpleBaseGameActivity implements IOnSceneTouc
 		this.mScene.setBackgroundEnabled(false);
 		this.mScene.attachChild(this.gameBoardSprite);
 		
-		//TODO aki calculem la posicio que hem de enfocar segons la imatge del gameboard
-		this.mZoomCamera.setZoomFactor(0.2f);
-		this.mZoomCamera.setCenter(0,0);
+
+		centerAndZoomGameBoard();
+		
 
 		this.mScrollDetector = new SurfaceScrollDetector(this);
 		this.mPinchZoomDetector = new PinchZoomDetector(this);
@@ -146,6 +146,17 @@ public class GameActivity extends SimpleBaseGameActivity implements IOnSceneTouc
 		
 
 		return this.mScene;
+	}
+
+	/**
+	 * Centrar el taulell en la pantalla i fer zoom per veure'l complert
+	 */
+	private void centerAndZoomGameBoard() {
+		float zoomFactor = CAMERA_HEIGHT/this.gameBoardSprite.getHeight();
+		this.mZoomCamera.setZoomFactor(zoomFactor);		
+		final float centerX = this.gameBoardSprite.getWidth() / 2;
+		final float centerY = this.gameBoardSprite.getHeight() / 2;
+		this.mZoomCamera.setCenter(centerX,centerY);
 	}
 
 	private Rectangle makeColoredRectangle(final float pX, final float pY, final float pRed, final float pGreen, final float pBlue) {
@@ -232,3 +243,4 @@ public class GameActivity extends SimpleBaseGameActivity implements IOnSceneTouc
 	}
 
 }
+

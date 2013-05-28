@@ -21,25 +21,65 @@ public class DiceAnimatedSprite extends AnimatedSprite {
 	private static final int HEIGHT = 256; // Height for all image
 	private static final String DICE1_JPG = "dice1.jpg";// Resource name
 
-	private DiceAnimatedSprite(BaseGameActivity bga, TiledTextureRegion mDiceTextureRegion) {
-		super(0, 0, mDiceTextureRegion, bga.getVertexBufferObjectManager());
+	private static TiledTextureRegion mDiceTextureRegion;
+
+	/**
+	 * Per fer drag and drop
+	 */
+	boolean mGrabbed = false;
+
+	private DiceAnimatedSprite(BaseGameActivity bga) {
+		super(0, 0, DiceAnimatedSprite.mDiceTextureRegion, bga.getVertexBufferObjectManager());
 	}
 
 	public static DiceAnimatedSprite getInstance(BaseGameActivity bga) {
-		BuildableBitmapTextureAtlas mBitmapTextureAtlas = new BuildableBitmapTextureAtlas(bga.getTextureManager(), WIDTH, HEIGHT, TextureOptions.NEAREST);
-		TiledTextureRegion mDiceTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBitmapTextureAtlas, bga, DICE1_JPG, COLUMNS, ROWS);
 
-		try {
-			mBitmapTextureAtlas.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0, 0, 1));
-			mBitmapTextureAtlas.load();
-		} catch (TextureAtlasBuilderException e) {
-			Debug.e(e);
+		// TiledTextureRegion mDiceTextureRegion =
+		// BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBitmapTextureAtlas,
+		// bga, DICE1_JPG, COLUMNS, ROWS);
+		if (DiceAnimatedSprite.mDiceTextureRegion == null) {
+			BuildableBitmapTextureAtlas mBitmapTextureAtlas = new BuildableBitmapTextureAtlas(bga.getTextureManager(), WIDTH, HEIGHT, TextureOptions.NEAREST);
+			DiceAnimatedSprite.mDiceTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBitmapTextureAtlas, bga, DICE1_JPG, COLUMNS,
+					ROWS);
+			try {
+				mBitmapTextureAtlas.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0, 0, 1));
+				mBitmapTextureAtlas.load();
+			} catch (TextureAtlasBuilderException e) {
+				Debug.e(e);
+			}
 		}
-		return new DiceAnimatedSprite(bga, mDiceTextureRegion);
+
+		return new DiceAnimatedSprite(bga);
 	}
 
 	@Override
 	public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
+		
+
+		switch (pSceneTouchEvent.getAction()) {
+		case TouchEvent.ACTION_DOWN:
+			this.setScale(2.25f);
+			this.mGrabbed = true;
+			break;
+		case TouchEvent.ACTION_MOVE:
+			if (this.mGrabbed) {
+				this.setPosition(pSceneTouchEvent.getX() - 45, pSceneTouchEvent.getY() - 45);
+			}
+			break;
+		case TouchEvent.ACTION_UP:
+			if (this.mGrabbed) {
+				this.mGrabbed = false;
+				this.setScale(1.0f);
+			}
+			throwDice();
+			break;
+		}
+
+		return true;
+	}
+
+	public void throwDice() {
+		// TODO implementar un llançament real de un dau
 		if (this.isAnimationRunning()) {
 			int stop = (int) (Math.random() * 6);
 			stop--;
@@ -51,7 +91,7 @@ public class DiceAnimatedSprite extends AnimatedSprite {
 		} else {
 			this.animate(250);
 		}
-		return super.onAreaTouched(pSceneTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
+
 	}
 
 }
