@@ -3,9 +3,18 @@ package cat.montoya.gbd;
 import java.io.File;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.Menu;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 import cat.montoya.gbd.dao.GameDAOMock;
@@ -15,7 +24,11 @@ import cat.montoya.gbd.entity.Game;
 public class GameDetail extends Activity {
 	
 	private IGameDAO gameDAO;
-
+	private static final int SELECT_PICTURE = 1;
+	private static final int CAMERA_REQUEST = 1888; 
+	private Uri selectedImageUri;
+	private String selectedImagePath;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -62,12 +75,73 @@ public class GameDetail extends Activity {
 			folder = getFilesDir();
 		return folder;
 	}
-
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.game_detail, menu);
 		return true;
 	}
-
+	
+	/*
+	 * Metodo para recuperar desde la galeria
+	 * */
+	public void addBoardFromGallery(View v){
+		Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), SELECT_PICTURE);
+	}
+	
+	/*
+	 * Método para recuperar la imagen desde la camara
+	 * */
+	public void addBoardFromCamera(View v){
+		final PackageManager packageManager = this.getPackageManager();
+		boolean cameraAvailable = packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA);
+		if (cameraAvailable){
+			Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+		    startActivityForResult(takePictureIntent, CAMERA_REQUEST);
+			
+		}
+	}
+	
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            if (requestCode == SELECT_PICTURE) {
+            	selectedImageUri = data.getData();
+                selectedImagePath = getPath(selectedImageUri);
+                ImageView preview = (ImageView)findViewById(R.id.ibPreview);
+                preview.setImageURI(selectedImageUri);
+            }
+            else if(requestCode == CAMERA_REQUEST){
+            	Bitmap photo = (Bitmap) data.getExtras().get("data");
+            	ImageView preview = (ImageView)findViewById(R.id.ibPreview);
+            	preview.setImageBitmap(photo);
+            }
+        }
+    }
+	
+	/*
+	 * En principio esto me pilla la imagen del bitmap y la reescalo
+	 * Por provar!!!!
+	 * */
+	protected void GetBitmapFromPreview(){
+		ImageView preview = (ImageView)findViewById(R.id.ibPreview);
+		BitmapDrawable drawable = (BitmapDrawable) preview.getDrawable();
+		Bitmap bitmap = drawable.getBitmap();
+		Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, 160, 160, true);
+	}
+	
+	protected String getPath(Uri uri) {
+		String res = null;
+	    String[] proj = { MediaStore.Images.Media.DATA };
+	    Cursor cursor = getContentResolver().query(uri, proj, null, null, null);
+	    if(cursor.moveToFirst()){;
+	       int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+	       res = cursor.getString(column_index);
+	    }
+	    cursor.close();
+	    return res;
+    }
 }

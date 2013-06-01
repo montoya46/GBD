@@ -108,17 +108,16 @@
 	    	android:layout_marginRight="10dp"
 	    	android:layout_marginTop="10dp"
 	    	android:layout_marginBottom="10dp"
-	    	android:id="@+id/rlGaleria">
-                        
+	    	android:id="@+id/rlGaleria"
+	    	android:clickable="true"
+ 			android:onClick="addBoardFromGallery">
             <ImageView
 		        android:id="@+id/ibGallery"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
 		        android:layout_alignParentLeft="true"
 		        android:contentDescription="@string/Game_Detail_GalleryAcces"
-		        android:src="@drawable/picture" 
-		        />
-    
+		        android:src="@drawable/picture" />
 		    <TextView
 		        android:id="@+id/tvDescripcionGaleria"
 		        android:layout_width="fill_parent"
@@ -130,6 +129,7 @@
 		        android:gravity="right"
 		        android:textStyle="bold"/>
         </RelativeLayout>
+        
         <RelativeLayout 
             android:background="@android:color/white" 
             android:layout_width="250dp"
@@ -138,8 +138,9 @@
 	    	android:layout_marginRight="10dp"
 	    	android:layout_marginTop="10dp"
 	    	android:layout_marginBottom="10dp"
-	    	android:id="@+id/rlCamera">
-                  
+	    	android:id="@+id/rlCamera"
+	    	android:clickable="true"
+ 			android:onClick="addBoardFromCamera">
             <ImageView
 		        android:id="@+id/ibCamera"
 		        android:layout_width="wrap_content"
@@ -147,7 +148,6 @@
 		        android:layout_alignParentLeft="true"
 		        android:contentDescription="@string/Game_Detail_CameraAcces"
 		        android:src="@drawable/camera" />
-		    
 		    <TextView
 		        android:id="@+id/tvDescripcionCamara"
 		        android:layout_width="fill_parent"

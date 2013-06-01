@@ -18,34 +18,36 @@
     <string name="Game_Detail_Help">¿Como jugar?</string>
     <string name="Game_Detail_Title_Hint">Introduzca el título</string>
     <string name="Game_Detail_Help_Hint">¿En que consiste el juego?</string>
-	<string name="Game_Detail_Tablero">Añadir tablero</string>
-	<string name="Game_Detail_GalleryAcces">Acceder a la galería.</string>
-	<string name="Game_Detail_CameraAcces">Acceder a la cámara.</string>
-	<string name="Game_Detail_ImagePreview">Vista previa.</string>
-	<string name="Game_Detail_GalleryAccesDescripcion">Añadir tablero desde galería.</string>
-	<string name="Game_Detail_CameraAccesDescripcion">Añadir tablero desde cámara.</string>
-	<string name="Game_Detail_Dados">Añadir dados</string>
-	<string name="Game_Detail_Fichas">Añadir fichas</string>
-	<string name="Game_Detail_AddDice">Añadir dado</string>
-	<string name="Game_Detail_AddChip">Añadir ficha</string>
-	
-	<string name="tvNumeroDices">Número de dados</string>
-	<string name="tvTipoDices">Tipo de dados</string>
-	<string name="ibNewDice">Tipo dado</string>
-	<string name="tvNumeroChips">Número de fichas </string>
-	<string name="tvTipoChips">Forma </string>
-	<string name="ibNewChip">Tipo ficha</string>
-	<string name="tvColor">Color</string>
-	<string name="tvSize">Tamaño</string>
-	<string name="tvAddDices">Añadir dados</string>
-	<string name="tvAddChips">Añadir fichas</string>
-	
-	<string-array name="number_dices_array">
+    <string name="Game_Detail_Tablero">Añadir tablero</string>
+    <string name="Game_Detail_GalleryAcces">Acceder a la galería.</string>
+    <string name="Game_Detail_CameraAcces">Acceder a la cámara.</string>
+    <string name="Game_Detail_ImagePreview">Vista previa.</string>
+    <string name="Game_Detail_GalleryAccesDescripcion">Añadir tablero desde galería.</string>
+    <string name="Game_Detail_CameraAccesDescripcion">Añadir tablero desde cámara.</string>
+    <string name="Game_Detail_Dados">Añadir dados</string>
+    <string name="Game_Detail_Fichas">Añadir fichas</string>
+    <string name="Game_Detail_AddDice">Añadir dado</string>
+    <string name="Game_Detail_AddChip">Añadir ficha</string>
+    <string name="tvNumeroDices">Número de dados</string>
+    <string name="tvTipoDices">Tipo de dados</string>
+    <string name="ibNewDice">Tipo dado</string>
+    <string name="tvNumeroChips">Número de fichas </string>
+    <string name="tvTipoChips">Forma </string>
+    <string name="ibNewChip">Tipo ficha</string>
+    <string name="tvColor">Color</string>
+    <string name="tvSize">Tamaño</string>
+    <string name="tvAddDices">Añadir dados</string>
+    <string name="tvAddChips">Añadir fichas</string>
+
+    <string-array name="number_dices_array">
         <item>1</item>
         <item>2</item>
         <item>3</item>
         <item>4</item>
         <item>5</item>
     </string-array>
-    
+
+    <string name="title_activity_browse_picture">BrowsePicture</string>
+    <string name="hello_world">Hello world!</string>
+
 </resources>

@@ -42,6 +42,10 @@
             android:name="cat.montoya.gbd.MainActivity"
             android:label="@string/app_name" >
         </activity>
+        <activity
+            android:name="cat.montoya.gbd.BrowsePicture"
+            android:label="@string/title_activity_browse_picture" >
+        </activity>
     </application>
 
 </manifest>

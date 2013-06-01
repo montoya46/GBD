@@ -44,7 +44,6 @@ public class MaintenanceActivity extends Activity {
             Bitmap photo = (Bitmap) data.getExtras().get("data");
             ImageView imageView = (ImageView) findViewById(R.id.gameBoard);
             imageView.setImageBitmap(photo);
-            
         }  
     } 
 
