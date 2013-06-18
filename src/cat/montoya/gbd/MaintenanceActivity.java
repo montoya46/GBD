@@ -30,6 +30,7 @@ public class MaintenanceActivity extends Activity {
 	}
 	
 	public void onCaptureCamera(View v){
+		// merda
 		final PackageManager packageManager = this.getPackageManager();
 		boolean cameraAvailable = packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA);
 		if (cameraAvailable){
