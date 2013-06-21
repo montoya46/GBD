@@ -6,15 +6,20 @@ import java.io.OutputStream;
 import java.util.List;
 
 import android.app.Activity;
+import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.app.FragmentActivity;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -34,14 +39,18 @@ public class GameDetail extends Activity {
 	private IGameDAO gameDAO;
 	private static final int SELECT_PICTURE = 1;
 	private static final int CAMERA_REQUEST = 1888;
-	private Uri selectedImageUri;
-	private String selectedImagePath;
+	private Bitmap _photo;
+	
+	//private Uri selectedImageUri;
+	//private String selectedImagePath;
 
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_game_detail);
+		
 		gameDAO = new GameDAOMock(getRootFolder());
 
 		Long id = getIntent().getLongExtra("id", -1);
@@ -55,6 +64,14 @@ public class GameDetail extends Activity {
 			Toast.makeText(this, "Nou joc", Toast.LENGTH_LONG).show();
 		}
 
+		//TODO: Las soluciones que la gente es que hay que utilizar fragments (revisarlo)
+		final Object data = getLastNonConfigurationInstance();
+		
+		if(data != null){
+			ImageView preview = (ImageView) findViewById(R.id.ibPreview);
+			preview.setImageBitmap((Bitmap)data);	
+		}
+				
 		Spinner spinner = (Spinner) findViewById(R.id.numer_dices);
 		// Create an ArrayAdapter using the string array and a default spinner
 		// layout
@@ -71,6 +88,11 @@ public class GameDetail extends Activity {
 		spinnerSize.setAdapter(adapter);
 	}
 
+	@Override
+	public Object onRetainNonConfigurationInstance() {
+	   return _photo;
+	}
+	
 	private void loadGame(Game game) {
 		// TODO Implementació carrega del joc
 	}
@@ -101,7 +123,7 @@ public class GameDetail extends Activity {
 	}
 
 	/*
-	 * M�todo para recuperar la imagen desde la camara
+	 * Metodo para recuperar la imagen desde la camara
 	 */
 	public void addBoardFromCamera(View v) {
 		final PackageManager packageManager = this.getPackageManager();
@@ -116,15 +138,15 @@ public class GameDetail extends Activity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (resultCode == RESULT_OK) {
 			if (requestCode == SELECT_PICTURE) {
-				selectedImageUri = data.getData();
-				selectedImagePath = getPath(selectedImageUri);
-				ImageView preview = (ImageView) findViewById(R.id.ibPreview);
-				preview.setImageURI(selectedImageUri);
+				Uri selectedImageUri = data.getData();
+				String selectedImagePath = getPath(selectedImageUri);
+				_photo = BitmapFactory.decodeFile(selectedImagePath);
 			} else if (requestCode == CAMERA_REQUEST) {
-				Bitmap photo = (Bitmap) data.getExtras().get("data");
-				ImageView preview = (ImageView) findViewById(R.id.ibPreview);
-				preview.setImageBitmap(photo);
+				_photo = (Bitmap) data.getExtras().get("data");
 			}
+			
+			ImageView preview = (ImageView) findViewById(R.id.ibPreview);
+			preview.setImageBitmap(_photo);
 		}
 	}
 
@@ -151,7 +173,8 @@ public class GameDetail extends Activity {
 		cursor.close();
 		return res;
 	}
-
+	
+	
 	/**
 	 * Called onClick save button
 	 * 
