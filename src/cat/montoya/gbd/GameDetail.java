@@ -217,36 +217,45 @@ public class GameDetail extends Activity {
 
 	/**
 	 * This method writes the image to aplication folder (not yet implemented)
+	 * 
 	 * @return
 	 */
 	private String writeBoardToFile() {
-		//TODO esta posat a saco
+		// TODO esta posat a saco
 
 		ImageView preview = (ImageView) findViewById(R.id.ibPreview);
-		BitmapDrawable drawable = (BitmapDrawable) preview.getDrawable();
-		Bitmap bitmap = drawable.getBitmap();
+		if (preview != null) {
+			if (preview.getDrawable() != null && preview.getDrawable() instanceof BitmapDrawable) {
+				BitmapDrawable drawable = (BitmapDrawable) preview.getDrawable();
+				Bitmap bitmap = drawable.getBitmap();
 
-//		String extStorageDirectory = Environment.getExternalStorageDirectory().toString();
-		File rootFolder = getRootFolder();
-		OutputStream outStream = null;
-		OutputStream outStreamThm = null;
-		File fBoard = new File(rootFolder, "board1.PNG");
-		File fBoardThumbnail = new File(rootFolder, "tmb_board1.PNG");
-		try {
-			outStream = new FileOutputStream(fBoard);
-			outStreamThm = new FileOutputStream(fBoardThumbnail);
-			bitmap.compress(Bitmap.CompressFormat.PNG, 100, outStream);
-			bitmap.compress(Bitmap.CompressFormat.PNG, 25, outStreamThm);
-			outStream.flush();
-			outStream.close();
-			outStreamThm.flush();
-			outStreamThm.close();
-		} catch (Exception e) {
-			Log.e("Error", "Error writing images to disc",e);
+				if (bitmap != null) {
+					// String extStorageDirectory =
+					// Environment.getExternalStorageDirectory().toString();
+					File rootFolder = getRootFolder();
+					OutputStream outStream = null;
+					OutputStream outStreamThm = null;
+					File fBoard = new File(rootFolder, "board1.PNG");
+					File fBoardThumbnail = new File(rootFolder, "tmb_board1.PNG");
+					try {
+						outStream = new FileOutputStream(fBoard);
+						outStreamThm = new FileOutputStream(fBoardThumbnail);
+						bitmap.compress(Bitmap.CompressFormat.PNG, 100, outStream);
+						bitmap.compress(Bitmap.CompressFormat.PNG, 25, outStreamThm);
+						outStream.flush();
+						outStream.close();
+						outStreamThm.flush();
+						outStreamThm.close();
+					} catch (Exception e) {
+						Log.e("Error", "Error writing images to disc", e);
+					}
+					
+					return fBoard.getName();
+				}
+			}
 		}
-		
-		
-		return fBoard.getName();
+
+		return null;
 
 	}
 
