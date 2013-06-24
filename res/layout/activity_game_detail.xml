@@ -428,10 +428,9 @@
   	    android:layout_width="wrap_content"
   	    android:layout_height="wrap_content"
   	    android:layout_alignParentBottom="true"
-
-  	    android:layout_alignParentRight="true"
+  	    android:layout_centerHorizontal="true"
   	    android:onClick="saveGame"
-  	    android:text="Save" />
+  	    android:text="Button" />
 
 </RelativeLayout>
 </ScrollView>
