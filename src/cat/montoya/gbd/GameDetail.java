@@ -28,6 +28,7 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import cat.montoya.gbd.dao.GameDAO;
 import cat.montoya.gbd.dao.GameDAOMock;
 import cat.montoya.gbd.dao.IGameDAO;
 import cat.montoya.gbd.entity.Chip;
@@ -51,7 +52,7 @@ public class GameDetail extends Activity {
 
 		setContentView(R.layout.activity_game_detail);
 		
-		gameDAO = new GameDAOMock(getRootFolder());
+		gameDAO = new GameDAO(this);
 
 		Long id = getIntent().getLongExtra("id", -1);
 

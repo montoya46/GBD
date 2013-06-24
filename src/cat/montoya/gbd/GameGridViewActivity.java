@@ -2,10 +2,6 @@ package cat.montoya.gbd;
 
 import java.io.File;
 
-import cat.montoya.gbd.R.id;
-import cat.montoya.gbd.adapters.ImageAdapter;
-import cat.montoya.gbd.dao.GameDAOMock;
-import cat.montoya.gbd.dao.IGameDAO;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,7 +14,9 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.GridView;
-import android.widget.Toast;
+import cat.montoya.gbd.adapters.ImageAdapter;
+import cat.montoya.gbd.dao.GameDAO;
+import cat.montoya.gbd.dao.IGameDAO;
 
 public class GameGridViewActivity extends Activity implements OnItemLongClickListener, OnItemClickListener {
 
@@ -31,7 +29,7 @@ public class GameGridViewActivity extends Activity implements OnItemLongClickLis
 		setContentView(R.layout.activity_games_gridview);
 
 		File folder = getRootFolder();
-		gameDAO = new GameDAOMock(folder);
+		gameDAO = new GameDAO(this);
 
 		GridView gridview = (GridView) findViewById(R.id.gamegridview);
 		gridview.setAdapter(new ImageAdapter(this, gameDAO.getGameList(), folder));

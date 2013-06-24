@@ -1,18 +1,14 @@
 package cat.montoya.gbd.dao;
 
-import java.io.File;
-import java.io.IOException;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.graphics.Color;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
-import android.database.sqlite.*;
-
+import android.database.sqlite.SQLiteDatabase;
 import cat.montoya.gbd.entity.Chip;
 import cat.montoya.gbd.entity.Chip.ChipType;
 import cat.montoya.gbd.entity.Dice;
@@ -111,6 +107,7 @@ public class GameDAO implements IGameDAO {
 
 	@Override
 	public Game setGame(Game game) {
+		open();
 		dbHelper.getWritableDatabase();
 		
 		ContentValues gameValues = new ContentValues();
@@ -147,13 +144,13 @@ public class GameDAO implements IGameDAO {
 			newChipId = db.insert(GameContract.Game_Dices.TABLE_NAME, null, chipValues);
 			c.setId((int)newChipId);
 		}
-		
+		close();
 		return game;
 	}
 
 	@Override
 	public List<Game> getGameList() {
-		dbHelper.getReadableDatabase();
+		open();
 		List<Game> games = new ArrayList<Game>();
 		
 		String[] projection = {
@@ -175,7 +172,7 @@ public class GameDAO implements IGameDAO {
 		      c.moveToNext();
 		    }
 		}
-		
+		close();
 		return games;
 	}
 
@@ -198,7 +195,7 @@ public class GameDAO implements IGameDAO {
 	}
 	
 	/*
-	 * Método para devolver la entidad a partir de la fila
+	 * Mï¿½todo para devolver la entidad a partir de la fila
 	 * a la que apunta el cursor.
 	 * */
 	private Game CursorToGame(Cursor c){
