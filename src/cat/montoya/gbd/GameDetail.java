@@ -4,22 +4,13 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.util.List;
-
 import android.app.Activity;
-import android.app.Fragment;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.v4.app.FragmentActivity;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -29,7 +20,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import cat.montoya.gbd.dao.GameDAO;
-import cat.montoya.gbd.dao.GameDAOMock;
 import cat.montoya.gbd.dao.IGameDAO;
 import cat.montoya.gbd.entity.Chip;
 import cat.montoya.gbd.entity.Dice;
@@ -38,14 +28,7 @@ import cat.montoya.gbd.entity.Game;
 public class GameDetail extends Activity {
 
 	private IGameDAO gameDAO;
-	private static final int SELECT_PICTURE = 1;
-	private static final int CAMERA_REQUEST = 1888;
-	private Bitmap _photo;
-	
-	//private Uri selectedImageUri;
-	//private String selectedImagePath;
 
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -65,13 +48,6 @@ public class GameDetail extends Activity {
 			Toast.makeText(this, "Nou joc", Toast.LENGTH_LONG).show();
 		}
 
-		//TODO: Las soluciones que la gente es que hay que utilizar fragments (revisarlo)
-		final Object data = getLastNonConfigurationInstance();
-		
-		if(data != null){
-			ImageView preview = (ImageView) findViewById(R.id.ibPreview);
-			preview.setImageBitmap((Bitmap)data);	
-		}
 				
 		Spinner spinner = (Spinner) findViewById(R.id.numer_dices);
 		// Create an ArrayAdapter using the string array and a default spinner
@@ -89,11 +65,6 @@ public class GameDetail extends Activity {
 		spinnerSize.setAdapter(adapter);
 	}
 
-	@Override
-	public Object onRetainNonConfigurationInstance() {
-	   return _photo;
-	}
-	
 	private void loadGame(Game game) {
 		// TODO Implementació carrega del joc
 	}
@@ -113,69 +84,6 @@ public class GameDetail extends Activity {
 		return true;
 	}
 
-	/*
-	 * Metodo para recuperar desde la galeria
-	 */
-	public void addBoardFromGallery(View v) {
-		Intent intent = new Intent();
-		intent.setType("image/*");
-		intent.setAction(Intent.ACTION_GET_CONTENT);
-		startActivityForResult(Intent.createChooser(intent, "Select Picture"), SELECT_PICTURE);
-	}
-
-	/*
-	 * Metodo para recuperar la imagen desde la camara
-	 */
-	public void addBoardFromCamera(View v) {
-		final PackageManager packageManager = this.getPackageManager();
-		boolean cameraAvailable = packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA);
-		if (cameraAvailable) {
-			Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-			startActivityForResult(takePictureIntent, CAMERA_REQUEST);
-
-		}
-	}
-
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (resultCode == RESULT_OK) {
-			if (requestCode == SELECT_PICTURE) {
-				Uri selectedImageUri = data.getData();
-				String selectedImagePath = getPath(selectedImageUri);
-				_photo = BitmapFactory.decodeFile(selectedImagePath);
-			} else if (requestCode == CAMERA_REQUEST) {
-				_photo = (Bitmap) data.getExtras().get("data");
-			}
-			
-			ImageView preview = (ImageView) findViewById(R.id.ibPreview);
-			preview.setImageBitmap(_photo);
-		}
-	}
-
-	/*
-	 * En principio esto me pilla la imagen del bitmap y la reescalo Por
-	 * provar!!!!
-	 */
-	protected void GetBitmapFromPreview() {
-		ImageView preview = (ImageView) findViewById(R.id.ibPreview);
-		BitmapDrawable drawable = (BitmapDrawable) preview.getDrawable();
-		Bitmap bitmap = drawable.getBitmap();
-		Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, 160, 160, true);
-	}
-
-	protected String getPath(Uri uri) {
-		String res = null;
-		String[] proj = { MediaStore.Images.Media.DATA };
-		Cursor cursor = getContentResolver().query(uri, proj, null, null, null);
-		if (cursor.moveToFirst()) {
-			;
-			int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-			res = cursor.getString(column_index);
-		}
-		cursor.close();
-		return res;
-	}
-	
-	
 	/**
 	 * Called onClick save button
 	 * 
