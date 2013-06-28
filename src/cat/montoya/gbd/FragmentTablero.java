@@ -58,8 +58,6 @@ public class FragmentTablero extends Fragment {
         });
 		
         return v;
-		
-        //return inflater.inflate(R.layout.fragment_tablero, container, false);
     }
 	
 	@Override
