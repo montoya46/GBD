@@ -22,15 +22,16 @@
         android:background="@android:color/black" />
     
     <RelativeLayout 
-        android:background="@android:color/white" 
         android:layout_width="250dp"
 	 	android:layout_height="wrap_content"
 	 	android:layout_marginLeft="10dp"
 	 	android:layout_marginRight="10dp"
 	 	android:layout_marginTop="10dp"
 	 	android:layout_marginBottom="10dp"
+	    android:background="@android:drawable/btn_default" 
+	    android:clickable="true"
+	    android:focusable="true"
 	 	android:id="@+id/rlGaleria"
-	 	android:clickable="true"
 		android:onClick="addBoardFromGallery">
         <ImageView
 	      	  android:id="@+id/ibGallery"
@@ -52,7 +53,6 @@
     </RelativeLayout>
         
     <RelativeLayout 
-            android:background="@android:color/white" 
             android:layout_width="250dp"
 	    	android:layout_height="wrap_content"
 	    	android:layout_marginLeft="10dp"
@@ -60,7 +60,9 @@
 	    	android:layout_marginTop="10dp"
 	    	android:layout_marginBottom="10dp"
 	    	android:id="@+id/rlCamera"
+	    	android:background="@android:drawable/btn_default" 
 	    	android:clickable="true"
+	    	android:focusable="true"
  			android:onClick="addBoardFromCamera">
             <ImageView
 		        android:id="@+id/ibCamera"
