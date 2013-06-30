@@ -61,6 +61,10 @@ public class GameDetail extends Activity {
 		Spinner spinnerSize = (Spinner) findViewById(R.id.number_size);
 		spinnerSize.setAdapter(adapter);
 	}
+	
+	public void SelectDice(View v){
+		
+	}
 
 	private void loadGame(Game game) {
 		// TODO Implementació carrega del joc

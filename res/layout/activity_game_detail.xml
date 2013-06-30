@@ -102,98 +102,60 @@
         android:layout_below="@+id/tvAddDados"
         android:background="@android:color/black" />
     
-  	<TableLayout
-       android:id="@+id/tblAddDices"
-       android:layout_width="fill_parent"
-       android:layout_height="wrap_content"
-       android:layout_marginTop="20dp"
-       android:layout_below="@+id/vwAddDados">
-
-       <TableRow
-           android:id="@+id/tbrNumeroDice"
-           android:layout_width="fill_parent"
-           android:layout_height="wrap_content"
-           android:padding="5dip">
-		    
-           <TextView
-	        android:id="@+id/tvNumeroDices"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_marginLeft="10dp"
-           	android:layout_marginRight="10dp"
-           	android:layout_gravity="center"
-	        android:text="@string/tvNumeroDices" 
-	        android:textSize="14sp"
-	        android:textStyle="bold" />
+    <LinearLayout 
+    	android:orientation="horizontal"
+        android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_marginTop="20dp"
+	    android:layout_marginBottom="20dp"
+	    android:layout_below="@+id/vwAddDados"
+	    android:id="@+id/lyAddDices">
+	
+        <Spinner
+            android:id="@+id/numer_dices"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
            
-           <TextView
-	        android:id="@+id/tvTipoDices"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_marginLeft="10dp"
-           	android:layout_marginRight="10dp"
-           	android:layout_gravity="center"
-	        android:text="@string/tvTipoDices" 
-	        android:textSize="14sp"
-	        android:textStyle="bold" />
-           
-           <TextView
-	        android:id="@+id/tvAddDices"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_marginLeft="10dp"
-           	android:layout_marginRight="10dp"
-           	android:layout_gravity="center"
-	        android:text="@string/tvAddDices" 
-	        android:textSize="14sp"
-	        android:textStyle="bold" />
-           
-       </TableRow>
-      <TableRow
-          android:id="@+id/tbrTipoDice"
-          android:layout_width="fill_parent"
-          android:layout_height="wrap_content"
-          android:layout_marginLeft="10dp"
-	      android:layout_marginRight="10dp"
-          android:padding="5dip">
+        <ImageView
+		        android:id="@+id/ibNewDice"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_marginLeft="10dp"
+	            android:layout_marginRight="10dp"
+	            android:background="@android:drawable/btn_default" 
+		    	android:clickable="true"
+		    	android:focusable="true"
+		        android:src="@drawable/dice1"
+		        android:onClick="SelectDice"
+		        android:contentDescription="@string/ibNewDice" />
+ 
+         <Button
+		  	 	android:id="@+id/ibAddDice"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+		 		android:text="@string/Game_Detail_AddDice">
+         </Button>
+        
+	</LinearLayout>
+	
     
-           <Spinner
-		    android:id="@+id/numer_dices"
-		    android:layout_width="wrap_content" 
-		    android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp" 
-            android:layout_gravity="center"/>
-           
-           <ImageView
-	        android:id="@+id/ibNewDice"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_gravity="center"
-	        android:src="@drawable/dice1"
-	        android:contentDescription="@string/ibNewDice" />
-           
-           <ImageView
-	        android:id="@+id/ibAddDice"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_gravity="center"
-	        android:contentDescription="@string/Game_Detail_AddDice"
-	        android:src="@drawable/add" />
-           
-      </TableRow>
-
-  </TableLayout>
+    <LinearLayout 
+    	android:orientation="horizontal"
+        android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_marginTop="20dp"
+	    android:layout_marginBottom="20dp"
+	    android:layout_below="@+id/lyAddDices"
+	    android:id="@+id/tblDicesAdded">
     
-  	
+    </LinearLayout>
+    
+    	
 	<TextView
 	     android:id="@+id/tvAddChips"
 	     android:layout_width="fill_parent"
 	     android:layout_height="wrap_content"
-	     android:layout_below="@+id/tblAddDices"
+	     android:layout_below="@+id/tblDicesAdded"
 	     android:text="@string/Game_Detail_Fichas" 
 	     android:textSize="22sp"
 	     android:layout_marginTop="20dp"

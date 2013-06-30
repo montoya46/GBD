@@ -24,7 +24,7 @@
     <string name="Game_Detail_ImagePreview">Vista previa.</string>
     <string name="Game_Detail_GalleryAccesDescripcion">Añadir tablero desde galería.</string>
     <string name="Game_Detail_CameraAccesDescripcion">Añadir tablero desde cámara.</string>
-    <string name="Game_Detail_Dados">Añadir dados</string>
+    <string name="Game_Detail_Dados">Añadir</string>
     <string name="Game_Detail_Fichas">Añadir fichas</string>
     <string name="Game_Detail_AddDice">Añadir dado</string>
     <string name="Game_Detail_AddChip">Añadir ficha</string>
@@ -45,6 +45,11 @@
         <item>3</item>
         <item>4</item>
         <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
     </string-array>
 
     <string name="title_activity_browse_picture">BrowsePicture</string>
