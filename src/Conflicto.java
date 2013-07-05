@@ -1,7 +1,7 @@
 
 public class Conflicto {
 	public void hola(){
-		String a = "VAMOS A VER SI RESOLVEMOS ESTO";
+		String a = "NO ME GUSTAN LAS BERENJENAS";
 	}
 
 }
