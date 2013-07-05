@@ -108,10 +108,21 @@ public class GameDAO implements IGameDAO {
 		gameValues.put(GameContract.Game.COLUMN_NAME_NAME, game.getName());
 		gameValues.put(GameContract.Game.COLUMN_NAME_BOARD_URL, game.getBoardURL());
 		gameValues.put(GameContract.Game.COLUMN_NAME_BOARD_THUMBNAIL_URL, game.getBoardThumbnailURL());
+		
+		long gameId;
+		if (game.getId() != null){
+			gameId = game.getId();
+			gameValues.put(GameContract.Game._ID, game.getId());
+			db.update(GameContract.Game.TABLE_NAME, gameValues, GameContract.Game._ID + " = ?", new String[]{String.valueOf(game.getId())});			
+			
+		} else {
+			gameId = db.insert(GameContract.Game.TABLE_NAME, null, gameValues);
+			game.setId(gameId);
+		}
 
-		long newGameId;
-		newGameId = db.insert(GameContract.Game.TABLE_NAME, null, gameValues);
-		game.setId(newGameId);
+		//Eliminem abans de insertar els nous. Sempre podem fer update enlloc de insert en cas que ja tinguin id.
+		db.delete(GameContract.Game_Dices.TABLE_NAME, GameContract.Game_Dices._ID + " = ?", new String[]{String.valueOf(game.getId())});
+		db.delete(GameContract.Game_Chips.TABLE_NAME, GameContract.Game_Chips._ID + " = ?", new String[]{String.valueOf(game.getId())});
 
 		// Insertamos los dados
 		ContentValues diceValues = new ContentValues();
@@ -120,7 +131,7 @@ public class GameDAO implements IGameDAO {
 		if (game.getDices() != null)
 			for (Dice d : game.getDices()) {
 				diceValues.clear();
-				diceValues.put(GameContract.Game_Dices.COLUMN_NAME_ID_GAME, newGameId);
+				diceValues.put(GameContract.Game_Dices.COLUMN_NAME_ID_GAME, gameId);
 				diceValues.put(GameContract.Game_Dices.COLUMN_NAME_ID_DICE_TYPE, String.valueOf(d.getType()));
 
 				newDiceId = db.insert(GameContract.Game_Dices.TABLE_NAME, null, diceValues);
@@ -134,10 +145,10 @@ public class GameDAO implements IGameDAO {
 		if (game.getChips() != null)
 			for (Chip c : game.getChips()) {
 				chipValues.clear();
-				chipValues.put(GameContract.Game_Chips.COLUMN_NAME_ID_GAME, newGameId);
+				chipValues.put(GameContract.Game_Chips.COLUMN_NAME_ID_GAME, gameId);
 				chipValues.put(GameContract.Game_Chips.COLUMN_NAME_ID_CHIP_TYPE, String.valueOf(c.getType()));
 
-				newChipId = db.insert(GameContract.Game_Dices.TABLE_NAME, null, chipValues);
+				newChipId = db.insert(GameContract.Game_Chips.TABLE_NAME, null, chipValues);
 				c.setId((int) newChipId);
 			}
 		close();

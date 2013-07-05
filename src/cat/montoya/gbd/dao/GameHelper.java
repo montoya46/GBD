@@ -5,7 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class GameHelper extends SQLiteOpenHelper {
-	public static final int DATABASE_VERSION = 2;
+	public static final int DATABASE_VERSION = 3;
 	public static final String DATABASE_NAME = "GBD.db";
 	private static final String INTEGER_TYPE = " INTEGER";
 	private static final String TEXT_TYPE = " TEXT";
@@ -113,8 +113,11 @@ public class GameHelper extends SQLiteOpenHelper {
 		// Creamos las tablas en el orden adecuado, ojo: que hay foreign keys
 		dropAll(db); // De moment borrem tot al arrancar fins que funcionin les sentencies create
 		db.execSQL(SQL_CREATE_GAME);
-		db.execSQL(SQL_CREATE_MASTER_CHIP);
-		db.execSQL(SQL_CREATE_MASTER_DICE);
+		db.execSQL(SQL_CREATE_GAME_CHIPS);
+		db.execSQL(SQL_CREATE_GAME_DICES);
+		
+//		db.execSQL(SQL_CREATE_MASTER_CHIP);
+//		db.execSQL(SQL_CREATE_MASTER_DICE);
 //		db.execSQL(SQL_CREATE_GAME_SAVED);
 //		db.execSQL(SQL_CREATE_GAME_HELP);
 //		db.execSQL(SQL_CREATE_GAME_CHIPS);
