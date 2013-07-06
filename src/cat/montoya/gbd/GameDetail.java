@@ -2,6 +2,7 @@ package cat.montoya.gbd;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
 import android.app.Activity;
@@ -21,6 +22,7 @@ import cat.montoya.gbd.dao.IGameDAO;
 import cat.montoya.gbd.entity.Chip;
 import cat.montoya.gbd.entity.Dice;
 import cat.montoya.gbd.entity.Game;
+import cat.montoya.gbd.utils.MD5Utils;
 
 public class GameDetail extends Activity {
 
@@ -31,7 +33,7 @@ public class GameDetail extends Activity {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_game_detail);
-		
+
 		gameDAO = new GameDAO(this);
 
 		Long id = getIntent().getLongExtra("id", -1);
@@ -45,7 +47,6 @@ public class GameDetail extends Activity {
 			Toast.makeText(this, "Nou joc", Toast.LENGTH_LONG).show();
 		}
 
-				
 		Spinner spinner = (Spinner) findViewById(R.id.numer_dices);
 		// Create an ArrayAdapter using the string array and a default spinner
 		// layout
@@ -61,13 +62,30 @@ public class GameDetail extends Activity {
 		Spinner spinnerSize = (Spinner) findViewById(R.id.number_size);
 		spinnerSize.setAdapter(adapter);
 	}
-	
-	public void SelectDice(View v){
-		
+
+	public void SelectDice(View v) {
+
 	}
 
-	private void loadGame(Game game) {
-		// TODO Implementació carrega del joc
+	private void loadGame(Game g) {
+
+		// ID
+		g.getId();
+		// NAME
+		TextView name = (TextView) findViewById(R.id.edTitulo);
+		name.setText(g.getName());
+		// HELP
+		g.setHelp(new String[] { getStringFromTextView(R.id.edDescripcion) });
+		// BOARD && BOARDTHUMBNAIL
+//		String file = writeBoardToFile();
+//		g.setBoardURL(file);
+//		g.setBoardThumbnailURL("tmb_" + file);
+//		// Chips
+//		g.setChips(viewToEntityChips());
+//		// Dices
+//		g.setDices(viewToEntityDices());
+//		// Save the game
+//		g = gameDAO.setGame(g);
 	}
 
 	// Metode duplicat
@@ -100,36 +118,36 @@ public class GameDetail extends Activity {
 		// HELP
 		g.setHelp(new String[] { getStringFromTextView(R.id.edDescripcion) });
 		// BOARD && BOARDTHUMBNAIL
-		String file = writeBoardToFile();
-		g.setBoardURL(file);
-		g.setBoardThumbnailURL("tmb_"+file);
-		//Chips
+		String[] file = writeBoardToFile();
+		g.setBoardURL(file[0]);
+		g.setBoardThumbnailURL(file[1]);
+		// Chips
 		g.setChips(viewToEntityChips());
 		// Dices
 		g.setDices(viewToEntityDices());
-		//Save the game
+		// Save the game
 		g = gameDAO.setGame(g);
-		
-		//TODO Load id into field
+
+		// TODO Load id into field
 
 	}
-	
-	private List<Chip> viewToEntityChips(){
+
+	private List<Chip> viewToEntityChips() {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
 	private List<Dice> viewToEntityDices() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	/**
-	 * This method writes the image to aplication folder (not yet implemented)
+	 * This method writes the image to aplication folder 
 	 * 
-	 * @return
+	 * @return string array with the name of the board
 	 */
-	private String writeBoardToFile() {
+	private String[] writeBoardToFile() {
 		// TODO esta posat a saco
 
 		ImageView preview = (ImageView) findViewById(R.id.ibPreview);
@@ -144,8 +162,8 @@ public class GameDetail extends Activity {
 					File rootFolder = getRootFolder();
 					OutputStream outStream = null;
 					OutputStream outStreamThm = null;
-					File fBoard = new File(rootFolder, "board1.PNG");
-					File fBoardThumbnail = new File(rootFolder, "tmb_board1.PNG");
+					File fBoard = new File(rootFolder, "board.PNG");
+					File fBoardThumbnail = new File(rootFolder, "tmb_board.PNG");
 					try {
 						outStream = new FileOutputStream(fBoard);
 						outStreamThm = new FileOutputStream(fBoardThumbnail);
@@ -153,13 +171,22 @@ public class GameDetail extends Activity {
 						bitmap.compress(Bitmap.CompressFormat.PNG, 25, outStreamThm);
 						outStream.flush();
 						outStream.close();
-						outStreamThm.flush();
-						outStreamThm.close();
+						
 					} catch (Exception e) {
 						Log.e("Error", "Error writing images to disc", e);
+					} finally {
+						try {
+							outStreamThm.flush();
+							outStreamThm.close();
+						} catch (IOException e) {
+						}
 					}
+					String fBoardName = MD5Utils.md5String(fBoard);
+					fBoard.renameTo(new File(rootFolder,fBoardName));
 					
-					return fBoard.getName();
+					String fBoardNameThumbnail = MD5Utils.md5String(fBoardThumbnail);
+					fBoardThumbnail.renameTo(new File(rootFolder,fBoardNameThumbnail));
+					return new String[]{fBoardName,fBoardNameThumbnail};
 				}
 			}
 		}
@@ -176,6 +203,5 @@ public class GameDetail extends Activity {
 		}
 		return ret;
 	}
-		
 
 }
