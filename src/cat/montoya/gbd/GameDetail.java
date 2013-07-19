@@ -64,7 +64,7 @@ public class GameDetail extends Activity {
 	}
 
 	public void SelectDice(View v) {
-
+		//TODO: Mostrar PopUp con los dado
 	}
 
 	private void loadGame(Game g) {
