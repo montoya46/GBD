@@ -46,7 +46,7 @@ public class GameHelper extends SQLiteOpenHelper {
 			+ NOT_NULL + COMMA_SEP
 			+ GameContract.Game_Saved.COLUMN_NAME_SHORT_DESCRIPTION + TEXT_TYPE
 			+ NOT_NULL + COMMA_SEP + FOREIGN_KEY + " ("
-			+ GameContract.Game_Saved._ID + " )" + REFERENCES
+			+ GameContract.Game_Saved._ID + " )" + REFERENCES + " "
 			+ GameContract.Game.TABLE_NAME + " (" + GameContract.Game._ID
 			+ " )" + " );";
 
@@ -55,7 +55,7 @@ public class GameHelper extends SQLiteOpenHelper {
 			+ GameContract.Game_Help._ID + " INTEGER PRIMARY KEY,"
 			+ GameContract.Game_Help.COLUMN_NAME_HELP + TEXT_TYPE + NOT_NULL
 			+ COMMA_SEP + FOREIGN_KEY + " (" + GameContract.Game_Help._ID
-			+ " )" + REFERENCES + GameContract.Game.TABLE_NAME + " ("
+			+ " )" + REFERENCES + " " + GameContract.Game.TABLE_NAME + " ("
 			+ GameContract.Game._ID + " )" + " );";
 
 	private static final String SQL_CREATE_GAME_CHIPS = "CREATE TABLE "
@@ -67,11 +67,11 @@ public class GameHelper extends SQLiteOpenHelper {
 			+ GameContract.Game_Chips.COLUMN_NAME_ID_CHIP_TYPE + INTEGER_TYPE
 			+ NOT_NULL + COMMA_SEP + GameContract.Game_Chips.COLUMN_NAME_COLOR
 			+ INTEGER_TYPE + NOT_NULL + COMMA_SEP + FOREIGN_KEY + " ("
-			+ GameContract.Game_Chips.COLUMN_NAME_ID_GAME + " )" + REFERENCES
+			+ GameContract.Game_Chips.COLUMN_NAME_ID_GAME + " )" + REFERENCES + " "
 			+ GameContract.Game.TABLE_NAME + " (" + GameContract.Game._ID
 			+ " )" + FOREIGN_KEY + " ("
 			+ GameContract.Game_Chips.COLUMN_NAME_ID_CHIP_TYPE + " )"
-			+ REFERENCES + GameContract.Master_Chip.TABLE_NAME + " ("
+			+ REFERENCES + " " + GameContract.Master_Chip.TABLE_NAME + " ("
 			+ GameContract.Master_Chip._ID + " )" + " );";
 
 	private static final String SQL_CREATE_GAME_DICES = "CREATE TABLE "
@@ -82,11 +82,11 @@ public class GameHelper extends SQLiteOpenHelper {
 			+ NOT_NULL + COMMA_SEP
 			+ GameContract.Game_Dices.COLUMN_NAME_ID_DICE_TYPE + INTEGER_TYPE
 			+ NOT_NULL + COMMA_SEP + FOREIGN_KEY + " ("
-			+ GameContract.Game_Dices.COLUMN_NAME_ID_GAME + " )" + REFERENCES
+			+ GameContract.Game_Dices.COLUMN_NAME_ID_GAME + " )" + REFERENCES + " "
 			+ GameContract.Game.TABLE_NAME + " (" + GameContract.Game._ID
 			+ " )" + FOREIGN_KEY + " ("
 			+ GameContract.Game_Dices.COLUMN_NAME_ID_DICE_TYPE + " )"
-			+ REFERENCES + GameContract.Master_Dice.TABLE_NAME + " ("
+			+ REFERENCES + " " + GameContract.Master_Dice.TABLE_NAME + " ("
 			+ GameContract.Master_Dice._ID + " )" + " );";
 
 	private static final String SQL_DELETE_GAME = "DROP TABLE IF EXISTS "
@@ -116,8 +116,9 @@ public class GameHelper extends SQLiteOpenHelper {
 		db.execSQL(SQL_CREATE_GAME_CHIPS);
 		db.execSQL(SQL_CREATE_GAME_DICES);
 		
-//		db.execSQL(SQL_CREATE_MASTER_CHIP);
-//		db.execSQL(SQL_CREATE_MASTER_DICE);
+		db.execSQL(SQL_CREATE_MASTER_CHIP);
+		db.execSQL(SQL_CREATE_MASTER_DICE);
+		
 //		db.execSQL(SQL_CREATE_GAME_SAVED);
 //		db.execSQL(SQL_CREATE_GAME_HELP);
 //		db.execSQL(SQL_CREATE_GAME_CHIPS);
