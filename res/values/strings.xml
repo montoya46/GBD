@@ -38,6 +38,8 @@
     <string name="tvSize">Tamaño</string>
     <string name="tvAddDices">Añadir dados</string>
     <string name="tvAddChips">Añadir fichas</string>
+    <string name="Aceptar">Aceptar</string>
+    <string name="Cancelar">Cancelar</string>
 
     <string-array name="number_dices_array">
         <item>1</item>
@@ -54,5 +56,6 @@
 
     <string name="title_activity_browse_picture">BrowsePicture</string>
     <string name="hello_world">Hello world!</string>
+    <string name="title_activity_color_picker">ColorPickerActivity</string>
 
 </resources>

@@ -6,7 +6,12 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.DialogFragment;
+import android.app.FragmentManager;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +19,7 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -61,6 +67,20 @@ public class GameDetail extends Activity {
 
 		Spinner spinnerSize = (Spinner) findViewById(R.id.number_size);
 		spinnerSize.setAdapter(adapter);
+		
+		RelativeLayout rlColor = (RelativeLayout)findViewById(R.id.rlColor);
+		rlColor.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+            	SelectColor();
+            }
+        });
+	}
+	
+	public void SelectColor(){
+		DialogColorPicker dialog = new DialogColorPicker();
+		dialog.show(getFragmentManager(), "fragment_dialog_color_picker.");
+		
 	}
 
 	public void SelectDice(View v) {
