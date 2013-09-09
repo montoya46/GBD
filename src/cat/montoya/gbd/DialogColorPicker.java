@@ -59,6 +59,8 @@ public class DialogColorPicker extends DialogFragment {
     
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+    	setRetainInstance(true);
+    	
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(R.string.TituloSeleccionaColor);
         builder.setPositiveButton(R.string.Aceptar, new DialogInterface.OnClickListener() {
