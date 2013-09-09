@@ -23,6 +23,7 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import cat.montoya.gbd.DialogColorPicker.OnColorSelectedListener;
 import cat.montoya.gbd.dao.GameDAO;
 import cat.montoya.gbd.dao.IGameDAO;
 import cat.montoya.gbd.entity.Chip;
@@ -80,7 +81,13 @@ public class GameDetail extends Activity {
 	public void SelectColor(){
 		DialogColorPicker dialog = new DialogColorPicker();
 		dialog.show(getFragmentManager(), "fragment_dialog_color_picker.");
-		
+		dialog.setOnColorSelectedListener(new OnColorSelectedListener() {
+			@Override
+			public void onColorSelectedOccurred(View v, int color) {
+				RelativeLayout rlColor = (RelativeLayout)findViewById(R.id.rlColor);
+				rlColor.setBackgroundColor(color);
+			}
+		});
 	}
 
 	public void SelectDice(View v) {

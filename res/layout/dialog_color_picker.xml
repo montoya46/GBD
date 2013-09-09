@@ -1,24 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/edit_name"
-    android:layout_width="wrap_content" android:layout_height="wrap_content"
+    android:layout_width="wrap_content" 
+    android:layout_height="wrap_content"
     android:layout_gravity="center" android:orientation="vertical"
     android:background="#E5E5E5">
-
-<!-- 	<ScrollView android:layout_width="fill_parent" -->
-<!--     android:layout_height="fill_parent" -->
-<!--     android:background="#E5E5E5" > -->
-		<GridView
+    
+        <GridView
 		    android:id="@+id/gvDialogColores"
 		    android:layout_width="fill_parent" 
 		    android:layout_height="fill_parent"
+		    android:layout_marginTop="10dp"
+		    android:layout_marginBottom="10dp" 
 		    android:columnWidth="100dp"
 		    android:numColumns="auto_fit"
 		    android:verticalSpacing="10dp"
 		    android:horizontalSpacing="10dp"
-		    android:stretchMode="columnWidth"
-		    android:gravity="center"
-		    android:layout_margin="10dp" />
-<!-- 	</ScrollView> -->
-    
+		    android:stretchMode="spacingWidthUniform"
+		    android:gravity="center" />
+        
+		 <RelativeLayout 
+		     android:layout_width="wrap_content" 
+		     android:layout_height="wrap_content"
+		     android:layout_marginTop="10dp"
+        	 android:layout_marginBottom="10dp"
+        	 android:layout_gravity="center_horizontal">
+      		<TextView
+	          	android:id="@+id/tvCurrentColorDialog"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_marginLeft="10dp"
+	           	android:layout_marginRight="10dp"
+	           	android:layout_marginTop="5dp"
+		        android:text="@string/tvCurrentColorDialog" 
+		        android:textSize="14sp"
+		        android:textStyle="bold"
+		        android:gravity="center_vertical" />
+		     <RelativeLayout 
+     			android:id="@+id/rlDialogCurrentColor"
+     			android:layout_width="30dp" 
+     			android:layout_height="30dp"
+     			android:layout_toRightOf="@+id/tvCurrentColorDialog"
+     			android:background="@android:color/holo_red_light">
+        	</RelativeLayout>
+		 </RelativeLayout>
+		 
 </LinearLayout>

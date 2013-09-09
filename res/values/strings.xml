@@ -41,6 +41,7 @@
     <string name="Aceptar">Aceptar</string>
     <string name="Cancelar">Cancelar</string>
     <string name="TituloSeleccionaColor">Selecciona un color</string>
+    <string name="tvCurrentColorDialog">Color actual:</string>
 
     <string-array name="number_dices_array">
         <item>1</item>
