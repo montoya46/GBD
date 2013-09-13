@@ -19,7 +19,7 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
 import cat.montoya.gbd.adapters.GameLazyListAdapter;
-import cat.montoya.gbd.dao.GameDAOMock;
+import cat.montoya.gbd.dao.GameDAO;
 import cat.montoya.gbd.dao.IGameDAO;
 
 /*
@@ -36,7 +36,7 @@ public class MainActivity extends Activity implements OnItemLongClickListener, O
 		setContentView(R.layout.activity_games_listview);
 
 		File folder = getRootFolder();
-		gameDAO = new GameDAOMock(folder);
+		gameDAO = new GameDAO(this);
 
 		ListView lv = (ListView) findViewById(R.id.gameList);
 		lv.setAdapter(new GameLazyListAdapter(this, gameDAO.getGameList(), folder));

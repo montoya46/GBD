@@ -4,14 +4,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.List;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.DialogFragment;
-import android.app.FragmentManager;
-import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.util.Log;
@@ -35,13 +31,23 @@ import cat.montoya.gbd.utils.MD5Utils;
 public class GameDetail extends Activity {
 
 	private IGameDAO gameDAO;
-
+	private int _currentShape;
+	private int _currentColor;	
+	private DialogShapePicker _dialogShape;
+	private DialogColorPicker _dialogColor;
+	private List<Chip> _chips = new ArrayList<Chip>();
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_game_detail);
 
+		_dialogShape = new DialogShapePicker();
+		_dialogColor = new DialogColorPicker();
+		_currentShape = _dialogShape.GetDefaultShape();
+		_currentColor = _dialogColor.GetDefaultColor();
+		
 		gameDAO = new GameDAO(this);
 
 		Long id = getIntent().getLongExtra("id", -1);
@@ -72,6 +78,16 @@ public class GameDetail extends Activity {
 		
 		RelativeLayout rlColor = (RelativeLayout)findViewById(R.id.rlColor);
 		ImageView ivShapes = (ImageView)findViewById(R.id.ibNewChip);
+		ImageView ibAddChip = (ImageView)findViewById(R.id.ibAddChip);
+		
+		ibAddChip.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				AddChip();
+			}
+		});
 		
 		ivShapes.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -89,27 +105,41 @@ public class GameDetail extends Activity {
         });
 	}
 	
+	public void AddChip(){
+		Spinner spNumeroFichas = (Spinner)findViewById(R.id.numer_chips);
+		int numeroFichas = Integer.parseInt(spNumeroFichas.getSelectedItem().toString());
+		Spinner spSize = (Spinner) findViewById(R.id.number_size);
+		int numeroSize = Integer.parseInt(spSize.getSelectedItem().toString());
+		
+		for (int i = 0; i < numeroFichas; i++) {
+			Chip c = new Chip();
+			c.setColor(_currentColor);
+			c.setType(_currentShape);
+			c.setSize(numeroSize);
+			_chips.add(c);
+		}
+	}
+	
 	public void SelectShape(){
-		DialogShapePicker dialog = new DialogShapePicker();
-		dialog.show(getFragmentManager(), "fragment_dialog_shape_picker");
-		dialog.setOnShapeSelectedListener(new OnShapeSelectedListener() {
+		_dialogShape.show(getFragmentManager(), "fragment_dialog_shape_picker");
+		_dialogShape.setOnShapeSelectedListener(new OnShapeSelectedListener() {
 			@Override
 			public void onShapeSelectedOccurred(View v, int shape) {
-				// TODO Auto-generated method stub
 				ImageView ivShapes = (ImageView)findViewById(R.id.ibNewChip);
 				ivShapes.setImageResource(shape);
+				_currentShape = shape;
 			}
 		});
 	}
 	
 	public void SelectColor(){
-		DialogColorPicker dialog = new DialogColorPicker();
-		dialog.show(getFragmentManager(), "fragment_dialog_color_picker");
-		dialog.setOnColorSelectedListener(new OnColorSelectedListener() {
+		_dialogColor.show(getFragmentManager(), "fragment_dialog_color_picker");
+		_dialogColor.setOnColorSelectedListener(new OnColorSelectedListener() {
 			@Override
 			public void onColorSelectedOccurred(View v, int color) {
 				RelativeLayout rlColor = (RelativeLayout)findViewById(R.id.rlColor);
 				rlColor.setBackgroundColor(color);
+				_currentColor = color;
 			}
 		});
 	}

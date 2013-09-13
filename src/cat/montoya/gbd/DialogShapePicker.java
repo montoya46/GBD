@@ -31,6 +31,10 @@ public class DialogShapePicker extends DialogFragment {
         listener = l;
 	}
 	
+	public int GetDefaultShape(){
+		return formas.get(0);
+	}
+	
     public DialogShapePicker() {
     	formas = new ArrayList<Integer>();
     	formas.add(R.drawable.circle128);

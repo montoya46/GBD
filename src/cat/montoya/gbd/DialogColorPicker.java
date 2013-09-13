@@ -43,6 +43,10 @@ public class DialogColorPicker extends DialogFragment {
         listener = l;
 	}
 	
+	public int GetDefaultColor(){
+		return colores.get(0);
+	}
+	
     public DialogColorPicker() {
     	colores = new ArrayList<Integer>();
     	colores.add(Color.BLACK);

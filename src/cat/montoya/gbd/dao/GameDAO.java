@@ -10,7 +10,6 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import cat.montoya.gbd.entity.Chip;
-import cat.montoya.gbd.entity.Chip.ChipType;
 import cat.montoya.gbd.entity.Dice;
 import cat.montoya.gbd.entity.Dice.DiceType;
 import cat.montoya.gbd.entity.Game;
@@ -220,10 +219,10 @@ public class GameDAO implements IGameDAO {
 
 	private Chip CursorToChip(Cursor c) {
 		Chip chip = new Chip();
-		chip.setId(c.getInt(c.getColumnIndexOrThrow(GameContract.Game_Chips._ID)));
-		chip.setDescripcion(c.getString(c.getColumnIndexOrThrow(GameContract.Master_Chip.COLUMN_NAME_DESCRIPTION)));
-		chip.setColor(c.getInt(c.getColumnIndexOrThrow(GameContract.Game_Chips.COLUMN_NAME_COLOR)));
-		chip.setType(ChipType.values()[c.getInt(c.getColumnIndexOrThrow(GameContract.Game_Chips.COLUMN_NAME_ID_CHIP_TYPE))]);
+//		chip.setId(c.getInt(c.getColumnIndexOrThrow(GameContract.Game_Chips._ID)));
+//		chip.setDescripcion(c.getString(c.getColumnIndexOrThrow(GameContract.Master_Chip.COLUMN_NAME_DESCRIPTION)));
+//		chip.setColor(c.getInt(c.getColumnIndexOrThrow(GameContract.Game_Chips.COLUMN_NAME_COLOR)));
+//		chip.setType(ChipType.values()[c.getInt(c.getColumnIndexOrThrow(GameContract.Game_Chips.COLUMN_NAME_ID_CHIP_TYPE))]);
 		return chip;
 	}
 }
