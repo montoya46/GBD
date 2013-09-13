@@ -24,6 +24,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import cat.montoya.gbd.DialogColorPicker.OnColorSelectedListener;
+import cat.montoya.gbd.DialogShapePicker.OnShapeSelectedListener;
 import cat.montoya.gbd.dao.GameDAO;
 import cat.montoya.gbd.dao.IGameDAO;
 import cat.montoya.gbd.entity.Chip;
@@ -70,6 +71,16 @@ public class GameDetail extends Activity {
 		spinnerSize.setAdapter(adapter);
 		
 		RelativeLayout rlColor = (RelativeLayout)findViewById(R.id.rlColor);
+		ImageView ivShapes = (ImageView)findViewById(R.id.ibNewChip);
+		
+		ivShapes.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				SelectShape();
+			}
+		});
+		
 		rlColor.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
@@ -78,9 +89,22 @@ public class GameDetail extends Activity {
         });
 	}
 	
+	public void SelectShape(){
+		DialogShapePicker dialog = new DialogShapePicker();
+		dialog.show(getFragmentManager(), "fragment_dialog_shape_picker");
+		dialog.setOnShapeSelectedListener(new OnShapeSelectedListener() {
+			@Override
+			public void onShapeSelectedOccurred(View v, int shape) {
+				// TODO Auto-generated method stub
+				ImageView ivShapes = (ImageView)findViewById(R.id.ibNewChip);
+				ivShapes.setImageResource(shape);
+			}
+		});
+	}
+	
 	public void SelectColor(){
 		DialogColorPicker dialog = new DialogColorPicker();
-		dialog.show(getFragmentManager(), "fragment_dialog_color_picker.");
+		dialog.show(getFragmentManager(), "fragment_dialog_color_picker");
 		dialog.setOnColorSelectedListener(new OnColorSelectedListener() {
 			@Override
 			public void onColorSelectedOccurred(View v, int color) {
