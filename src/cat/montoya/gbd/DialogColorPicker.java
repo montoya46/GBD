@@ -2,26 +2,16 @@ package cat.montoya.gbd;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import cat.montoya.gbd.adapters.ColorAdapter;
-import cat.montoya.gbd.adapters.ImageAdapter;
-
-import android.R.color;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.RelativeLayout;
 

@@ -26,8 +26,10 @@
     <string name="Game_Detail_CameraAccesDescripcion">Añadir tablero desde cámara.</string>
     <string name="Game_Detail_Dados">Añadir</string>
     <string name="Game_Detail_Fichas">Añadir fichas</string>
-    <string name="Game_Detail_AddDice">Añadir dado</string>
-    <string name="Game_Detail_AddChip">Añadir ficha</string>
+    <string name="Game_Detail_AddDice">Añadir dados</string>
+    <string name="Game_Detail_ModifyDice">Modificar dados</string>
+    <string name="Game_Detail_AddChip">Añadir fichas</string>
+    <string name="Game_Detail_ModifyChip">Modificar fichas</string>
     <string name="tvNumeroDices">Número de dados</string>
     <string name="tvTipoDices">Tipo de dados</string>
     <string name="ibNewDice">Tipo dado</string>
@@ -44,6 +46,8 @@
     <string name="tvCurrentColorDialog">Color actual:</string>
     <string name="tvCurrentFormaDialog">Forma actual:</string>
     <string name="TituloSeleccionaForma">Selecciona una forma</string>
+    <string name="imgItemDeleteText">Eliminar</string>
+    
 
     <string-array name="number_dices_array">
         <item>1</item>

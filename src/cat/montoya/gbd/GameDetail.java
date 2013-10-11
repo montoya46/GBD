@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -78,10 +79,11 @@ public class GameDetail extends Activity {
 		
 		RelativeLayout rlColor = (RelativeLayout)findViewById(R.id.rlColor);
 		ImageView ivShapes = (ImageView)findViewById(R.id.ibNewChip);
-		ImageView ibAddChip = (ImageView)findViewById(R.id.ibAddChip);
 		
-		ibAddChip.setOnClickListener(new View.OnClickListener() {
-			
+		Button btnAddChip = (Button) findViewById(R.id.ibAddChip);
+
+		btnAddChip.setOnClickListener(new View.OnClickListener() {
+
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
@@ -149,7 +151,6 @@ public class GameDetail extends Activity {
 	}
 
 	private void loadGame(Game g) {
-
 		// ID
 		g.getId();
 		// NAME
