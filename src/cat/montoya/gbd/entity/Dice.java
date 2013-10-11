@@ -7,8 +7,7 @@ public class Dice {
 		POKER;
 	}
 
-	private int Id;
-	private String Descripcion;
+	private Long id;
 	private DiceType type;
 	
 	public DiceType getType() {
@@ -19,20 +18,12 @@ public class Dice {
 		this.type = type;
 	}
 
-	public int getId() {
-		return Id;
+	public Long getId() {
+		return id;
 	}
 
-	public void setId(int id) {
-		Id = id;
-	}
-
-	public String getDescripcion() {
-		return Descripcion;
-	}
-
-	public void setDescripcion(String descripcion) {
-		Descripcion = descripcion;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 }

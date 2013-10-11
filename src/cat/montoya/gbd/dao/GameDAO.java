@@ -35,64 +35,70 @@ public class GameDAO implements IGameDAO {
 	public Game getGame(Long id) {
 		dbHelper.getReadableDatabase();
 		Game g = null;
-		List<Dice> dices = new ArrayList<Dice>();
-		List<Chip> chips = new ArrayList<Chip>();
-
-		String[] projectionGame = { GameContract.Game._ID, GameContract.Game.COLUMN_NAME_NAME, GameContract.Game.COLUMN_NAME_BOARD_URL,
-				GameContract.Game.COLUMN_NAME_BOARD_THUMBNAIL_URL };
-
-		String selectionGame = GameContract.Game._ID + " = ?";
+		//TODO moure aixo a una constant
+		String[] projectionGame = {"id", "name", "help", "boardURL"};
+		String selectionGame = "id = ?";
 		String[] selectionGameArgs = { String.valueOf(id) };
-		// String orderByGame = GameContract.Game.COLUMN_NAME_NAME + " DESC";
 
-		Cursor c = db.query(GameContract.Game.TABLE_NAME, projectionGame, selectionGame, selectionGameArgs, null, null, null);
+		Cursor cGame = db.query("game", projectionGame, selectionGame, selectionGameArgs, null, null, null);
 
-		if (c != null) {
-			c.moveToFirst();
+		if (cGame != null) {
+			cGame.moveToFirst();
 			g = new Game();
-			g.setId(c.getLong(c.getColumnIndexOrThrow(GameContract.Game._ID)));
-			g.setName(c.getString(c.getColumnIndexOrThrow(GameContract.Game.COLUMN_NAME_NAME)));
-			g.setBoardURL(c.getString(c.getColumnIndexOrThrow(GameContract.Game.COLUMN_NAME_BOARD_URL)));
-			g.setBoardThumbnailURL(c.getString(c.getColumnIndexOrThrow(GameContract.Game.COLUMN_NAME_BOARD_THUMBNAIL_URL)));
+			g.setId(cGame.getLong(cGame.getColumnIndexOrThrow(projectionGame[0])));
+			g.setName(cGame.getString(cGame.getColumnIndexOrThrow(projectionGame[1])));
+			g.setBoardURL(cGame.getString(cGame.getColumnIndexOrThrow(projectionGame[2])));
+			g.setBoardThumbnailURL(g.getBoardURL()+".tmb");
 		}
 
-		c.close();
+		cGame.close();
 
 		if (g != null) {
+			List<Dice> dices = new ArrayList<Dice>();
+			List<Chip> chips = new ArrayList<Chip>();
+			
+			
+			String[] projectionDice = {"id", "idgame", "type"};
+			String selectionDice = "idgame = ?";
+			String[] selectionDiceArgs = { String.valueOf(id) };
 
-			// obtenemos los dados
-			String dicesQuery = "SELECT gd.Id, gd.IdGame, gd.IdDiceType, md.Description  FROM " + GameContract.Game_Dices.TABLE_NAME + " gd INNER JOIN "
-					+ GameContract.Master_Dice.TABLE_NAME + " md ON gd.IdDiceType = md.Id WHERE gd.IdGame = ?";
+			Cursor cDices = db.query("dice", projectionGame, selectionGame, selectionGameArgs, null, null, null);
 
-			c = db.rawQuery(dicesQuery, selectionGameArgs);
-
-			if (c != null) {
-				c.moveToFirst();
-				while (!c.isAfterLast()) {
-					dices.add(CursorToDice(c));
-					c.moveToNext();
+			if (cDices != null) {
+				cDices.moveToFirst();
+				while (cDices.moveToNext()){
+					Dice d = new Dice();
+					d.setId(cDices.getLong(cGame.getColumnIndexOrThrow(projectionDice[0])));
+					Long diceType = cDices.getLong(cGame.getColumnIndexOrThrow(projectionDice[2]));
+					
+					if (diceType == null || diceType.longValue() == 0)
+						d.setType(Dice.DiceType.STANDARD);
+					else
+						d.setType(Dice.DiceType.POKER);
+					
+					
 				}
 			}
-
+	
 			g.setDices(dices);
-			c.close();
+			cGame.close();
 
 			// Obtenemos las fichas
 			String chipsQuery = "SELECT gc.Id, gc.IdGame, gc.IdChipType, gc.RGB_Color, mc.Description  FROM " + GameContract.Game_Chips.TABLE_NAME
 					+ " gc INNER JOIN " + GameContract.Master_Chip.TABLE_NAME + " mc ON gc.IdChipType = mc.Id WHERE gc.IdGame = ?";
 
-			c = db.rawQuery(chipsQuery, selectionGameArgs);
+			cGame = db.rawQuery(chipsQuery, selectionGameArgs);
 
-			if (c != null) {
-				c.moveToFirst();
-				while (!c.isAfterLast()) {
-					chips.add(CursorToChip(c));
-					c.moveToNext();
+			if (cGame != null) {
+				cGame.moveToFirst();
+				while (!cGame.isAfterLast()) {
+					chips.add(CursorToChip(cGame));
+					cGame.moveToNext();
 				}
 			}
 
 			g.setChips(chips);
-			c.close();
+			cGame.close();
 		}
 
 		return g;
@@ -134,7 +140,7 @@ public class GameDAO implements IGameDAO {
 				diceValues.put(GameContract.Game_Dices.COLUMN_NAME_ID_DICE_TYPE, String.valueOf(d.getType()));
 
 				newDiceId = db.insert(GameContract.Game_Dices.TABLE_NAME, null, diceValues);
-				d.setId((int) newDiceId);
+				d.setId(newDiceId);
 			}
 
 		// Insertamos las fichas
@@ -148,7 +154,7 @@ public class GameDAO implements IGameDAO {
 				chipValues.put(GameContract.Game_Chips.COLUMN_NAME_ID_CHIP_TYPE, String.valueOf(c.getType()));
 
 				newChipId = db.insert(GameContract.Game_Chips.TABLE_NAME, null, chipValues);
-				c.setId((int) newChipId);
+				c.setId( newChipId);
 			}
 		close();
 		return game;
@@ -211,8 +217,7 @@ public class GameDAO implements IGameDAO {
 
 	private Dice CursorToDice(Cursor c) {
 		Dice d = new Dice();
-		d.setId(c.getInt(c.getColumnIndexOrThrow(GameContract.Game_Dices._ID)));
-		d.setDescripcion(c.getString(c.getColumnIndexOrThrow(GameContract.Master_Dice.COLUMN_NAME_DESCRIPTION)));
+		d.setId(c.getLong(c.getColumnIndexOrThrow(GameContract.Game_Dices._ID)));
 		d.setType(DiceType.values()[c.getInt(c.getColumnIndexOrThrow(GameContract.Game_Dices.COLUMN_NAME_ID_DICE_TYPE))]);
 		return d;
 	}

@@ -5,16 +5,55 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class GameHelper extends SQLiteOpenHelper {
-	public static final int DATABASE_VERSION = 3;
+	public static final int DATABASE_VERSION = 1;
 	public static final String DATABASE_NAME = "GBD.db";
-	private static final String INTEGER_TYPE = " INTEGER";
-	private static final String TEXT_TYPE = " TEXT";
-	private static final String COMMA_SEP = ",";
-	private static final String NOT_NULL = "not null";
-	private static final String FOREIGN_KEY = "FOREIGN KEY";
-	private static final String REFERENCES = "REFERENCES";
 
-	private static final String SQL_CREATE_GAME = "CREATE TABLE "
+	public GameHelper(Context context) {
+		super(context, DATABASE_NAME, null, DATABASE_VERSION);
+	}
+
+	@Override
+	public void onCreate(SQLiteDatabase db) {
+		// Creamos las tablas en el orden adecuado, ojo: que hay foreign keys
+		dropAll(db); // De moment borrem tot al arrancar fins que funcionin les sentencies create		
+		String tGame = "create table game (id integer primary key autoincrement, name text not null, help text, boardURL text not null);";
+		String tChip = "create table chip (id integer primary key autoincrement, idgame integer not null, type integer, color integer, size integer);";
+		String tDice = "create table dice (id integer primary key autoincrement, idgame integer not null, type integer);";
+		
+		db.execSQL(tGame);
+		db.execSQL(tChip);
+		db.execSQL(tDice);
+
+	}
+
+	@Override
+	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+		onCreate(db);
+	}
+
+	@Override
+	public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+		onUpgrade(db, oldVersion, newVersion);
+	}
+
+	private void dropAll(SQLiteDatabase db) {
+		try {
+			String dropDice = "DROP TABLE IF EXISTS dice;";
+			String dropChip = "DROP TABLE IF EXISTS chip;";
+			String dropGame = "DROP TABLE IF EXISTS game;";
+
+			db.execSQL(dropDice);
+			db.execSQL(dropChip);
+			db.execSQL(dropGame);
+		} catch (Exception e) {
+
+		}
+	}
+	
+	
+	
+	/*
+	 * private static final String SQL_CREATE_GAME = "CREATE TABLE "
 			+ GameContract.Game.TABLE_NAME + " (" + GameContract.Game._ID
 			+ " INTEGER PRIMARY KEY autoincrement,"
 			+ GameContract.Game.COLUMN_NAME_NAME + TEXT_TYPE + NOT_NULL
@@ -103,71 +142,6 @@ public class GameHelper extends SQLiteOpenHelper {
 			+ GameContract.Game_Chips.TABLE_NAME + " ;";
 	private static final String SQL_DELETE_GAME_DICES = "DROP TABLE IF EXISTS "
 			+ GameContract.Game_Dices.TABLE_NAME + " ;";
-
-	public GameHelper(Context context) {
-		super(context, DATABASE_NAME, null, DATABASE_VERSION);
-	}
-
-	@Override
-	public void onCreate(SQLiteDatabase db) {
-		// Creamos las tablas en el orden adecuado, ojo: que hay foreign keys
-		dropAll(db); // De moment borrem tot al arrancar fins que funcionin les sentencies create
-		db.execSQL(SQL_CREATE_GAME);
-		db.execSQL(SQL_CREATE_GAME_CHIPS);
-		db.execSQL(SQL_CREATE_GAME_DICES);
-		
-		db.execSQL(SQL_CREATE_MASTER_CHIP);
-		db.execSQL(SQL_CREATE_MASTER_DICE);
-		
-//		db.execSQL(SQL_CREATE_GAME_SAVED);
-//		db.execSQL(SQL_CREATE_GAME_HELP);
-//		db.execSQL(SQL_CREATE_GAME_CHIPS);
-//		db.execSQL(SQL_CREATE_GAME_DICES);
-
-		// Insertamos los datos maestros para MASTER_CHIP y MASTER_DICE
-		// En las tablas maestras el campo estado es 1 si esta activo y 0 si
-		// esta inactivo (no existe el tipo boolean en sql lite)
-		db.execSQL("INSERT INTO " + GameContract.Master_Chip.TABLE_NAME
-				+ " VALUES(1, 'CIRCLE', 1);");
-		db.execSQL("INSERT INTO " + GameContract.Master_Chip.TABLE_NAME
-				+ " VALUES(2, 'RECTANGLE', 1);");
-		db.execSQL("INSERT INTO " + GameContract.Master_Dice.TABLE_NAME
-				+ " VALUES(1, 'STANDARD', 1);");
-		db.execSQL("INSERT INTO " + GameContract.Master_Dice.TABLE_NAME
-				+ " VALUES(2, 'POKER', 1);");
-	}
-
-	@Override
-	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		// This database is only a cache for online data, so its upgrade policy
-		// is
-		// to simply to discard the data and start over
-		db.execSQL(SQL_DELETE_MASTER_CHIP);
-		db.execSQL(SQL_DELETE_MASTER_DICE);
-		db.execSQL(SQL_DELETE_GAME_HELP);
-		db.execSQL(SQL_DELETE_GAME_CHIPS);
-		db.execSQL(SQL_DELETE_GAME_DICES);
-		db.execSQL(SQL_DELETE_GAME_SAVED);
-		db.execSQL(SQL_DELETE_GAME);
-		onCreate(db);
-	}
-
-	@Override
-	public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		onUpgrade(db, oldVersion, newVersion);
-	}
-
-	private void dropAll(SQLiteDatabase db) {
-		try {
-			db.execSQL(SQL_DELETE_MASTER_CHIP);
-			db.execSQL(SQL_DELETE_MASTER_DICE);
-			db.execSQL(SQL_DELETE_GAME_HELP);
-			db.execSQL(SQL_DELETE_GAME_CHIPS);
-			db.execSQL(SQL_DELETE_GAME_DICES);
-			db.execSQL(SQL_DELETE_GAME_SAVED);
-			db.execSQL(SQL_DELETE_GAME);
-		} catch (Exception e) {
-
-		}
-	}
+	 * 
+	 * */
 }

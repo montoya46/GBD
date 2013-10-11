@@ -1,10 +1,9 @@
 package cat.montoya.gbd.entity;
 
-import android.graphics.Color;
 
 public class Chip {
 
-	private int Id;
+	private Long id;
 	private int type;
 	private int color;
 	private int size;
@@ -25,19 +24,19 @@ public class Chip {
 		this.color = color;
 	}
 
-	public int getId() {
-		return Id;
-	}
-
-	public void setId(int id) {
-		Id = id;
-	}
-
 	public int getSize() {
 		return size;
 	}
 
 	public void setSize(int size) {
 		this.size = size;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 }
