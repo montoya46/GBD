@@ -157,7 +157,7 @@ public class GameDetail extends Activity {
 		TextView name = (TextView) findViewById(R.id.edTitulo);
 		name.setText(g.getName());
 		// HELP
-		g.setHelp(new String[] { getStringFromTextView(R.id.edDescripcion) });
+		g.setHelp( getStringFromTextView(R.id.edDescripcion));
 		// BOARD && BOARDTHUMBNAIL
 //		String file = writeBoardToFile();
 //		g.setBoardURL(file);
@@ -198,7 +198,7 @@ public class GameDetail extends Activity {
 		// NAME
 		g.setName(getStringFromTextView(R.id.edTitulo));
 		// HELP
-		g.setHelp(new String[] { getStringFromTextView(R.id.edDescripcion) });
+		g.setHelp(getStringFromTextView(R.id.edDescripcion));
 		// BOARD && BOARDTHUMBNAIL
 		String[] file = writeBoardToFile();
 		g.setBoardURL(file[0]);

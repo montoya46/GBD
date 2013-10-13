@@ -10,7 +10,7 @@ public class Game implements Serializable {
 	
 	private Long id;
 	private String name = "Game name";
-	private String[] help = { "How to play" };
+	private String help = "How to play";
 	private String boardURL = "default_board.jpg";
 	private String boardThumbnailURL = "default_board_thumbnail.jpg";
 	private List<Chip> chips = new ArrayList<Chip>();
@@ -32,11 +32,11 @@ public class Game implements Serializable {
 		this.name = name;
 	}
 
-	public String[] getHelp() {
+	public String getHelp() {
 		return help;
 	}
 
-	public void setHelp(String[] help) {
+	public void setHelp(String help) {
 		this.help = help;
 	}
 

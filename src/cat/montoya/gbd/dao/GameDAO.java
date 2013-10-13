@@ -11,13 +11,16 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import cat.montoya.gbd.entity.Chip;
 import cat.montoya.gbd.entity.Dice;
-import cat.montoya.gbd.entity.Dice.DiceType;
 import cat.montoya.gbd.entity.Game;
 
 public class GameDAO implements IGameDAO {
 
 	private SQLiteDatabase db;
 	private GameHelper dbHelper;
+
+	String[] PROJECTIONGAME = { "id", "name", "help", "boardURL" };
+	String[] PROJECTIONDICE = { "id", "idgame", "type" };
+	String[] PROJECTIONCHIP = { "id", "idgame", "type", "color", "size" };
 
 	public GameDAO(Context context) {
 		dbHelper = new GameHelper(context);
@@ -35,70 +38,61 @@ public class GameDAO implements IGameDAO {
 	public Game getGame(Long id) {
 		dbHelper.getReadableDatabase();
 		Game g = null;
-		//TODO moure aixo a una constant
-		String[] projectionGame = {"id", "name", "help", "boardURL"};
+		// TODO moure aixo a una constant
+		String[] projectionGame = { "id", "name", "help", "boardURL" };
 		String selectionGame = "id = ?";
 		String[] selectionGameArgs = { String.valueOf(id) };
 
-		Cursor cGame = db.query("game", projectionGame, selectionGame, selectionGameArgs, null, null, null);
+		Cursor cGame = db.query("game", projectionGame, selectionGame,
+				selectionGameArgs, null, null, null);
 
 		if (cGame != null) {
 			cGame.moveToFirst();
-			g = new Game();
-			g.setId(cGame.getLong(cGame.getColumnIndexOrThrow(projectionGame[0])));
-			g.setName(cGame.getString(cGame.getColumnIndexOrThrow(projectionGame[1])));
-			g.setBoardURL(cGame.getString(cGame.getColumnIndexOrThrow(projectionGame[2])));
-			g.setBoardThumbnailURL(g.getBoardURL()+".tmb");
+			g = cursorToGame(cGame);
+			cGame.close();
 		}
-
-		cGame.close();
 
 		if (g != null) {
 			List<Dice> dices = new ArrayList<Dice>();
-			List<Chip> chips = new ArrayList<Chip>();
-			
-			
-			String[] projectionDice = {"id", "idgame", "type"};
+
+			String[] projectionDice = { "id", "idgame", "type" };
 			String selectionDice = "idgame = ?";
 			String[] selectionDiceArgs = { String.valueOf(id) };
 
-			Cursor cDices = db.query("dice", projectionGame, selectionGame, selectionGameArgs, null, null, null);
+			Cursor cDices = db.query("dice", projectionDice, selectionDice,
+					selectionDiceArgs, null, null, null);
 
 			if (cDices != null) {
 				cDices.moveToFirst();
-				while (cDices.moveToNext()){
-					Dice d = new Dice();
-					d.setId(cDices.getLong(cGame.getColumnIndexOrThrow(projectionDice[0])));
-					Long diceType = cDices.getLong(cGame.getColumnIndexOrThrow(projectionDice[2]));
-					
-					if (diceType == null || diceType.longValue() == 0)
-						d.setType(Dice.DiceType.STANDARD);
-					else
-						d.setType(Dice.DiceType.POKER);
-					
-					
+				while (!cDices.isAfterLast()) {
+					Dice d = cursorToDice(cDices);
+					dices.add(d);
+					cDices.moveToNext();
 				}
-			}
-	
-			g.setDices(dices);
-			cGame.close();
-
-			// Obtenemos las fichas
-			String chipsQuery = "SELECT gc.Id, gc.IdGame, gc.IdChipType, gc.RGB_Color, mc.Description  FROM " + GameContract.Game_Chips.TABLE_NAME
-					+ " gc INNER JOIN " + GameContract.Master_Chip.TABLE_NAME + " mc ON gc.IdChipType = mc.Id WHERE gc.IdGame = ?";
-
-			cGame = db.rawQuery(chipsQuery, selectionGameArgs);
-
-			if (cGame != null) {
-				cGame.moveToFirst();
-				while (!cGame.isAfterLast()) {
-					chips.add(CursorToChip(cGame));
-					cGame.moveToNext();
-				}
+				g.setDices(dices);
+				cDices.close();
 			}
 
-			g.setChips(chips);
-			cGame.close();
+			List<Chip> chips = new ArrayList<Chip>();
+
+			String[] projectionChip = { "id", "idgame", "type", "color", "size" };
+			String selectionChip = "idgame = ?";
+			String[] selectionChioArgs = { String.valueOf(id) };
+
+			Cursor cChips = db.query("chip", projectionChip, selectionChip,
+					selectionChioArgs, null, null, null);
+
+			if (cChips != null) {
+				cChips.moveToFirst();
+				while (!cChips.isAfterLast()) {
+					Chip c = cursorToChip(cChips);
+					chips.add(c);
+					cChips.moveToNext();
+				}
+				g.setChips(chips);
+				cChips.close();
+			}
+
 		}
 
 		return g;
@@ -110,24 +104,28 @@ public class GameDAO implements IGameDAO {
 		dbHelper.getWritableDatabase();
 
 		ContentValues gameValues = new ContentValues();
-		gameValues.put(GameContract.Game.COLUMN_NAME_NAME, game.getName());
-		gameValues.put(GameContract.Game.COLUMN_NAME_BOARD_URL, game.getBoardURL());
-		gameValues.put(GameContract.Game.COLUMN_NAME_BOARD_THUMBNAIL_URL, game.getBoardThumbnailURL());
-		
+		gameValues.put(PROJECTIONGAME[1], game.getName());
+		gameValues.put(PROJECTIONGAME[2], game.getHelp());
+		gameValues.put(PROJECTIONGAME[3], game.getBoardURL());
+
 		long gameId;
-		if (game.getId() != null){
+		if (game.getId() != null) {
 			gameId = game.getId();
-			gameValues.put(GameContract.Game._ID, game.getId());
-			db.update(GameContract.Game.TABLE_NAME, gameValues, GameContract.Game._ID + " = ?", new String[]{String.valueOf(game.getId())});			
-			
+			gameValues.put(PROJECTIONGAME[1], game.getId());
+			db.update("game", gameValues, "id = ?",
+					new String[] { String.valueOf(game.getId()) });
+
 		} else {
-			gameId = db.insert(GameContract.Game.TABLE_NAME, null, gameValues);
+			gameId = db.insert("game", null, gameValues);
 			game.setId(gameId);
 		}
 
-		//Eliminem abans de insertar els nous. Sempre podem fer update enlloc de insert en cas que ja tinguin id.
-		db.delete(GameContract.Game_Dices.TABLE_NAME, GameContract.Game_Dices._ID + " = ?", new String[]{String.valueOf(game.getId())});
-		db.delete(GameContract.Game_Chips.TABLE_NAME, GameContract.Game_Chips._ID + " = ?", new String[]{String.valueOf(game.getId())});
+		// Eliminem abans de insertar els nous. Sempre podem fer update enlloc
+		// de insert en cas que ja tinguin id.
+		db.delete("dice", "idgame = ?",
+				new String[] { String.valueOf(game.getId()) });
+		db.delete("chip", "idgame = ?",
+				new String[] { String.valueOf(game.getId()) });
 
 		// Insertamos los dados
 		ContentValues diceValues = new ContentValues();
@@ -136,10 +134,9 @@ public class GameDAO implements IGameDAO {
 		if (game.getDices() != null)
 			for (Dice d : game.getDices()) {
 				diceValues.clear();
-				diceValues.put(GameContract.Game_Dices.COLUMN_NAME_ID_GAME, gameId);
-				diceValues.put(GameContract.Game_Dices.COLUMN_NAME_ID_DICE_TYPE, String.valueOf(d.getType()));
-
-				newDiceId = db.insert(GameContract.Game_Dices.TABLE_NAME, null, diceValues);
+				diceValues.put(PROJECTIONDICE[1], gameId);
+				diceValues.put(PROJECTIONDICE[2], String.valueOf(d.getType()));
+				newDiceId = db.insert("dice", null, diceValues);
 				d.setId(newDiceId);
 			}
 
@@ -150,11 +147,12 @@ public class GameDAO implements IGameDAO {
 		if (game.getChips() != null)
 			for (Chip c : game.getChips()) {
 				chipValues.clear();
-				chipValues.put(GameContract.Game_Chips.COLUMN_NAME_ID_GAME, gameId);
-				chipValues.put(GameContract.Game_Chips.COLUMN_NAME_ID_CHIP_TYPE, String.valueOf(c.getType()));
-
-				newChipId = db.insert(GameContract.Game_Chips.TABLE_NAME, null, chipValues);
-				c.setId( newChipId);
+				chipValues.put(PROJECTIONCHIP[1], gameId);
+				chipValues.put(PROJECTIONCHIP[2], String.valueOf(c.getType()));
+				chipValues.put(PROJECTIONCHIP[3], String.valueOf(c.getColor()));
+				chipValues.put(PROJECTIONCHIP[4], String.valueOf(c.getSize()));
+				newChipId = db.insert("chip", null, chipValues);
+				c.setId(newChipId);
 			}
 		close();
 		return game;
@@ -165,17 +163,15 @@ public class GameDAO implements IGameDAO {
 		open();
 		List<Game> games = new ArrayList<Game>();
 
-		String[] projection = { GameContract.Game._ID, GameContract.Game.COLUMN_NAME_NAME, GameContract.Game.COLUMN_NAME_BOARD_URL,
-				GameContract.Game.COLUMN_NAME_BOARD_THUMBNAIL_URL };
+		String orderBy = PROJECTIONGAME[1] + " DESC";
 
-		String orderBy = GameContract.Game.COLUMN_NAME_NAME + " DESC";
-
-		Cursor c = db.query(GameContract.Game.TABLE_NAME, projection, null, null, null, null, orderBy);
+		Cursor c = db.query("game", PROJECTIONGAME, null, null, null, null,
+				orderBy);
 
 		if (c != null) {
 			c.moveToFirst();
 			while (!c.isAfterLast()) {
-				Game game = CursorToGame(c);
+				Game game = cursorToGame(c);
 				games.add(game);
 				c.moveToNext();
 			}
@@ -186,48 +182,59 @@ public class GameDAO implements IGameDAO {
 
 	@Override
 	public void deleteGame(Long id) {
-		String selection = GameContract.Game._ID + " = ?";
-		String[] selectionArgs = { id.toString() };
-		db.delete(GameContract.Game.TABLE_NAME, selection, selectionArgs);
+		db.delete("dice", "idgame = ?", new String[] { String.valueOf(id) });
+		db.delete("chip", "idgame = ?", new String[] { String.valueOf(id) });
+		db.delete("game", "id = ?", new String[] { String.valueOf(id) });
 	}
 
 	@Override
 	public void saveGame(Long id, Date d, String description) {
-		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public Game loadGame(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+		throw new UnsupportedOperationException();
 	}
 
 	/*
-	 * M�todo para devolver la entidad a partir de la fila a la que apunta el
+	 * Metodo para devolver la entidad a partir de la fila a la que apunta el
 	 * cursor.
 	 */
-	private Game CursorToGame(Cursor c) {
+	private Game cursorToGame(Cursor cGame) {
 		Game g = new Game();
-		g.setId(c.getLong(c.getColumnIndexOrThrow(GameContract.Game._ID)));
-		g.setName(c.getString(c.getColumnIndexOrThrow(GameContract.Game.COLUMN_NAME_NAME)));
-		g.setBoardURL(c.getString(c.getColumnIndexOrThrow(GameContract.Game.COLUMN_NAME_BOARD_URL)));
-		g.setBoardThumbnailURL(c.getString(c.getColumnIndexOrThrow(GameContract.Game.COLUMN_NAME_BOARD_THUMBNAIL_URL)));
+		g.setId(cGame.getLong(cGame.getColumnIndexOrThrow(PROJECTIONGAME[0])));
+		g.setName(cGame.getString(cGame
+				.getColumnIndexOrThrow(PROJECTIONGAME[1])));
+		g.setBoardURL(cGame.getString(cGame
+				.getColumnIndexOrThrow(PROJECTIONGAME[2])));
+		g.setBoardThumbnailURL(g.getBoardURL() + ".tmb");
 		return g;
 	}
 
-	private Dice CursorToDice(Cursor c) {
+	private Dice cursorToDice(Cursor cDices) {
 		Dice d = new Dice();
-		d.setId(c.getLong(c.getColumnIndexOrThrow(GameContract.Game_Dices._ID)));
-		d.setType(DiceType.values()[c.getInt(c.getColumnIndexOrThrow(GameContract.Game_Dices.COLUMN_NAME_ID_DICE_TYPE))]);
+		d.setId(cDices.getLong(cDices.getColumnIndexOrThrow(PROJECTIONDICE[0])));
+		Long diceType = cDices.getLong(cDices
+				.getColumnIndexOrThrow(PROJECTIONDICE[2]));
+
+		if (diceType == null || diceType.longValue() == 0)
+			d.setType(Dice.DiceType.STANDARD);
+		else
+			d.setType(Dice.DiceType.POKER);
 		return d;
 	}
 
-	private Chip CursorToChip(Cursor c) {
+	private Chip cursorToChip(Cursor cChips) {
 		Chip chip = new Chip();
-//		chip.setId(c.getInt(c.getColumnIndexOrThrow(GameContract.Game_Chips._ID)));
-//		chip.setDescripcion(c.getString(c.getColumnIndexOrThrow(GameContract.Master_Chip.COLUMN_NAME_DESCRIPTION)));
-//		chip.setColor(c.getInt(c.getColumnIndexOrThrow(GameContract.Game_Chips.COLUMN_NAME_COLOR)));
-//		chip.setType(ChipType.values()[c.getInt(c.getColumnIndexOrThrow(GameContract.Game_Chips.COLUMN_NAME_ID_CHIP_TYPE))]);
+		chip.setId(cChips.getLong(cChips
+				.getColumnIndexOrThrow(PROJECTIONDICE[0])));
+		chip.setType(cChips.getInt(cChips
+				.getColumnIndexOrThrow(PROJECTIONDICE[2])));
+		chip.setColor(cChips.getInt(cChips
+				.getColumnIndexOrThrow(PROJECTIONDICE[3])));
+		chip.setSize(cChips.getInt(cChips
+				.getColumnIndexOrThrow(PROJECTIONDICE[4])));
 		return chip;
 	}
 }
