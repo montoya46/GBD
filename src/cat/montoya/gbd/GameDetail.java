@@ -194,15 +194,17 @@ public class GameDetail extends Activity {
 
 		Game g = new Game();
 		// ID
-		g.setId(1l);
+//		g.setId(1l);
 		// NAME
 		g.setName(getStringFromTextView(R.id.edTitulo));
 		// HELP
 		g.setHelp(getStringFromTextView(R.id.edDescripcion));
 		// BOARD && BOARDTHUMBNAIL
 		String[] file = writeBoardToFile();
-		g.setBoardURL(file[0]);
-		g.setBoardThumbnailURL(file[1]);
+		if (file != null){
+			g.setBoardURL(file[0]);
+			g.setBoardThumbnailURL(file[1]);
+		}
 		// Chips
 		g.setChips(viewToEntityChips());
 		// Dices

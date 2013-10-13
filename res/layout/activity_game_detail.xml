@@ -232,5 +232,16 @@
 		  	</Button>
  			  
 		 </LinearLayout>
+
+		  <Button
+		      android:id="@+id/btn_savegame"
+		      android:layout_width="wrap_content"
+		      android:layout_height="wrap_content"
+		      android:layout_alignParentBottom="true"
+		      android:layout_centerHorizontal="true"
+		      android:text="Guardar"
+		      android:layout_below="@+id/lyAddChips"
+		      android:onClick="saveGame" />
+
 	</RelativeLayout>
 </ScrollView>
