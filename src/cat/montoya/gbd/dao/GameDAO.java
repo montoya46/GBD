@@ -36,15 +36,12 @@ public class GameDAO implements IGameDAO {
 
 	@Override
 	public Game getGame(Long id) {
-		dbHelper.getReadableDatabase();
+		open();
 		Game g = null;
-		// TODO moure aixo a una constant
-		String[] projectionGame = { "id", "name", "help", "boardURL" };
 		String selectionGame = "id = ?";
 		String[] selectionGameArgs = { String.valueOf(id) };
 
-		Cursor cGame = db.query("game", projectionGame, selectionGame,
-				selectionGameArgs, null, null, null);
+		Cursor cGame = db.query("game", PROJECTIONGAME, selectionGame, selectionGameArgs, null, null, null);
 
 		if (cGame != null) {
 			cGame.moveToFirst();
@@ -94,7 +91,7 @@ public class GameDAO implements IGameDAO {
 			}
 
 		}
-
+		close();
 		return g;
 	}
 
@@ -206,9 +203,11 @@ public class GameDAO implements IGameDAO {
 		g.setId(cGame.getLong(cGame.getColumnIndexOrThrow(PROJECTIONGAME[0])));
 		g.setName(cGame.getString(cGame
 				.getColumnIndexOrThrow(PROJECTIONGAME[1])));
-		g.setBoardURL(cGame.getString(cGame
+		g.setHelp(cGame.getString(cGame
 				.getColumnIndexOrThrow(PROJECTIONGAME[2])));
-		g.setBoardThumbnailURL(g.getBoardURL() + ".tmb");
+		g.setBoardURL(cGame.getString(cGame
+				.getColumnIndexOrThrow(PROJECTIONGAME[3])));
+		g.setBoardThumbnailURL("tmb_"+g.getBoardURL());
 		return g;
 	}
 

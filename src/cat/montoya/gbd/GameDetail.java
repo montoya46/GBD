@@ -8,7 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 import android.app.Activity;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.media.ThumbnailUtils;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -146,22 +148,28 @@ public class GameDetail extends Activity {
 		});
 	}
 
-	public void SelectDice(View v) {
-		//TODO: Mostrar PopUp con los dado
-	}
-
 	private void loadGame(Game g) {
-		// ID
+		// ID (no cal fer res amb aixo?)
 		g.getId();
 		// NAME
 		TextView name = (TextView) findViewById(R.id.edTitulo);
 		name.setText(g.getName());
 		// HELP
-		g.setHelp( getStringFromTextView(R.id.edDescripcion));
+		TextView help = (TextView) findViewById(R.id.edDescripcion);
+		help.setText(g.getHelp());
+		
 		// BOARD && BOARDTHUMBNAIL
-//		String file = writeBoardToFile();
-//		g.setBoardURL(file);
-//		g.setBoardThumbnailURL("tmb_" + file);
+		File imgFile = new  File(getRootFolder(),g.getBoardURL());
+		if(imgFile.exists()){
+
+		    Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+
+		    ImageView myImage = (ImageView) findViewById(R.id.ibPreview);
+		    myImage.setImageBitmap(myBitmap);
+
+		}
+
+
 //		// Chips
 //		g.setChips(viewToEntityChips());
 //		// Dices
@@ -200,10 +208,10 @@ public class GameDetail extends Activity {
 		// HELP
 		g.setHelp(getStringFromTextView(R.id.edDescripcion));
 		// BOARD && BOARDTHUMBNAIL
-		String[] file = writeBoardToFile();
+		String file = writeBoardToFile();
 		if (file != null){
-			g.setBoardURL(file[0]);
-			g.setBoardThumbnailURL(file[1]);
+			g.setBoardURL(file);
+			g.setBoardThumbnailURL("tmb_"+file);
 		}
 		// Chips
 		g.setChips(viewToEntityChips());
@@ -231,7 +239,7 @@ public class GameDetail extends Activity {
 	 * 
 	 * @return string array with the name of the board
 	 */
-	private String[] writeBoardToFile() {
+	private String writeBoardToFile() {
 		// TODO esta posat a saco
 
 		ImageView preview = (ImageView) findViewById(R.id.ibPreview);
@@ -245,32 +253,47 @@ public class GameDetail extends Activity {
 					// Environment.getExternalStorageDirectory().toString();
 					File rootFolder = getRootFolder();
 					OutputStream outStream = null;
-					OutputStream outStreamThm = null;
+					
 					File fBoard = new File(rootFolder, "board.PNG");
-					File fBoardThumbnail = new File(rootFolder, "tmb_board.PNG");
 					try {
 						outStream = new FileOutputStream(fBoard);
-						outStreamThm = new FileOutputStream(fBoardThumbnail);
 						bitmap.compress(Bitmap.CompressFormat.PNG, 100, outStream);
-						bitmap.compress(Bitmap.CompressFormat.PNG, 25, outStreamThm);
 						outStream.flush();
-						outStream.close();
-						
 					} catch (Exception e) {
 						Log.e("Error", "Error writing images to disc", e);
 					} finally {
 						try {
-							outStreamThm.flush();
-							outStreamThm.close();
+							outStream.close();
 						} catch (IOException e) {
+							Log.w("Warn", "Ha petat algo guardant les imatgess");
 						}
 					}
+					
+					OutputStream outStreamThm = null;
+					File fBoardThumbnail = new File(rootFolder, "tmb_board.PNG");
+					Bitmap bitmaptmb=null;
+					try {
+						outStreamThm = new FileOutputStream(fBoardThumbnail);
+						bitmaptmb = ThumbnailUtils.extractThumbnail(bitmap, 100, 100);
+						bitmaptmb.compress(Bitmap.CompressFormat.PNG, 25, outStreamThm);
+						outStreamThm.flush();
+					} catch (Exception e) {
+						Log.e("Error", "Error writing images to disc", e);
+					} finally {
+						try {
+							outStreamThm.close();
+						} catch (IOException e) {
+							Log.w("Warn", "Ha petat algo guardant les imatgess");
+						}
+						bitmap.recycle();
+						bitmaptmb.recycle();
+					}
+					
 					String fBoardName = MD5Utils.md5String(fBoard);
 					fBoard.renameTo(new File(rootFolder,fBoardName));
+					fBoardThumbnail.renameTo(new File(rootFolder, "tmb_"+fBoardName));
 					
-					String fBoardNameThumbnail = MD5Utils.md5String(fBoardThumbnail);
-					fBoardThumbnail.renameTo(new File(rootFolder,fBoardNameThumbnail));
-					return new String[]{fBoardName,fBoardNameThumbnail};
+					return fBoardName;
 				}
 			}
 		}
