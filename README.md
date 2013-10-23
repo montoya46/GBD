@@ -1,4 +1,3 @@
 GBD
 ===
-This project is for testing GitHub and Android development.
-Hola holita
+Android app for for digitizing board games, and of course also play them.
