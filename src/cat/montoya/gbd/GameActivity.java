@@ -1,5 +1,6 @@
 package cat.montoya.gbd;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +28,7 @@ import org.andengine.ui.activity.SimpleBaseGameActivity;
 import android.graphics.Point;
 import android.view.Display;
 import android.widget.Toast;
+import cat.montoya.gbd.entity.Game;
 import cat.montoya.gbd.game.elements.DiceAnimatedSprite;
 import cat.montoya.gbd.game.elements.GameBoardSprite;
 
@@ -55,6 +57,7 @@ public class GameActivity extends SimpleBaseGameActivity implements IOnSceneTouc
 	private float mPinchZoomStartedCameraZoomFactor;
 
 	// Game elements
+	private Game game;
 	private GameBoardSprite gameBoardSprite;
 	private List<DiceAnimatedSprite> dices = new ArrayList<DiceAnimatedSprite>();
 
@@ -74,7 +77,12 @@ public class GameActivity extends SimpleBaseGameActivity implements IOnSceneTouc
 
 	@Override
 	public EngineOptions onCreateEngineOptions() {
-
+		game = (Game) getIntent().getSerializableExtra("game");
+		if (game  != null)
+			Toast.makeText(this, "REBUT!", Toast.LENGTH_LONG).show();
+		else
+			Toast.makeText(this, "NO REBUT", Toast.LENGTH_LONG).show();
+		
 		Display display = getWindowManager().getDefaultDisplay();
 		Point size = new Point();
 		display.getSize(size);
@@ -105,12 +113,21 @@ public class GameActivity extends SimpleBaseGameActivity implements IOnSceneTouc
 
 		return engineOptions;
 	}
+	
+	private String getRootFolder() {
+		File folder = getExternalFilesDir(null);
+		if (folder == null)
+			folder = getFilesDir();
+		return folder.getAbsolutePath();
+	}
 
 	@Override
 	public void onCreateResources() {
 
+//		String sFolder = getRootFolder() + "/";
+//		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath(sFolder);
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
-		this.gameBoardSprite = GameBoardSprite.getInstance(this, "parchis.jpg", 1866, 1860);
+		this.gameBoardSprite = GameBoardSprite.getInstance(this, game.getBoardURL(), 1866, 1860);
 		this.dices.add(DiceAnimatedSprite.getInstance(this));
 		this.dices.add(DiceAnimatedSprite.getInstance(this));
 	}

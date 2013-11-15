@@ -17,6 +17,7 @@ import android.widget.GridView;
 import cat.montoya.gbd.adapters.ImageAdapter;
 import cat.montoya.gbd.dao.GameDAO;
 import cat.montoya.gbd.dao.IGameDAO;
+import cat.montoya.gbd.entity.Game;
 
 public class GameGridViewActivity extends Activity implements OnItemLongClickListener, OnItemClickListener {
 
@@ -47,11 +48,8 @@ public class GameGridViewActivity extends Activity implements OnItemLongClickLis
 	}
 
 	@Override
-	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-		Intent i = new Intent(this, GameActivity.class);
-		// i.putExtra("game", gameDAO.getGame(id));
-		startActivity(i);
-
+	public void onItemClick(AdapterView<?> parent, View view, int position, final long id) {
+		openGameActivity(id);
 	}
 
 	@Override
@@ -75,7 +73,7 @@ public class GameGridViewActivity extends Activity implements OnItemLongClickLis
 				switch (item.getItemId()) {
 				case R.id.action_edit_game:
 					openMaintenanceActivity(id);
-					mode.finish();
+//					mode.finish();
 					return true;
 				case R.id.action_play_game:
 					mode.finish();
@@ -111,6 +109,20 @@ public class GameGridViewActivity extends Activity implements OnItemLongClickLis
 		
 		startActivity(i);
 	}
+	
+	public void openGameActivity(Long id) {
+		Intent i = new Intent(this, GameActivity.class);
+		Game game = gameDAO.getGame(id);
+		if (game != null)
+			i.putExtra("game", game);
+		
+		startActivity(i);
+	}
+	
+	
+	
+	
+	
 
 	// *******************************************************************
 	// *********************** Menu Actions ******************************
