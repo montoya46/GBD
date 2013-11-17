@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
+
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -24,6 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import cat.montoya.gbd.DialogColorPicker.OnColorSelectedListener;
 import cat.montoya.gbd.DialogShapePicker.OnShapeSelectedListener;
+import cat.montoya.gbd.DialogDeleteList.OnChipSelectedListener;
 import cat.montoya.gbd.dao.GameDAO;
 import cat.montoya.gbd.dao.IGameDAO;
 import cat.montoya.gbd.entity.Chip;
@@ -38,7 +41,9 @@ public class GameDetail extends Activity {
 	private int _currentColor;	
 	private DialogShapePicker _dialogShape;
 	private DialogColorPicker _dialogColor;
+	private DialogDeleteList _dialogDeleteChips;
 	private List<Chip> _chips = new ArrayList<Chip>();
+	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +53,8 @@ public class GameDetail extends Activity {
 
 		_dialogShape = new DialogShapePicker();
 		_dialogColor = new DialogColorPicker();
+		_dialogDeleteChips = new DialogDeleteList();
+		
 		_currentShape = _dialogShape.GetDefaultShape();
 		_currentColor = _dialogColor.GetDefaultColor();
 		
@@ -82,7 +89,11 @@ public class GameDetail extends Activity {
 		RelativeLayout rlColor = (RelativeLayout)findViewById(R.id.rlColor);
 		ImageView ivShapes = (ImageView)findViewById(R.id.ibNewChip);
 		
+		//Botones para los dados
+		
+		//Botones de fichas
 		Button btnAddChip = (Button) findViewById(R.id.ibAddChip);
+		Button btnModifyChip = (Button) findViewById(R.id.ibModifyChip);
 
 		btnAddChip.setOnClickListener(new View.OnClickListener() {
 
@@ -92,7 +103,7 @@ public class GameDetail extends Activity {
 				AddChip();
 			}
 		});
-		
+	
 		ivShapes.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -107,6 +118,15 @@ public class GameDetail extends Activity {
             	SelectColor();
             }
         });
+		
+		btnModifyChip.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				SelectChip();
+			}
+		});
 	}
 	
 	public void AddChip(){
@@ -117,6 +137,7 @@ public class GameDetail extends Activity {
 		
 		for (int i = 0; i < numeroFichas; i++) {
 			Chip c = new Chip();
+			c.setId(UUID.randomUUID().getMostSignificantBits());
 			c.setColor(_currentColor);
 			c.setType(_currentShape);
 			c.setSize(numeroSize);
@@ -144,6 +165,19 @@ public class GameDetail extends Activity {
 				RelativeLayout rlColor = (RelativeLayout)findViewById(R.id.rlColor);
 				rlColor.setBackgroundColor(color);
 				_currentColor = color;
+			}
+		});
+	}
+	
+	public void SelectChip(){
+		_dialogDeleteChips.SetChipList(_chips);
+		_dialogDeleteChips.show(getFragmentManager(), "fragment_dialog_delete_chips");
+		
+		_dialogDeleteChips.setOnChipSelectedListener(new OnChipSelectedListener() {
+			
+			@Override
+			public void onChipSelectedOccurred(View v, Chip chip) {
+				Chip c = chip;
 			}
 		});
 	}

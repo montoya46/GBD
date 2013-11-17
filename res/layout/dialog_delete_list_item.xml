@@ -10,7 +10,7 @@
         android:contentDescription="@string/imgItemDeleteText"
         android:src="@drawable/ic_delete" />
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/tvDescripcionItem"
         android:layout_marginTop="5dp"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"

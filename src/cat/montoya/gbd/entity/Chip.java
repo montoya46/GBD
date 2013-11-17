@@ -1,5 +1,10 @@
 package cat.montoya.gbd.entity;
 
+import cat.montoya.gbd.R;
+import cat.montoya.gbd.R.string;
+import android.content.res.Resources;
+import android.graphics.Color;
+
 
 public class Chip {
 
@@ -19,7 +24,7 @@ public class Chip {
 	public int getColor() {
 		return color;
 	}
-
+	
 	public void setColor(int color) {
 		this.color = color;
 	}

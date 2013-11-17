@@ -47,8 +47,21 @@
     <string name="tvCurrentFormaDialog">Forma actual:</string>
     <string name="TituloSeleccionaForma">Selecciona una forma</string>
     <string name="imgItemDeleteText">Eliminar</string>
+    <string name="TituloSeleccionaFicha">Selecciona un ficha</string>
+    <string name="ColorBLACKDescription">Negro</string>
+    <string name="ColorDKGRAYDescription">Gris oscuro</string>
+    <string name="ColorGRAYDescription">Gris</string>
+    <string name="ColorLTGRAYDescription">Gris claro</string>
+    <string name="ColorBLUEDescription">Azul</string>
+    <string name="ColorCYANDescription">Cian</string>
+    <string name="ColorGREENDescription">Verde</string>
+    <string name="ColorREDDescription">Rojo</string>
+    <string name="ColorMAGENTADescription">Magenta</string>
+    <string name="ColorYELLOWDescription">Amarillo</string>
+    <string name="ShapeCircleDescription">Circulo</string>
+    <string name="ShapeSquareDescription">Cuadrado</string>
+    <string name="SizeDescription">Tamaño</string>
     
-
     <string-array name="number_dices_array">
         <item>1</item>
         <item>2</item>

@@ -20,7 +20,6 @@ public class ColorAdapter extends BaseAdapter {
 		if (ColorAdapter.inflater == null) {
 			ColorAdapter.inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		}
-
 	}
 
 	public int getCount() {
