@@ -1,8 +1,11 @@
 package cat.montoya.gbd.game.elements;
 
+import java.io.File;
+
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
+import org.andengine.opengl.texture.atlas.bitmap.source.FileBitmapTextureAtlasSource;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.util.GLState;
 import org.andengine.opengl.vbo.DrawType;
@@ -18,7 +21,8 @@ public class GameBoardSprite extends Sprite {
 	public static GameBoardSprite getInstance(BaseGameActivity bga, String resource, int pWidth, int pHeigth) {
 
 		BitmapTextureAtlas mBackgroundTexture = new BitmapTextureAtlas(bga.getTextureManager(), pWidth, pHeigth);
-		ITextureRegion mBackgroundTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(mBackgroundTexture, bga, resource, 0, 0);
+//		ITextureRegion mBackgroundTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(mBackgroundTexture, bga, resource, 0, 0);
+		ITextureRegion mBackgroundTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromSource(mBackgroundTexture, FileBitmapTextureAtlasSource.create(new File(resource)), 0, 0);
 		mBackgroundTexture.load();
 		return new GameBoardSprite(0, 0, mBackgroundTextureRegion, bga.getVertexBufferObjectManager());
 	}

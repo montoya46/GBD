@@ -27,12 +27,19 @@ public class DiceAnimatedSprite extends AnimatedSprite {
 	 * Per fer drag and drop
 	 */
 	boolean mGrabbed = false;
+	float scale;
 
-	private DiceAnimatedSprite(BaseGameActivity bga) {
+	private DiceAnimatedSprite(BaseGameActivity bga, float xTaulell) {
 		super(0, 0, DiceAnimatedSprite.mDiceTextureRegion, bga.getVertexBufferObjectManager());
+		//El tamany dels daus el fem dependre de la mida del taulell
+//		this.scale = xTaulell/20/this.getWidth();
+//		this.setWidth(this.getWidth()*this.scale);
+//		this.setHeight(this.getHeight()*this.scale);
+		//O DIRECTAMENT li apliquem una scala
+//		this.setScale(scale);
 	}
 
-	public static DiceAnimatedSprite getInstance(BaseGameActivity bga) {
+	public static DiceAnimatedSprite getInstance(BaseGameActivity bga, float xTaulell) {
 
 		if (DiceAnimatedSprite.mDiceTextureRegion == null) {
 			BuildableBitmapTextureAtlas mBitmapTextureAtlas = new BuildableBitmapTextureAtlas(bga.getTextureManager(), WIDTH, HEIGHT, TextureOptions.NEAREST);
@@ -46,7 +53,7 @@ public class DiceAnimatedSprite extends AnimatedSprite {
 			}
 		}
 
-		return new DiceAnimatedSprite(bga);
+		return new DiceAnimatedSprite(bga, xTaulell);
 	}
 
 	@Override
@@ -55,12 +62,12 @@ public class DiceAnimatedSprite extends AnimatedSprite {
 
 		switch (pSceneTouchEvent.getAction()) {
 		case TouchEvent.ACTION_DOWN:
-			this.setScale(2.25f);
+			this.setScale(2.0f);
 			this.mGrabbed = true;
 			break;
 		case TouchEvent.ACTION_MOVE:
 			if (this.mGrabbed) {
-				this.setPosition(pSceneTouchEvent.getX() - 45, pSceneTouchEvent.getY() - 45);
+				this.setPosition(pSceneTouchEvent.getX() - this.getWidth()/2, pSceneTouchEvent.getY() -this.getHeight()/2);
 			}
 			break;
 		case TouchEvent.ACTION_UP:

@@ -124,12 +124,15 @@ public class GameActivity extends SimpleBaseGameActivity implements IOnSceneTouc
 	@Override
 	public void onCreateResources() {
 
-//		String sFolder = getRootFolder() + "/";
+		String sFolder = getRootFolder() + "/";
 //		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath(sFolder);
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
-		this.gameBoardSprite = GameBoardSprite.getInstance(this, game.getBoardURL(), 1866, 1860);
-		this.dices.add(DiceAnimatedSprite.getInstance(this));
-		this.dices.add(DiceAnimatedSprite.getInstance(this));
+		this.gameBoardSprite = GameBoardSprite.getInstance(this, sFolder + game.getBoardURL(), 1866, 1860);
+		
+		final float xTaulell = this.gameBoardSprite.getWidth();
+		
+		this.dices.add(DiceAnimatedSprite.getInstance(this, xTaulell));
+		this.dices.add(DiceAnimatedSprite.getInstance(this, xTaulell));
 	}
 
 	@Override
