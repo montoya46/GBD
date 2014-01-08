@@ -1,10 +1,5 @@
 package cat.montoya.gbd.entity;
 
-import cat.montoya.gbd.R;
-import cat.montoya.gbd.R.string;
-import android.content.res.Resources;
-import android.graphics.Color;
-
 
 public class Chip {
 
@@ -12,6 +7,10 @@ public class Chip {
 	private int type;
 	private int color;
 	private int size;
+	
+	public static final int RECTANGLE = 1;
+	public static final int CIRCLE = 2;
+	
 
 	public int getType() {
 		return type;

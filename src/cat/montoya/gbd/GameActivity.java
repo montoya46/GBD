@@ -14,6 +14,7 @@ import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.scene.IOnSceneTouchListener;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
+import org.andengine.entity.shape.Shape;
 import org.andengine.entity.util.FPSLogger;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.input.touch.controller.MultiTouch;
@@ -24,10 +25,13 @@ import org.andengine.input.touch.detector.ScrollDetector.IScrollDetectorListener
 import org.andengine.input.touch.detector.SurfaceScrollDetector;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.andengine.ui.activity.SimpleBaseGameActivity;
+import org.andengine.util.color.Color;
 
 import android.graphics.Point;
 import android.view.Display;
 import android.widget.Toast;
+import cat.montoya.gbd.entity.Chip;
+import cat.montoya.gbd.entity.Dice;
 import cat.montoya.gbd.entity.Game;
 import cat.montoya.gbd.game.elements.DiceAnimatedSprite;
 import cat.montoya.gbd.game.elements.GameBoardSprite;
@@ -60,6 +64,7 @@ public class GameActivity extends SimpleBaseGameActivity implements IOnSceneTouc
 	private Game game;
 	private GameBoardSprite gameBoardSprite;
 	private List<DiceAnimatedSprite> dices = new ArrayList<DiceAnimatedSprite>();
+	private List<Shape> chips = new ArrayList<Shape>();
 
 	// ===========================================================
 	// Constructors
@@ -73,7 +78,6 @@ public class GameActivity extends SimpleBaseGameActivity implements IOnSceneTouc
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 	
-	private boolean rotated = false;
 
 	@Override
 	public EngineOptions onCreateEngineOptions() {
@@ -123,76 +127,94 @@ public class GameActivity extends SimpleBaseGameActivity implements IOnSceneTouc
 
 	@Override
 	public void onCreateResources() {
-
-		String sFolder = getRootFolder() + "/";
-//		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath(sFolder);
+		
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
+		this.createBoard();
+		this.createAllDices();
+		this.createAllChips();
+		
+	}
+
+	private void createBoard() {
+		String sFolder = getRootFolder() + "/";
 		this.gameBoardSprite = GameBoardSprite.getInstance(this, sFolder + game.getBoardURL(), 1866, 1860);
-		
-		final float xTaulell = this.gameBoardSprite.getWidth();
-		
-		this.dices.add(DiceAnimatedSprite.getInstance(this, xTaulell));
-		this.dices.add(DiceAnimatedSprite.getInstance(this, xTaulell));
+	}
+	
+	private void createAllDices() {
+		if (this.game.getDices() == null ||this.game.getDices().isEmpty()){
+			//TODO eliminar aixo, de moment posem daus dummy
+			final float xTaulell = this.gameBoardSprite.getWidth();
+			this.dices.add(DiceAnimatedSprite.getInstance(this, xTaulell));
+			this.dices.add(DiceAnimatedSprite.getInstance(this, xTaulell));
+		} else {
+			for (Dice dice : this.game.getDices()) {
+				this.dices.add(DiceAnimatedSprite.getInstance(this, this.gameBoardSprite.getWidth()));
+			}
+		}
+	}
+	
+	private void createAllChips() {
+		if (this.game.getChips() == null || this.game.getChips().isEmpty()){
+			for (int i = 0; i < 4; i++) {
+				final Shape rect1 = this.makeColoredRectangle(100, 200, 90, 90, 1);
+				this.chips.add(rect1);
+				final Rectangle rect2 = this.makeColoredRectangle(100, 200, 90, 90, 2);
+				this.chips.add(rect2);
+				final Rectangle rect3 = this.makeColoredRectangle(100, 200, 90, 90, 3);
+				this.chips.add(rect3);
+				final Rectangle rect4 = this.makeColoredRectangle(100, 200, 90, 90, 4);
+				this.chips.add(rect4);
+			}
+			
+		} else {
+			for (Chip chip : this.game.getChips()) {
+				switch (chip.getType()) {
+				case Chip.RECTANGLE:
+					final Shape rect = this.makeColoredRectangle(1500, 200, chip.getSize(), chip.getSize(), chip.getColor());
+					this.chips.add(rect);
+					break;
+				case Chip.CIRCLE:
+					
+					break;
+
+				default:
+					break;
+				}
+				
+			}
+			
+		}
 	}
 
 	@Override
 	public Scene onCreateScene() {
 		this.mEngine.registerUpdateHandler(new FPSLogger());
-
 		this.mScene = new Scene();
 		this.mScene.setOnAreaTouchTraversalFrontToBack();
 
 		this.mScene.setBackground(new Background(0.09804f, 0.6274f, 0.8784f));
 		this.mScene.setBackgroundEnabled(false);
 		this.mScene.attachChild(this.gameBoardSprite);
-		
-
 		centerAndZoomGameBoard();
 		
-
 		this.mScrollDetector = new SurfaceScrollDetector(this);
 		this.mPinchZoomDetector = new PinchZoomDetector(this);
 
 		this.mScene.setOnSceneTouchListener(this);
 		this.mScene.setTouchAreaBindingOnActionDownEnabled(true);
 
-		for (int i = 0; i < 4; i++) {
-			final Rectangle rect1 = this.makeColoredRectangle(1500, 200, 1, 0, 0);
-			final Rectangle rect2 = this.makeColoredRectangle(100, 200, 0, 1, 0);
-			final Rectangle rect3 = this.makeColoredRectangle(1500, 1500, 0, 0, 1);
-			final Rectangle rect4 = this.makeColoredRectangle(100, 1500, 1, 1, 0);
+		
+		
+		for (Shape chip : this.chips){
+			this.mScene.attachChild(chip);
+			this.mScene.registerTouchArea(chip);
 		}
-		
-		
-		final Rectangle rect = new Rectangle(-90, 0, 90, 90, this.getVertexBufferObjectManager()){
-			
-			@Override
-			public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
-				rotate();
-				return true;
-			}
 
-		};
-		
-		rect.setColor(1,1,1);
-
-		this.mScene.attachChild(rect);
-		this.mScene.registerTouchArea(rect);
-
-		for (DiceAnimatedSprite dice : dices) {
+		for (DiceAnimatedSprite dice : this.dices) {
 			this.mScene.attachChild(dice);
 			this.mScene.registerTouchArea(dice);
 		}
-		
-
 		return this.mScene;
-	}
-	
-	private void rotate() {
-		if (!this.rotated){
-			this.rotated=true;
-//			this.gameBoardSprite.registerEntityModifier(new LoopEntityModifier(new RotationModifier(1, 1, 45)));
-		}
 	}
 
 	/**
@@ -206,8 +228,8 @@ public class GameActivity extends SimpleBaseGameActivity implements IOnSceneTouc
 		this.mZoomCamera.setCenter(centerX,centerY);
 	}
 
-	private Rectangle makeColoredRectangle(final float pX, final float pY, final float pRed, final float pGreen, final float pBlue) {
-		final Rectangle coloredRect = new Rectangle(pX, pY, 90, 90, this.getVertexBufferObjectManager()) {
+	private Rectangle makeColoredRectangle(final float pX, final float pY, float pWidth, float pHeight, int pColor) {
+		final Rectangle coloredRect = new Rectangle(pX, pY, pWidth, pHeight, this.getVertexBufferObjectManager()) {
 			boolean mGrabbed = false;
 
 			@Override
@@ -232,12 +254,35 @@ public class GameActivity extends SimpleBaseGameActivity implements IOnSceneTouc
 				return true;
 			}
 		};
-		coloredRect.setColor(pRed, pGreen, pBlue);
-
-		this.mScene.attachChild(coloredRect);
-		this.mScene.registerTouchArea(coloredRect);
-
+		
+		coloredRect.setColor(getColorFromInt(pColor));
 		return coloredRect;
+	}
+
+	private Color getColorFromInt(int pColor) {
+		Color ret = null;
+		switch (pColor) {
+		case 1:
+			ret = Color.RED;
+			break;
+		case 2:
+			ret = Color.BLUE;
+			break;
+		case 3:
+			ret = Color.YELLOW;
+			break;
+		case 4:
+			ret = Color.GREEN;
+			break;
+		case 5:
+			ret = Color.PINK;
+			break;
+
+		default:
+			ret = Color.RED;
+			break;
+		}
+		return ret;
 	}
 
 	@Override
