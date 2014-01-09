@@ -8,8 +8,6 @@ import org.andengine.engine.camera.ZoomCamera;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
-import org.andengine.entity.modifier.LoopEntityModifier;
-import org.andengine.entity.modifier.RotationModifier;
 import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.scene.IOnSceneTouchListener;
 import org.andengine.entity.scene.Scene;
@@ -23,16 +21,27 @@ import org.andengine.input.touch.detector.PinchZoomDetector.IPinchZoomDetectorLi
 import org.andengine.input.touch.detector.ScrollDetector;
 import org.andengine.input.touch.detector.ScrollDetector.IScrollDetectorListener;
 import org.andengine.input.touch.detector.SurfaceScrollDetector;
+import org.andengine.opengl.texture.TextureOptions;
+import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
+import org.andengine.opengl.texture.atlas.bitmap.BuildableBitmapTextureAtlas;
+import org.andengine.opengl.texture.atlas.bitmap.source.IBitmapTextureAtlasSource;
+import org.andengine.opengl.texture.atlas.buildable.builder.BlackPawnTextureAtlasBuilder;
+import org.andengine.opengl.texture.atlas.buildable.builder.ITextureAtlasBuilder.TextureAtlasBuilderException;
+import org.andengine.opengl.texture.region.ITiledTextureRegion;
 import org.andengine.ui.activity.SimpleBaseGameActivity;
 import org.andengine.util.color.Color;
 
+import android.content.Intent;
+import android.content.res.AssetManager;
 import android.graphics.Point;
+import android.util.Log;
 import android.view.Display;
 import android.widget.Toast;
 import cat.montoya.gbd.entity.Chip;
 import cat.montoya.gbd.entity.Dice;
 import cat.montoya.gbd.entity.Game;
+import cat.montoya.gbd.game.elements.ChipTiledSprite;
 import cat.montoya.gbd.game.elements.DiceAnimatedSprite;
 import cat.montoya.gbd.game.elements.GameBoardSprite;
 
@@ -59,12 +68,15 @@ public class GameActivity extends SimpleBaseGameActivity implements IOnSceneTouc
 	private SurfaceScrollDetector mScrollDetector;
 	private PinchZoomDetector mPinchZoomDetector;
 	private float mPinchZoomStartedCameraZoomFactor;
+	private BuildableBitmapTextureAtlas mBitmapTextureAtlas;
+	private ITiledTextureRegion mTiledTextureRegion;
 
 	// Game elements
 	private Game game;
 	private GameBoardSprite gameBoardSprite;
 	private List<DiceAnimatedSprite> dices = new ArrayList<DiceAnimatedSprite>();
-	private List<Shape> chips = new ArrayList<Shape>();
+	private List<ChipTiledSprite> chips = new ArrayList<ChipTiledSprite>();
+	private List<Shape> old_chips = new ArrayList<Shape>();
 
 	// ===========================================================
 	// Constructors
@@ -82,10 +94,12 @@ public class GameActivity extends SimpleBaseGameActivity implements IOnSceneTouc
 	@Override
 	public EngineOptions onCreateEngineOptions() {
 		game = (Game) getIntent().getSerializableExtra("game");
-		if (game  != null)
-			Toast.makeText(this, "REBUT!", Toast.LENGTH_LONG).show();
-		else
-			Toast.makeText(this, "NO REBUT", Toast.LENGTH_LONG).show();
+		if (game  == null){
+			Toast.makeText(this, "ERROR LOADING GAME", Toast.LENGTH_SHORT).show();
+			Intent i = new Intent(this, GameGridViewActivity.class);
+			startActivity(i);
+		}
+			
 		
 		Display display = getWindowManager().getDefaultDisplay();
 		Point size = new Point();
@@ -102,7 +116,7 @@ public class GameActivity extends SimpleBaseGameActivity implements IOnSceneTouc
 
 		if (MultiTouch.isSupported(this)) {
 			if (MultiTouch.isSupportedDistinct(this)) {
-				Toast.makeText(this, "MultiTouch detected --> Both controls will work properly!", Toast.LENGTH_SHORT).show();
+//				Toast.makeText(this, "MultiTouch detected --> Both controls will work properly!", Toast.LENGTH_SHORT).show();
 			} else {
 				Toast.makeText(
 						this,
@@ -127,11 +141,24 @@ public class GameActivity extends SimpleBaseGameActivity implements IOnSceneTouc
 
 	@Override
 	public void onCreateResources() {
-		
+		AssetManager am = this.getAssets();
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
+		this.mBitmapTextureAtlas = new BuildableBitmapTextureAtlas(this.getTextureManager(), 1024, 1024, TextureOptions.NEAREST);
+		mTiledTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAssetDirectory(this.mBitmapTextureAtlas, this.getAssets(), "animatedsprites");
+		
+		DiceAnimatedSprite.resetTextureRegion();
+		ChipTiledSprite.resetTextureRegion();
 		this.createBoard();
 		this.createAllDices();
 		this.createAllChips();
+		
+		try {
+			mBitmapTextureAtlas.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0, 0, 0));
+			mBitmapTextureAtlas.load();
+		} catch (TextureAtlasBuilderException e) {
+			Log.d("", e.getMessage());
+		}
+		
 		
 	}
 
@@ -144,34 +171,41 @@ public class GameActivity extends SimpleBaseGameActivity implements IOnSceneTouc
 		if (this.game.getDices() == null ||this.game.getDices().isEmpty()){
 			//TODO eliminar aixo, de moment posem daus dummy
 			final float xTaulell = this.gameBoardSprite.getWidth();
-			this.dices.add(DiceAnimatedSprite.getInstance(this, xTaulell));
-			this.dices.add(DiceAnimatedSprite.getInstance(this, xTaulell));
+			this.dices.add(DiceAnimatedSprite.getInstance(this, this.mTiledTextureRegion, xTaulell));
+			this.dices.add(DiceAnimatedSprite.getInstance(this, this.mTiledTextureRegion, xTaulell));
 		} else {
 			for (Dice dice : this.game.getDices()) {
-				this.dices.add(DiceAnimatedSprite.getInstance(this, this.gameBoardSprite.getWidth()));
+				this.dices.add(DiceAnimatedSprite.getInstance(this, this.mTiledTextureRegion, this.gameBoardSprite.getWidth()));
 			}
 		}
 	}
 	
 	private void createAllChips() {
+		
+		
+		
 		if (this.game.getChips() == null || this.game.getChips().isEmpty()){
-			for (int i = 0; i < 4; i++) {
-				final Shape rect1 = this.makeColoredRectangle(100, 200, 90, 90, 1);
-				this.chips.add(rect1);
-				final Rectangle rect2 = this.makeColoredRectangle(100, 200, 90, 90, 2);
-				this.chips.add(rect2);
-				final Rectangle rect3 = this.makeColoredRectangle(100, 200, 90, 90, 3);
-				this.chips.add(rect3);
-				final Rectangle rect4 = this.makeColoredRectangle(100, 200, 90, 90, 4);
-				this.chips.add(rect4);
-			}
+
+		for (int i = 0; i < 4; i++) {
+			this.chips.add(ChipTiledSprite.getInstance(this, this.mTiledTextureRegion, 3));
+			this.chips.add(ChipTiledSprite.getInstance(this, this.mTiledTextureRegion, 4));
+			this.chips.add(ChipTiledSprite.getInstance(this, this.mTiledTextureRegion, 5));
+//			final Shape rect1 = this.makeColoredRectangle(100, 200, 90, 90, 1);
+//			this.old_chips.add(rect1);
+//			final Rectangle rect2 = this.makeColoredRectangle(100, 200, 90, 90, 2);
+//			this.old_chips.add(rect2);
+//			final Rectangle rect3 = this.makeColoredRectangle(100, 200, 90, 90, 3);
+//			this.old_chips.add(rect3);
+//			final Rectangle rect4 = this.makeColoredRectangle(100, 200, 90, 90, 4);
+//			this.old_chips.add(rect4);
+		}
 			
 		} else {
 			for (Chip chip : this.game.getChips()) {
 				switch (chip.getType()) {
 				case Chip.RECTANGLE:
 					final Shape rect = this.makeColoredRectangle(1500, 200, chip.getSize(), chip.getSize(), chip.getColor());
-					this.chips.add(rect);
+					this.old_chips.add(rect);
 					break;
 				case Chip.CIRCLE:
 					
@@ -205,7 +239,7 @@ public class GameActivity extends SimpleBaseGameActivity implements IOnSceneTouc
 
 		
 		
-		for (Shape chip : this.chips){
+		for (ChipTiledSprite chip : this.chips){
 			this.mScene.attachChild(chip);
 			this.mScene.registerTouchArea(chip);
 		}

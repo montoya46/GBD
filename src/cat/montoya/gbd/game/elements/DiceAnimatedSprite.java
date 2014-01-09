@@ -2,26 +2,20 @@ package cat.montoya.gbd.game.elements;
 
 import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.input.touch.TouchEvent;
-import org.andengine.opengl.texture.TextureOptions;
-import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
-import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
-import org.andengine.opengl.texture.atlas.bitmap.BuildableBitmapTextureAtlas;
-import org.andengine.opengl.texture.atlas.bitmap.source.IBitmapTextureAtlasSource;
-import org.andengine.opengl.texture.atlas.buildable.builder.BlackPawnTextureAtlasBuilder;
-import org.andengine.opengl.texture.atlas.buildable.builder.ITextureAtlasBuilder.TextureAtlasBuilderException;
+import org.andengine.opengl.texture.ITexture;
+import org.andengine.opengl.texture.region.ITiledTextureRegion;
 import org.andengine.opengl.texture.region.TiledTextureRegion;
 import org.andengine.ui.activity.BaseGameActivity;
-import org.andengine.util.debug.Debug;
 
 public class DiceAnimatedSprite extends AnimatedSprite {
 
 	private static final int ROWS = 1;// Rows in the image
 	private static final int COLUMNS = 6;// Columns in the image
-	private static final int WIDTH = 1024;// Width for all image
-	private static final int HEIGHT = 256; // Height for all image
-	private static final String DICE1_JPG = "dice1.jpg";// Resource name
+	private static final int WIDTH = 300;// Width for all image
+	private static final int HEIGHT = 50; // Height for all image
+	private static final int DICE1_INDEX= 0;// Resource name
 
-	private static TiledTextureRegion mDiceTextureRegion;
+	private static ITiledTextureRegion mDiceTextureRegion;
 
 	/**
 	 * Per fer drag and drop
@@ -31,6 +25,7 @@ public class DiceAnimatedSprite extends AnimatedSprite {
 
 	private DiceAnimatedSprite(BaseGameActivity bga, float xTaulell) {
 		super(0, 0, DiceAnimatedSprite.mDiceTextureRegion, bga.getVertexBufferObjectManager());
+		this.setScale(2.0f);
 		//El tamany dels daus el fem dependre de la mida del taulell
 //		this.scale = xTaulell/20/this.getWidth();
 //		this.setWidth(this.getWidth()*this.scale);
@@ -39,20 +34,11 @@ public class DiceAnimatedSprite extends AnimatedSprite {
 //		this.setScale(scale);
 	}
 
-	public static DiceAnimatedSprite getInstance(BaseGameActivity bga, float xTaulell) {
-
-		if (DiceAnimatedSprite.mDiceTextureRegion == null) {
-			BuildableBitmapTextureAtlas mBitmapTextureAtlas = new BuildableBitmapTextureAtlas(bga.getTextureManager(), WIDTH, HEIGHT, TextureOptions.NEAREST);
-			DiceAnimatedSprite.mDiceTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBitmapTextureAtlas, bga, DICE1_JPG, COLUMNS,
-					ROWS);
-			try {
-				mBitmapTextureAtlas.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0, 0, 1));
-				mBitmapTextureAtlas.load();
-			} catch (TextureAtlasBuilderException e) {
-				Debug.e(e);
-			}
+	public static DiceAnimatedSprite getInstance(BaseGameActivity bga, ITiledTextureRegion mTiledTextureRegion, float xTaulell) {
+		if (DiceAnimatedSprite.mDiceTextureRegion == null){
+			ITexture tr = mTiledTextureRegion.getTextureRegion(DICE1_INDEX).getTexture();
+			DiceAnimatedSprite.mDiceTextureRegion = TiledTextureRegion.create(tr, 0, 0, WIDTH, HEIGHT, COLUMNS, ROWS);	
 		}
-
 		return new DiceAnimatedSprite(bga, xTaulell);
 	}
 
@@ -62,7 +48,7 @@ public class DiceAnimatedSprite extends AnimatedSprite {
 
 		switch (pSceneTouchEvent.getAction()) {
 		case TouchEvent.ACTION_DOWN:
-			this.setScale(2.0f);
+//			this.setScale(2.0f);
 			this.mGrabbed = true;
 			break;
 		case TouchEvent.ACTION_MOVE:
@@ -73,7 +59,7 @@ public class DiceAnimatedSprite extends AnimatedSprite {
 		case TouchEvent.ACTION_UP:
 			if (this.mGrabbed) {
 				this.mGrabbed = false;
-				this.setScale(1.0f);
+//				this.setScale(1.0f);
 			}
 			throwDice();
 			break;
@@ -96,6 +82,10 @@ public class DiceAnimatedSprite extends AnimatedSprite {
 			this.animate(250);
 		}
 
+	}
+	
+	public static void resetTextureRegion(){
+		DiceAnimatedSprite.mDiceTextureRegion = null;
 	}
 
 }
