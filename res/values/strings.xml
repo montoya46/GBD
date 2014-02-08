@@ -47,7 +47,7 @@
     <string name="tvCurrentFormaDialog">Forma actual:</string>
     <string name="TituloSeleccionaForma">Selecciona una forma</string>
     <string name="imgItemDeleteText">Eliminar</string>
-    <string name="TituloSeleccionaFicha">Selecciona un ficha</string>
+    <string name="TituloSeleccionaFicha">Elimina una ficha</string>
     <string name="ColorBLACKDescription">Negro</string>
     <string name="ColorDKGRAYDescription">Gris oscuro</string>
     <string name="ColorGRAYDescription">Gris</string>

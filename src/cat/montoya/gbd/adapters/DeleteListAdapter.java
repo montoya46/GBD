@@ -1,6 +1,8 @@
 package cat.montoya.gbd.adapters;
 
+import java.util.ArrayList;
 import java.util.List;
+
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
@@ -17,10 +19,13 @@ public class DeleteListAdapter extends BaseAdapter {
 	private List<Chip> chips;
 	private static LayoutInflater inflater = null;
 	private Activity _activity;
+	private List<Chip> chipsToRemove;
 
 	public DeleteListAdapter(Activity activity, List<Chip> chips) {
 		this._activity = activity;
 		this.chips = chips;
+		chipsToRemove = new ArrayList<Chip>();
+		
 		if (DeleteListAdapter.inflater == null) {
 			DeleteListAdapter.inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		}
@@ -52,7 +57,6 @@ public class DeleteListAdapter extends BaseAdapter {
 
 		TextView tvDescripcionItem = (TextView) vi.findViewById(R.id.tvDescripcionItem);
 		ImageButton imgItem = (ImageButton) vi.findViewById(R.id.imgItemDelete);
-
 
 		tvDescripcionItem.setText(getDescription(c.getColor(), c.getType(), c.getSize()));
 		imgItem.setTag(c);

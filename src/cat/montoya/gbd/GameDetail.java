@@ -44,7 +44,6 @@ public class GameDetail extends Activity {
 	private DialogDeleteList _dialogDeleteChips;
 	private List<Chip> _chips = new ArrayList<Chip>();
 	
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -90,6 +89,8 @@ public class GameDetail extends Activity {
 		ImageView ivShapes = (ImageView)findViewById(R.id.ibNewChip);
 		
 		//Botones para los dados
+		
+		
 		
 		//Botones de fichas
 		Button btnAddChip = (Button) findViewById(R.id.ibAddChip);
