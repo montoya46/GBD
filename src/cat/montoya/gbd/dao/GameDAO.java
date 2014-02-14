@@ -227,13 +227,13 @@ public class GameDAO implements IGameDAO {
 	private Chip cursorToChip(Cursor cChips) {
 		Chip chip = new Chip();
 		chip.setId(cChips.getLong(cChips
-				.getColumnIndexOrThrow(PROJECTIONDICE[0])));
+				.getColumnIndexOrThrow(PROJECTIONCHIP[0])));
 		chip.setType(cChips.getInt(cChips
-				.getColumnIndexOrThrow(PROJECTIONDICE[2])));
+				.getColumnIndexOrThrow(PROJECTIONCHIP[2])));
 		chip.setColor(cChips.getInt(cChips
-				.getColumnIndexOrThrow(PROJECTIONDICE[3])));
+				.getColumnIndexOrThrow(PROJECTIONCHIP[3])));
 		chip.setSize(cChips.getInt(cChips
-				.getColumnIndexOrThrow(PROJECTIONDICE[4])));
+				.getColumnIndexOrThrow(PROJECTIONCHIP[4])));
 		return chip;
 	}
 }

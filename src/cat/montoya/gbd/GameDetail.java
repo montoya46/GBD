@@ -200,14 +200,6 @@ public class GameDetail extends Activity {
 		    myImage.setImageBitmap(myBitmap);
 
 		}
-
-
-//		// Chips
-//		g.setChips(viewToEntityChips());
-//		// Dices
-//		g.setDices(viewToEntityDices());
-//		// Save the game
-//		g = gameDAO.setGame(g);
 	}
 
 	// Metode duplicat
@@ -232,27 +224,20 @@ public class GameDetail extends Activity {
 	 */
 	public void saveGame(View v) {
 
-		Game g = new Game();
-		// ID
-//		g.setId(1l);
+
 		// NAME
-		g.setName(getStringFromTextView(R.id.edTitulo));
+		_game.setName(getStringFromTextView(R.id.edTitulo));
 		// HELP
-		g.setHelp(getStringFromTextView(R.id.edDescripcion));
+		_game.setHelp(getStringFromTextView(R.id.edDescripcion));
 		// BOARD && BOARDTHUMBNAIL
 		String file = writeBoardToFile();
 		if (file != null){
-			g.setBoardURL(file);
-			g.setBoardThumbnailURL("tmb_"+file);
+			_game.setBoardURL(file);
+			_game.setBoardThumbnailURL("tmb_"+file);
 		}
-		// Chips
-		g.setChips(viewToEntityChips());
-		// Dices
-		g.setDices(viewToEntityDices());
-		// Save the game
-		g = gameDAO.setGame(g);
 
-		// TODO Load id into field
+		// Save the game
+		_game = gameDAO.setGame(_game);
 
 	}
 
