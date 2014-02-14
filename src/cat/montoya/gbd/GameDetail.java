@@ -87,8 +87,8 @@ public class GameDetail extends Activity {
 		ImageView ivShapes = (ImageView)findViewById(R.id.ibNewChip);
 		
 		//Botones para los dados
-		
-		
+//		Button btnAddDice = (Button) findViewById(R.id.ibAddChip);
+//		Button btnModifyDice = (Button) findViewById(R.id.ibModifyChip);
 		
 		//Botones de fichas
 		Button btnAddChip = (Button) findViewById(R.id.ibAddChip);
