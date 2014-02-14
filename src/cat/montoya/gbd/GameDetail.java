@@ -42,7 +42,7 @@ public class GameDetail extends Activity {
 	private DialogShapePicker _dialogShape;
 	private DialogColorPicker _dialogColor;
 	private DialogDeleteList _dialogDeleteChips;
-	private List<Chip> _chips = new ArrayList<Chip>();
+	private Game _game = null;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -62,11 +62,10 @@ public class GameDetail extends Activity {
 
 		if (id != -1) {// Carregar Joc de la base de dades i emplenar fitxa
 			Toast.makeText(this, "Carregar joc amb id: " + id, Toast.LENGTH_LONG).show();
-			Game game = gameDAO.getGame(id);
-			loadGame(game);
-		} else {
-			// Nou joc
-			Toast.makeText(this, "Nou joc", Toast.LENGTH_LONG).show();
+			_game = gameDAO.getGame(id);
+			loadGame();
+		} else { 
+			_game = new Game();
 		}
 
 		Spinner spinner = (Spinner) findViewById(R.id.numer_dices);
@@ -140,7 +139,7 @@ public class GameDetail extends Activity {
 			c.setColor(_currentColor);
 			c.setType(_currentShape);
 			c.setSize(numeroSize);
-			_chips.add(c);
+			_game.getChips().add(c);
 		}
 	}
 	
@@ -169,31 +168,31 @@ public class GameDetail extends Activity {
 	}
 	
 	public void SelectChip(){
-		_dialogDeleteChips.SetChipList(_chips);
+		_dialogDeleteChips.SetChipList(_game.getChips());
 		_dialogDeleteChips.show(getFragmentManager(), "fragment_dialog_delete_chips");
 		
 		_dialogDeleteChips.setOnChipSelectedListener(new OnChipSelectedListener() {
 			@Override
 			public void onChipSelectedOccurred(View v, List<Chip> chipsToDelete) {
 				for (Chip chip : chipsToDelete) {
-					_chips.remove(chip);
+					_game.getChips().remove(chip);
 				}
 			}
 		});
 	}
 
-	private void loadGame(Game g) {
+	private void loadGame() {
 		// ID (no cal fer res amb aixo?)
-		g.getId();
+//		_game.getId();
 		// NAME
 		TextView name = (TextView) findViewById(R.id.edTitulo);
-		name.setText(g.getName());
+		name.setText(_game.getName());
 		// HELP
 		TextView help = (TextView) findViewById(R.id.edDescripcion);
-		help.setText(g.getHelp());
+		help.setText(_game.getHelp());
 		
 		// BOARD && BOARDTHUMBNAIL
-		File imgFile = new  File(getRootFolder(),g.getBoardURL());
+		File imgFile = new  File(getRootFolder(),_game.getBoardURL());
 		if(imgFile.exists()){
 
 		    Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
