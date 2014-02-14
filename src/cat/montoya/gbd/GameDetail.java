@@ -156,7 +156,7 @@ public class GameDetail extends Activity {
 		});
 	}
 	
-	public void SelectColor(){
+	public void SelectColor() {
 		_dialogColor.show(getFragmentManager(), "fragment_dialog_color_picker");
 		_dialogColor.setOnColorSelectedListener(new OnColorSelectedListener() {
 			@Override
@@ -168,7 +168,7 @@ public class GameDetail extends Activity {
 		});
 	}
 	
-	public void SelectChip(){
+	public void SelectChip() {
 		_dialogDeleteChips.SetChipList(_chips);
 		_dialogDeleteChips.show(getFragmentManager(), "fragment_dialog_delete_chips");
 		
