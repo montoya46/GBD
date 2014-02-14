@@ -53,7 +53,6 @@ public class GameDetail extends Activity {
 		_dialogShape = new DialogShapePicker();
 		_dialogColor = new DialogColorPicker();
 		_dialogDeleteChips = new DialogDeleteList();
-		
 		_currentShape = _dialogShape.GetDefaultShape();
 		_currentColor = _dialogColor.GetDefaultColor();
 		
@@ -97,7 +96,6 @@ public class GameDetail extends Activity {
 		Button btnModifyChip = (Button) findViewById(R.id.ibModifyChip);
 
 		btnAddChip.setOnClickListener(new View.OnClickListener() {
-
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
@@ -175,10 +173,11 @@ public class GameDetail extends Activity {
 		_dialogDeleteChips.show(getFragmentManager(), "fragment_dialog_delete_chips");
 		
 		_dialogDeleteChips.setOnChipSelectedListener(new OnChipSelectedListener() {
-			
 			@Override
-			public void onChipSelectedOccurred(View v, Chip chip) {
-				Chip c = chip;
+			public void onChipSelectedOccurred(View v, List<Chip> chipsToDelete) {
+				for (Chip chip : chipsToDelete) {
+					_chips.remove(chip);
+				}
 			}
 		});
 	}

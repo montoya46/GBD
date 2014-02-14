@@ -56,10 +56,10 @@ public class DeleteListAdapter extends BaseAdapter {
 			vi = inflater.inflate(R.layout.dialog_delete_list_item, null);
 
 		TextView tvDescripcionItem = (TextView) vi.findViewById(R.id.tvDescripcionItem);
-		ImageButton imgItem = (ImageButton) vi.findViewById(R.id.imgItemDelete);
+//		ImageButton imgItem = (ImageButton) vi.findViewById(R.id.imgItemDelete);
 
 		tvDescripcionItem.setText(getDescription(c.getColor(), c.getType(), c.getSize()));
-		imgItem.setTag(c);
+//		imgItem.setTag(c);
 		
 		return vi;
 	}

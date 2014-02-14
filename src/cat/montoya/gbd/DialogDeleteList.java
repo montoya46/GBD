@@ -28,7 +28,7 @@ public class DialogDeleteList extends DialogFragment {
 	private List<Chip> chipsToDelete = new ArrayList<Chip>();
 	
 	public interface OnChipSelectedListener {
-		void onChipSelectedOccurred(View v, Chip chip);
+		void onChipSelectedOccurred(View v, List<Chip> chipsToDelete);
 	}
 	
 	public void setOnChipSelectedListener(OnChipSelectedListener l) {
@@ -52,7 +52,7 @@ public class DialogDeleteList extends DialogFragment {
         
         builder.setPositiveButton(R.string.Aceptar, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-                listener.onChipSelectedOccurred(currentView, currentChip);
+                listener.onChipSelectedOccurred(currentView, chipsToDelete);
             }
     	});
         
