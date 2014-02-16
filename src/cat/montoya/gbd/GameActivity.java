@@ -44,6 +44,7 @@ import cat.montoya.gbd.entity.Game;
 import cat.montoya.gbd.game.elements.ChipTiledSprite;
 import cat.montoya.gbd.game.elements.DiceAnimatedSprite;
 import cat.montoya.gbd.game.elements.GameBoardSprite;
+import cat.montoya.gbd.utils.FileUtils;
 
 public class GameActivity extends SimpleBaseGameActivity implements IOnSceneTouchListener, IScrollDetectorListener, IPinchZoomDetectorListener {
 	// ===========================================================
@@ -132,12 +133,6 @@ public class GameActivity extends SimpleBaseGameActivity implements IOnSceneTouc
 		return engineOptions;
 	}
 	
-	private String getRootFolder() {
-		File folder = getExternalFilesDir(null);
-		if (folder == null)
-			folder = getFilesDir();
-		return folder.getAbsolutePath();
-	}
 
 	@Override
 	public void onCreateResources() {
@@ -159,11 +154,10 @@ public class GameActivity extends SimpleBaseGameActivity implements IOnSceneTouc
 			Log.d("", e.getMessage());
 		}
 		
-		
 	}
 
 	private void createBoard() {
-		String sFolder = getRootFolder() + "/";
+		String sFolder = FileUtils.getRootFolderPath(this) + "/";
 		this.gameBoardSprite = GameBoardSprite.getInstance(this, sFolder + game.getBoardURL(), 1866, 1860);
 	}
 	

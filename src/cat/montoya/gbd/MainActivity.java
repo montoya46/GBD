@@ -21,6 +21,7 @@ import android.widget.Toast;
 import cat.montoya.gbd.adapters.GameLazyListAdapter;
 import cat.montoya.gbd.dao.GameDAO;
 import cat.montoya.gbd.dao.IGameDAO;
+import cat.montoya.gbd.utils.FileUtils;
 
 /*
  * Game List Activity
@@ -35,7 +36,7 @@ public class MainActivity extends Activity implements OnItemLongClickListener, O
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_games_listview);
 
-		File folder = getRootFolder();
+		File folder = FileUtils.getRootFolder(this);
 		gameDAO = new GameDAO(this);
 
 		ListView lv = (ListView) findViewById(R.id.gameList);
@@ -43,13 +44,6 @@ public class MainActivity extends Activity implements OnItemLongClickListener, O
 		lv.setOnItemLongClickListener(this);
 		lv.setOnItemClickListener(this);
 
-	}
-
-	private File getRootFolder() {
-		File folder = getExternalFilesDir(null);
-		if (folder == null)
-			folder = getFilesDir();
-		return folder;
 	}
 
 	@Override

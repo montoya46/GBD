@@ -18,6 +18,7 @@ import cat.montoya.gbd.adapters.ImageAdapter;
 import cat.montoya.gbd.dao.GameDAO;
 import cat.montoya.gbd.dao.IGameDAO;
 import cat.montoya.gbd.entity.Game;
+import cat.montoya.gbd.utils.FileUtils;
 
 public class GameGridViewActivity extends Activity implements OnItemLongClickListener, OnItemClickListener {
 
@@ -29,7 +30,7 @@ public class GameGridViewActivity extends Activity implements OnItemLongClickLis
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_games_gridview);
 
-		File folder = getRootFolder();
+		File folder = FileUtils.getRootFolder(this);
 		gameDAO = new GameDAO(this);
 
 		GridView gridview = (GridView) findViewById(R.id.gamegridview);
@@ -38,13 +39,6 @@ public class GameGridViewActivity extends Activity implements OnItemLongClickLis
 		gridview.setOnItemLongClickListener(this);
 		gridview.setOnItemClickListener(this);
 
-	}
-
-	private File getRootFolder() {
-		File folder = getExternalFilesDir(null);
-		if (folder == null)
-			folder = getFilesDir();
-		return folder;
 	}
 
 	@Override

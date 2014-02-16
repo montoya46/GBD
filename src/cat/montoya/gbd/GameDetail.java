@@ -32,6 +32,7 @@ import cat.montoya.gbd.dao.IGameDAO;
 import cat.montoya.gbd.entity.Chip;
 import cat.montoya.gbd.entity.Dice;
 import cat.montoya.gbd.entity.Game;
+import cat.montoya.gbd.utils.FileUtils;
 import cat.montoya.gbd.utils.MD5Utils;
 
 public class GameDetail extends Activity {
@@ -191,7 +192,7 @@ public class GameDetail extends Activity {
 		help.setText(_game.getHelp());
 		
 		// BOARD && BOARDTHUMBNAIL
-		File imgFile = new  File(getRootFolder(),_game.getBoardURL());
+		File imgFile = new  File(FileUtils.getRootFolder(this),_game.getBoardURL());
 		if(imgFile.exists()){
 
 		    Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
@@ -200,14 +201,6 @@ public class GameDetail extends Activity {
 		    myImage.setImageBitmap(myBitmap);
 
 		}
-	}
-
-	// Metode duplicat
-	private File getRootFolder() {
-		File folder = getExternalFilesDir(null);
-		if (folder == null)
-			folder = getFilesDir();
-		return folder;
 	}
 
 	@Override
@@ -268,7 +261,7 @@ public class GameDetail extends Activity {
 				if (bitmap != null) {
 					// String extStorageDirectory =
 					// Environment.getExternalStorageDirectory().toString();
-					File rootFolder = getRootFolder();
+					File rootFolder = FileUtils.getRootFolder(this);
 					OutputStream outStream = null;
 					
 					File fBoard = new File(rootFolder, "board.PNG");
