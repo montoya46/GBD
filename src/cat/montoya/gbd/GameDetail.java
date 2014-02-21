@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -25,6 +24,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import cat.montoya.gbd.DialogColorPicker.OnColorSelectedListener;
+import cat.montoya.gbd.DialogDicePicker.OnDiceSelectedListener;
 import cat.montoya.gbd.DialogShapePicker.OnShapeSelectedListener;
 import cat.montoya.gbd.DialogDeleteList.OnChipSelectedListener;
 import cat.montoya.gbd.dao.GameDAO;
@@ -32,30 +32,36 @@ import cat.montoya.gbd.dao.IGameDAO;
 import cat.montoya.gbd.entity.Chip;
 import cat.montoya.gbd.entity.Dice;
 import cat.montoya.gbd.entity.Game;
+import cat.montoya.gbd.entity.Dice.DiceType;
 import cat.montoya.gbd.utils.FileUtils;
+import cat.montoya.gbd.utils.ImageSelectorUtils;
 import cat.montoya.gbd.utils.MD5Utils;
 
 public class GameDetail extends Activity {
 
 	private IGameDAO gameDAO;
 	private int _currentShape;
-	private int _currentColor;	
+	private int _currentColor;
+	private Dice.DiceType _currentDice;
 	private DialogShapePicker _dialogShape;
+	private DialogDicePicker _dialogDicePicker;
 	private DialogColorPicker _dialogColor;
 	private DialogDeleteList _dialogDeleteChips;
 	private Game _game = null;
 	
-	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		
 		setContentView(R.layout.activity_game_detail);
-
+		
 		_dialogShape = new DialogShapePicker();
 		_dialogColor = new DialogColorPicker();
 		_dialogDeleteChips = new DialogDeleteList();
+		_dialogDicePicker = new DialogDicePicker();
+		
 		_currentShape = _dialogShape.GetDefaultShape();
 		_currentColor = _dialogColor.GetDefaultColor();
+		_currentDice = _dialogDicePicker.GetDefaultDice();
 		
 		gameDAO = new GameDAO(this);
 
@@ -70,17 +76,11 @@ public class GameDetail extends Activity {
 		}
 
 		Spinner spinner = (Spinner) findViewById(R.id.numer_dices);
-		// Create an ArrayAdapter using the string array and a default spinner
-		// layout
 		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.number_dices_array, android.R.layout.simple_spinner_item);
-		// Specify the layout to use when the list of choices appears
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		// Apply the adapter to the spinner
 		spinner.setAdapter(adapter);
-
 		Spinner spinnerChips = (Spinner) findViewById(R.id.numer_chips);
 		spinnerChips.setAdapter(adapter);
-
 		Spinner spinnerSize = (Spinner) findViewById(R.id.number_size);
 		spinnerSize.setAdapter(adapter);
 		
@@ -88,44 +88,83 @@ public class GameDetail extends Activity {
 		ImageView ivShapes = (ImageView)findViewById(R.id.ibNewChip);
 		
 		//Botones para los dados
-//		Button btnAddDice = (Button) findViewById(R.id.ibAddChip);
-//		Button btnModifyDice = (Button) findViewById(R.id.ibModifyChip);
+		Button btnAddDice = (Button) findViewById(R.id.ibAddDice);
+		Button btnModifyDice = (Button) findViewById(R.id.ibModifyDice);
+		ImageView ivSelectDice = (ImageView)findViewById(R.id.ibNewDice);
+		
+		btnAddDice.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				AddDice();
+			}
+		});
+		
+		btnModifyDice.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				ModifyDices();
+			}
+		});
+		
+		ivSelectDice.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				SelectDiceType();
+			}
+		});
 		
 		//Botones de fichas
 		Button btnAddChip = (Button) findViewById(R.id.ibAddChip);
 		Button btnModifyChip = (Button) findViewById(R.id.ibModifyChip);
-
+		
 		btnAddChip.setOnClickListener(new View.OnClickListener() {
-			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				AddChip();
 			}
 		});
-	
+
 		ivShapes.setOnClickListener(new View.OnClickListener() {
-			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				SelectShape();
 			}
 		});
-		
+
 		rlColor.setOnClickListener(new View.OnClickListener(){
-            @Override
             public void onClick(View v){
             	SelectColor();
             }
         });
 		
 		btnModifyChip.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				SelectChip();
 			}
 		});
+	
+	}
+	
+	public void AddDice(){
+		Spinner spNumeroDices = (Spinner)findViewById(R.id.numer_dices);
+		int numeroFichas = Integer.parseInt(spNumeroDices.getSelectedItem().toString());
+		
+		for (int i = 0; i < numeroFichas; i++) {
+			Dice d = new Dice();
+			d.setId(UUID.randomUUID().getMostSignificantBits());
+			d.setType(_currentDice);
+			_game.getDices().add(d);		
+		}
+	}
+	
+	public void SelectDiceType(){
+		_dialogDicePicker.show(getFragmentManager(), "fragment_dialog_dice_picker");
+		_dialogDicePicker.setOnShapeSelectedListener(new OnDiceSelectedListener() {
+			public void onDiceSelectedOccurred(View v, DiceType dice) {
+				ImageView ivDices = (ImageView)findViewById(R.id.ibNewDice);
+				ivDices.setImageResource(ImageSelectorUtils.SelectImg(dice));
+				_currentDice = dice;
+			}
+		});
+	}
+	
+	public void ModifyDices(){
+		
 	}
 	
 	public void AddChip(){
@@ -147,7 +186,6 @@ public class GameDetail extends Activity {
 	public void SelectShape(){
 		_dialogShape.show(getFragmentManager(), "fragment_dialog_shape_picker");
 		_dialogShape.setOnShapeSelectedListener(new OnShapeSelectedListener() {
-			@Override
 			public void onShapeSelectedOccurred(View v, int shape) {
 				ImageView ivShapes = (ImageView)findViewById(R.id.ibNewChip);
 				ivShapes.setImageResource(shape);

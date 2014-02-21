@@ -1,14 +1,15 @@
 package cat.montoya.gbd.entity;
 
 public class Dice {
-
-	public static enum DiceType {
-		STANDARD, 
-		POKER;
-	}
-
 	private Long id;
 	private DiceType type;
+	
+	public enum DiceType {
+		STANDARD,
+		TETRAAEDRO,
+		HEXAEDRO,
+		OCTAEDRO
+	}
 	
 	public DiceType getType() {
 		return type;
@@ -25,5 +26,4 @@ public class Dice {
 	public void setId(Long id) {
 		this.id = id;
 	}
-
 }

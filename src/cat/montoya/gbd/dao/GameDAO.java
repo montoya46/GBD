@@ -220,7 +220,8 @@ public class GameDAO implements IGameDAO {
 		if (diceType == null || diceType.longValue() == 0)
 			d.setType(Dice.DiceType.STANDARD);
 		else
-			d.setType(Dice.DiceType.POKER);
+			d.setType(Dice.DiceType.valueOf(String.valueOf(diceType)));
+		
 		return d;
 	}
 
