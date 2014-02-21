@@ -1,6 +1,5 @@
 package cat.montoya.gbd;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,6 +68,7 @@ public class GameActivity extends SimpleBaseGameActivity implements IOnSceneTouc
 	private SurfaceScrollDetector mScrollDetector;
 	private PinchZoomDetector mPinchZoomDetector;
 	private float mPinchZoomStartedCameraZoomFactor;
+	private float zoomFactorInicial;
 	private BuildableBitmapTextureAtlas mBitmapTextureAtlas;
 	private ITiledTextureRegion mTiledTextureRegion;
 
@@ -136,7 +136,6 @@ public class GameActivity extends SimpleBaseGameActivity implements IOnSceneTouc
 
 	@Override
 	public void onCreateResources() {
-		AssetManager am = this.getAssets();
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
 		this.mBitmapTextureAtlas = new BuildableBitmapTextureAtlas(this.getTextureManager(), 1024, 1024, TextureOptions.NEAREST);
 		mTiledTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAssetDirectory(this.mBitmapTextureAtlas, this.getAssets(), "animatedsprites");
@@ -249,8 +248,8 @@ public class GameActivity extends SimpleBaseGameActivity implements IOnSceneTouc
 	 * Centrar el taulell en la pantalla i fer zoom per veure'l complert
 	 */
 	private void centerAndZoomGameBoard() {
-		float zoomFactor = CAMERA_HEIGHT/this.gameBoardSprite.getHeight();
-		this.mZoomCamera.setZoomFactor(zoomFactor);		
+		zoomFactorInicial = CAMERA_HEIGHT/this.gameBoardSprite.getHeight();
+		this.mZoomCamera.setZoomFactor(zoomFactorInicial);		
 		final float centerX = this.gameBoardSprite.getWidth() / 2;
 		final float centerY = this.gameBoardSprite.getHeight() / 2;
 		this.mZoomCamera.setCenter(centerX,centerY);
@@ -329,6 +328,14 @@ public class GameActivity extends SimpleBaseGameActivity implements IOnSceneTouc
 	public void onScrollFinished(final ScrollDetector pScollDetector, final int pPointerID, final float pDistanceX, final float pDistanceY) {
 		final float zoomFactor = this.mZoomCamera.getZoomFactor();
 		this.mZoomCamera.offsetCenter(-pDistanceX / zoomFactor, -pDistanceY / zoomFactor);
+		
+//		float xTemp = -pDistanceX / zoomFactor;
+//		float yTemp = -pDistanceY / zoomFactor;
+//		
+//		final float centerX = this.gameBoardSprite.getWidth() / 2;
+//		final float centerY = this.gameBoardSprite.getHeight() / 2;
+//		this.mZoomCamera.setCenter(centerX,centerY);
+		
 	}
 
 	@Override
@@ -339,11 +346,16 @@ public class GameActivity extends SimpleBaseGameActivity implements IOnSceneTouc
 	@Override
 	public void onPinchZoom(final PinchZoomDetector pPinchZoomDetector, final TouchEvent pTouchEvent, final float pZoomFactor) {
 		this.mZoomCamera.setZoomFactor(this.mPinchZoomStartedCameraZoomFactor * pZoomFactor);
+
 	}
 
 	@Override
 	public void onPinchZoomFinished(final PinchZoomDetector pPinchZoomDetector, final TouchEvent pTouchEvent, final float pZoomFactor) {
 		this.mZoomCamera.setZoomFactor(this.mPinchZoomStartedCameraZoomFactor * pZoomFactor);
+		if (this.mZoomCamera.getZoomFactor()<zoomFactorInicial){
+			centerAndZoomGameBoard();
+		}
+		
 	}
 
 	@Override
