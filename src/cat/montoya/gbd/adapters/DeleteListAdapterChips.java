@@ -2,7 +2,6 @@ package cat.montoya.gbd.adapters;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
@@ -10,24 +9,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageButton;
 import android.widget.TextView;
 import cat.montoya.gbd.R;
 import cat.montoya.gbd.entity.Chip;
 
-public class DeleteListAdapter extends BaseAdapter {
+public class DeleteListAdapterChips extends BaseAdapter {
 	private List<Chip> chips;
 	private static LayoutInflater inflater = null;
 	private Activity _activity;
-	private List<Chip> chipsToRemove;
-
-	public DeleteListAdapter(Activity activity, List<Chip> chips) {
+	
+	public DeleteListAdapterChips(Activity activity, List<Chip> chips) {
 		this._activity = activity;
 		this.chips = chips;
-		chipsToRemove = new ArrayList<Chip>();
+		new ArrayList<Chip>();
 		
-		if (DeleteListAdapter.inflater == null) {
-			DeleteListAdapter.inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		if (DeleteListAdapterChips.inflater == null) {
+			DeleteListAdapterChips.inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		}
 	}
 
@@ -56,10 +53,7 @@ public class DeleteListAdapter extends BaseAdapter {
 			vi = inflater.inflate(R.layout.dialog_delete_list_item, null);
 
 		TextView tvDescripcionItem = (TextView) vi.findViewById(R.id.tvDescripcionItem);
-//		ImageButton imgItem = (ImageButton) vi.findViewById(R.id.imgItemDelete);
-
 		tvDescripcionItem.setText(getDescription(c.getColor(), c.getType(), c.getSize()));
-//		imgItem.setTag(c);
 		
 		return vi;
 	}

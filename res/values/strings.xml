@@ -62,6 +62,11 @@
     <string name="ShapeCircleDescription">Circulo</string>
     <string name="ShapeSquareDescription">Cuadrado</string>
     <string name="SizeDescription">Tamaño</string>
+    <string name="DiceDescription">Dado</string>
+    <string name="DiceStandardDescription">standard</string>
+    <string name="DiceTetraedroDescription">tetraedro</string>
+    <string name="DiceHexaedroDescription">hexaedro</string>
+    <string name="DiceOctaedroDescription">octaedro</string>
     
     <string-array name="number_dices_array">
         <item>1</item>

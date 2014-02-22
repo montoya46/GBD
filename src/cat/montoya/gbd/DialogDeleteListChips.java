@@ -2,23 +2,20 @@ package cat.montoya.gbd;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import cat.montoya.gbd.adapters.DeleteListAdapter;
+import cat.montoya.gbd.adapters.DeleteListAdapterChips;
 import cat.montoya.gbd.entity.Chip;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
-public class DialogDeleteList extends DialogFragment {
+public class DialogDeleteListChips extends DialogFragment {
 
 	private List<Chip> chips;
 	private OnChipSelectedListener listener;
@@ -35,7 +32,7 @@ public class DialogDeleteList extends DialogFragment {
         listener = l;
 	}
 	
-	public DialogDeleteList(){
+	public DialogDeleteListChips(){
 		
 	}
 	
@@ -64,7 +61,7 @@ public class DialogDeleteList extends DialogFragment {
 
         currentView = getActivity().getLayoutInflater().inflate(R.layout.dialog_delete_list, null);
         deleteList = (ListView) currentView.findViewById(R.id.lvDeleteList);
-        deleteList.setAdapter(new DeleteListAdapter(getActivity(), chips));
+        deleteList.setAdapter(new DeleteListAdapterChips(getActivity(), chips));
         
         deleteList.setOnItemClickListener(new OnItemClickListener() {
 			@Override

@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
 import java.util.UUID;
-
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -24,9 +23,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import cat.montoya.gbd.DialogColorPicker.OnColorSelectedListener;
+import cat.montoya.gbd.DialogDeleteListDices.OnDeleteDiceSelectedListener;
 import cat.montoya.gbd.DialogDicePicker.OnDiceSelectedListener;
 import cat.montoya.gbd.DialogShapePicker.OnShapeSelectedListener;
-import cat.montoya.gbd.DialogDeleteList.OnChipSelectedListener;
+import cat.montoya.gbd.DialogDeleteListChips.OnChipSelectedListener;
 import cat.montoya.gbd.dao.GameDAO;
 import cat.montoya.gbd.dao.IGameDAO;
 import cat.montoya.gbd.entity.Chip;
@@ -38,7 +38,6 @@ import cat.montoya.gbd.utils.ImageSelectorUtils;
 import cat.montoya.gbd.utils.MD5Utils;
 
 public class GameDetail extends Activity {
-
 	private IGameDAO gameDAO;
 	private int _currentShape;
 	private int _currentColor;
@@ -46,7 +45,8 @@ public class GameDetail extends Activity {
 	private DialogShapePicker _dialogShape;
 	private DialogDicePicker _dialogDicePicker;
 	private DialogColorPicker _dialogColor;
-	private DialogDeleteList _dialogDeleteChips;
+	private DialogDeleteListChips _dialogDeleteChips;
+	private DialogDeleteListDices _dialogDeleteDices;
 	private Game _game = null;
 	
 	protected void onCreate(Bundle savedInstanceState) {
@@ -56,9 +56,9 @@ public class GameDetail extends Activity {
 		
 		_dialogShape = new DialogShapePicker();
 		_dialogColor = new DialogColorPicker();
-		_dialogDeleteChips = new DialogDeleteList();
+		_dialogDeleteChips = new DialogDeleteListChips();
 		_dialogDicePicker = new DialogDicePicker();
-		
+		_dialogDeleteDices = new DialogDeleteListDices();
 		_currentShape = _dialogShape.GetDefaultShape();
 		_currentColor = _dialogColor.GetDefaultColor();
 		_currentDice = _dialogDicePicker.GetDefaultDice();
@@ -164,7 +164,15 @@ public class GameDetail extends Activity {
 	}
 	
 	public void ModifyDices(){
-		
+		_dialogDeleteDices.SetDiceList(_game.getDices());
+		_dialogDeleteDices.show(getFragmentManager(), "fragment_dialog_delete_dices");
+		_dialogDeleteDices.setOnDeleteDiceSelectedListener(new OnDeleteDiceSelectedListener() {
+			public void onDiceSelectedOccurred(View v, List<Dice> dicesToDelete) {
+				for (Dice dice : dicesToDelete) {
+					_game.getDices().remove(dice);
+				}
+			}
+		});
 	}
 	
 	public void AddChip(){
@@ -254,8 +262,6 @@ public class GameDetail extends Activity {
 	 * @param v
 	 */
 	public void saveGame(View v) {
-
-
 		// NAME
 		_game.setName(getStringFromTextView(R.id.edTitulo));
 		// HELP
@@ -266,7 +272,6 @@ public class GameDetail extends Activity {
 			_game.setBoardURL(file);
 			_game.setBoardThumbnailURL("tmb_"+file);
 		}
-
 		// Save the game
 		_game = gameDAO.setGame(_game);
 
@@ -289,7 +294,6 @@ public class GameDetail extends Activity {
 	 */
 	private String writeBoardToFile() {
 		// TODO esta posat a saco
-
 		ImageView preview = (ImageView) findViewById(R.id.ibPreview);
 		if (preview != null) {
 			if (preview.getDrawable() != null && preview.getDrawable() instanceof BitmapDrawable) {
@@ -345,9 +349,7 @@ public class GameDetail extends Activity {
 				}
 			}
 		}
-
 		return null;
-
 	}
 
 	private String getStringFromTextView(int res) {
@@ -358,5 +360,4 @@ public class GameDetail extends Activity {
 		}
 		return ret;
 	}
-
 }
