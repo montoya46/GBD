@@ -89,7 +89,7 @@
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
 	        android:layout_below="@+id/FrgTablero"
-	        android:text="@string/Game_Detail_Dados" 
+	        android:text="@string/Game_Detail_AddDice" 
 	        android:textSize="22sp"
 	        android:layout_marginTop="20dp"
 	        android:textStyle="bold"/>
@@ -135,7 +135,7 @@
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:layout_marginRight="10dp"
-			 		android:text="@string/Game_Detail_AddDice">
+			 		android:text="@string/Game_Detail_Dados">
 	         </Button>
 	         
 	         <Button
@@ -233,15 +233,35 @@
  			  
 		 </LinearLayout>
 
-		  <Button
-		      android:id="@+id/btn_savegame"
-		      android:layout_width="wrap_content"
-		      android:layout_height="wrap_content"
-		      android:layout_alignParentBottom="true"
-		      android:layout_centerHorizontal="true"
-		      android:text="Guardar"
-		      android:layout_below="@+id/lyAddChips"
-		      android:onClick="saveGame" />
+		  <RelativeLayout 
+		        android:layout_width="120dp"
+			 	android:layout_height="wrap_content"
+				android:layout_alignParentBottom="true"
+				android:layout_centerHorizontal="true"
+				android:layout_below="@+id/lyAddChips"
+			    android:background="@android:drawable/btn_default" 
+			    android:clickable="true"
+			    android:focusable="true"
+			 	android:id="@+id/btn_savegame"
+				android:onClick="saveGame">
+		        <ImageView
+			      	  android:id="@+id/ibSaveGame"
+				      android:layout_width="wrap_content"
+				      android:layout_height="wrap_content"
+				      android:layout_alignParentLeft="true"
+				      android:contentDescription="@string/GameDetailSaveGame"
+				      android:src="@drawable/save" />
+		  		<TextView
+				      android:id="@+id/tvDescripcionButtonSaveGame"
+				      android:layout_width="fill_parent"
+				      android:layout_height="wrap_content"
+				      android:layout_centerInParent="true"
+				      android:layout_marginRight="5dp"
+				      android:text="@string/GameDetailSaveGame" 
+				      android:textSize="14sp"
+				      android:gravity="right"
+				      android:textStyle="bold"/>
+		    </RelativeLayout>
 
 	</RelativeLayout>
 </ScrollView>

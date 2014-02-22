@@ -27,9 +27,9 @@
     <string name="Game_Detail_Dados">Añadir</string>
     <string name="Game_Detail_Fichas">Añadir fichas</string>
     <string name="Game_Detail_AddDice">Añadir dados</string>
-    <string name="Game_Detail_ModifyDice">Modificar dados</string>
-    <string name="Game_Detail_AddChip">Añadir fichas</string>
-    <string name="Game_Detail_ModifyChip">Modificar fichas</string>
+    <string name="Game_Detail_ModifyDice">Modificar</string>
+    <string name="Game_Detail_AddChip">Añadir</string>
+    <string name="Game_Detail_ModifyChip">Modificar</string>
     <string name="tvNumeroDices">Número de dados</string>
     <string name="tvTipoDices">Tipo de dados</string>
     <string name="ibNewDice">Tipo dado</string>
@@ -67,6 +67,8 @@
     <string name="DiceTetraedroDescription">tetraedro</string>
     <string name="DiceHexaedroDescription">hexaedro</string>
     <string name="DiceOctaedroDescription">octaedro</string>
+    <string name="GameDetailSaveGame">Guardar</string>
+    
     
     <string-array name="number_dices_array">
         <item>1</item>
