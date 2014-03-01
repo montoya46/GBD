@@ -73,7 +73,7 @@ public class DialogDeleteListDices extends DialogFragment {
 				}
 				else {
 					dicesToDelete.add(dices.get(arg2));
-					arg1.setBackgroundColor(Color.RED);
+					arg1.setBackgroundColor(Color.parseColor("#FEA408"));
 				}
 			}
 		});

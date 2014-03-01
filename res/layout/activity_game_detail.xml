@@ -114,8 +114,8 @@
 	        <Spinner
 	            android:id="@+id/numer_dices"
 	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:padding="10dp"/>
+	            android:layout_height="wrap_content" 
+	            android:gravity="center"/>
 	           
 	        <ImageView
 			        android:id="@+id/ibNewDice"
@@ -130,21 +130,64 @@
 			        android:onClick="SelectDice"
 			        android:contentDescription="@string/ibNewDice" />
 	 
-	         <Button
-			  	 	android:id="@+id/ibAddDice"
+
+				 <RelativeLayout 
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:layout_marginRight="10dp"
-			 		android:text="@string/Game_Detail_Dados">
-	         </Button>
-	         
-	         <Button
-			  	 	android:id="@+id/ibModifyDice"
+					android:background="@android:drawable/btn_default" 
+					android:clickable="true"
+					android:focusable="true"
+					android:id="@+id/ibAddDice"
+					android:onClick="AddDice">
+					<ImageView
+						  android:id="@+id/ivAddDice"
+						  android:layout_width="wrap_content"
+						  android:layout_height="wrap_content"
+						  android:layout_alignParentLeft="true"
+						  android:contentDescription="@string/Game_Detail_Dados"
+						  android:src="@drawable/add" />
+					<TextView
+						  android:id="@+id/tvAddDice"
+						  android:layout_width="wrap_content"
+						  android:layout_height="wrap_content"
+						  android:layout_toRightOf="@+id/ivAddDice"
+						  android:layout_marginRight="5dp"
+						  android:layout_marginLeft="5dp"
+						  android:layout_centerVertical="true"
+						  android:text="@string/Game_Detail_Dados" 
+						  android:textSize="14sp"
+						  android:gravity="right"
+						  android:textStyle="bold"/>
+				</RelativeLayout>
+
+				<RelativeLayout 
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:layout_marginRight="10dp"
-			 		android:text="@string/Game_Detail_ModifyDice">
-	         </Button>
+					android:background="@android:drawable/btn_default" 
+					android:clickable="true"
+					android:focusable="true"
+					android:id="@+id/ibModifyDice"
+					android:onClick="ModifyDices">
+					<ImageView
+						  android:id="@+id/ivModifyDice"
+						  android:layout_width="wrap_content"
+						  android:layout_height="wrap_content"
+						  android:layout_alignParentLeft="true"
+						  android:contentDescription="@string/Game_Detail_ModifyDice"
+						  android:src="@drawable/remove" />
+					<TextView
+						  android:id="@+id/tvModify"
+						  android:layout_width="wrap_content"
+						  android:layout_height="wrap_content"
+						  android:layout_toRightOf="@+id/ivModifyDice"
+						  android:layout_marginRight="5dp"
+						  android:layout_marginLeft="5dp"
+						  android:layout_centerVertical="true"
+						  android:text="@string/Game_Detail_ModifyDice" 
+						  android:textSize="14sp"
+						  android:gravity="right"
+						  android:textStyle="bold"/>
+				</RelativeLayout>
 	        
 		</LinearLayout>
 		
@@ -210,31 +253,69 @@
 		        android:layout_marginLeft="10dp"
 		        android:layout_marginRight="10dp"
 		        android:layout_gravity="center" />
-		                
-            <Button
-		  	 	android:id="@+id/ibAddChip"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:text="@string/Game_Detail_AddChip"
-	        	android:layout_marginLeft="10dp"
-		        android:layout_marginRight="10dp"
-		        android:layout_gravity="center">
-		  	</Button>
+		            
 		  	
-            <Button
-		  	 	android:id="@+id/ibModifyChip"
+		  	<RelativeLayout 
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:text="@string/Game_Detail_ModifyChip"
-	        	android:layout_marginLeft="10dp"
-		        android:layout_marginRight="10dp"
-		        android:layout_gravity="center">
-		  	</Button>
- 			  
+				android:background="@android:drawable/btn_default" 
+				android:clickable="true"
+				android:focusable="true"
+				android:id="@+id/ibAddChip"
+				android:onClick="AddChip">
+				<ImageView
+					  android:id="@+id/ivAddChip"
+					  android:layout_width="wrap_content"
+					  android:layout_height="wrap_content"
+					  android:layout_alignParentLeft="true"
+					  android:contentDescription="@string/Game_Detail_AddChip"
+					  android:src="@drawable/add" />
+				<TextView
+					  android:id="@+id/tvAddChip"
+					  android:layout_width="wrap_content"
+					  android:layout_height="wrap_content"
+					  android:layout_toRightOf="@+id/ivAddChip"
+					  android:layout_marginRight="5dp"
+					  android:layout_marginLeft="5dp"
+					  android:layout_centerVertical="true"
+					  android:text="@string/Game_Detail_AddChip" 
+					  android:textSize="14sp"
+					  android:gravity="right"
+					  android:textStyle="bold"/>
+			</RelativeLayout>
+		  	
+ 			  <RelativeLayout 
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:background="@android:drawable/btn_default" 
+					android:clickable="true"
+					android:focusable="true"
+					android:id="@+id/ibModifyChip"
+					android:onClick="SelectChip">
+					<ImageView
+						  android:id="@+id/ivModifyChip"
+						  android:layout_width="wrap_content"
+						  android:layout_height="wrap_content"
+						  android:layout_alignParentLeft="true"
+						  android:contentDescription="@string/Game_Detail_ModifyChip"
+						  android:src="@drawable/remove" />
+					<TextView
+						  android:id="@+id/tvModifyChip"
+						  android:layout_width="wrap_content"
+						  android:layout_height="wrap_content"
+						  android:layout_toRightOf="@+id/ivModifyChip"
+						  android:layout_marginRight="5dp"
+						  android:layout_marginLeft="5dp"
+						  android:layout_centerVertical="true"
+						  android:text="@string/Game_Detail_ModifyChip" 
+						  android:textSize="14sp"
+						  android:gravity="right"
+						  android:textStyle="bold"/>
+				</RelativeLayout>
 		 </LinearLayout>
 
 		  <RelativeLayout 
-		        android:layout_width="120dp"
+		        android:layout_width="wrap_content"
 			 	android:layout_height="wrap_content"
 				android:layout_alignParentBottom="true"
 				android:layout_centerHorizontal="true"
@@ -253,10 +334,11 @@
 				      android:src="@drawable/save" />
 		  		<TextView
 				      android:id="@+id/tvDescripcionButtonSaveGame"
-				      android:layout_width="fill_parent"
+				      android:layout_width="wrap_content"
 				      android:layout_height="wrap_content"
-				      android:layout_centerInParent="true"
-				      android:layout_marginRight="5dp"
+				      android:layout_toRightOf="@+id/ibSaveGame"
+					  android:layout_marginLeft="5dp"
+					  android:layout_centerVertical="true"
 				      android:text="@string/GameDetailSaveGame" 
 				      android:textSize="14sp"
 				      android:gravity="right"

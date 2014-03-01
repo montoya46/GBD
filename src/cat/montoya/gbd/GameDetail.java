@@ -16,7 +16,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -86,37 +85,11 @@ public class GameDetail extends Activity {
 		
 		RelativeLayout rlColor = (RelativeLayout)findViewById(R.id.rlColor);
 		ImageView ivShapes = (ImageView)findViewById(R.id.ibNewChip);
-		
-		//Botones para los dados
-		Button btnAddDice = (Button) findViewById(R.id.ibAddDice);
-		Button btnModifyDice = (Button) findViewById(R.id.ibModifyDice);
 		ImageView ivSelectDice = (ImageView)findViewById(R.id.ibNewDice);
-		
-		btnAddDice.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				AddDice();
-			}
-		});
-		
-		btnModifyDice.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				ModifyDices();
-			}
-		});
-		
+
 		ivSelectDice.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				SelectDiceType();
-			}
-		});
-		
-		//Botones de fichas
-		Button btnAddChip = (Button) findViewById(R.id.ibAddChip);
-		Button btnModifyChip = (Button) findViewById(R.id.ibModifyChip);
-		
-		btnAddChip.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				AddChip();
 			}
 		});
 
@@ -130,17 +103,10 @@ public class GameDetail extends Activity {
             public void onClick(View v){
             	SelectColor();
             }
-        });
-		
-		btnModifyChip.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				SelectChip();
-			}
-		});
-	
+        });	
 	}
 	
-	public void AddDice(){
+	public void AddDice(View v){
 		Spinner spNumeroDices = (Spinner)findViewById(R.id.numer_dices);
 		int numeroFichas = Integer.parseInt(spNumeroDices.getSelectedItem().toString());
 		
@@ -163,7 +129,7 @@ public class GameDetail extends Activity {
 		});
 	}
 	
-	public void ModifyDices(){
+	public void ModifyDices(View v){
 		_dialogDeleteDices.SetDiceList(_game.getDices());
 		_dialogDeleteDices.show(getFragmentManager(), "fragment_dialog_delete_dices");
 		_dialogDeleteDices.setOnDeleteDiceSelectedListener(new OnDeleteDiceSelectedListener() {
@@ -175,7 +141,7 @@ public class GameDetail extends Activity {
 		});
 	}
 	
-	public void AddChip(){
+	public void AddChip(View v){
 		Spinner spNumeroFichas = (Spinner)findViewById(R.id.numer_chips);
 		int numeroFichas = Integer.parseInt(spNumeroFichas.getSelectedItem().toString());
 		Spinner spSize = (Spinner) findViewById(R.id.number_size);
@@ -214,7 +180,7 @@ public class GameDetail extends Activity {
 		});
 	}
 	
-	public void SelectChip(){
+	public void SelectChip(View v){
 		_dialogDeleteChips.SetChipList(_game.getChips());
 		_dialogDeleteChips.show(getFragmentManager(), "fragment_dialog_delete_chips");
 		_dialogDeleteChips.setOnChipSelectedListener(new OnChipSelectedListener() {

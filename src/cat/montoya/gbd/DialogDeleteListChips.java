@@ -74,7 +74,7 @@ public class DialogDeleteListChips extends DialogFragment {
 				}
 				else {
 					chipsToDelete.add(chips.get(arg2));
-					arg1.setBackgroundColor(Color.RED);
+					arg1.setBackgroundColor(Color.parseColor("#FEA408"));
 				}
 			}
 		});
