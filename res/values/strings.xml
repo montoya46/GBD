@@ -14,19 +14,19 @@
     <string name="action_edit_game">Edit Game</string>
     <string name="action_delete_game">Delete Game</string>
     <string name="title_activity_game_detail">GameDetail</string>
-    <string name="Game_Detail_Title">Titulo</string>
+    <string name="Game_Detail_Title">Titulo - (Obligatorio)</string>
     <string name="Game_Detail_Help">¿Como jugar?</string>
     <string name="Game_Detail_Title_Hint">Introduzca el título</string>
     <string name="Game_Detail_Help_Hint">¿En que consiste el juego?</string>
-    <string name="Game_Detail_Tablero">Añadir tablero</string>
+    <string name="Game_Detail_Tablero">Añadir tablero - (Obligatorio)</string>
     <string name="Game_Detail_GalleryAcces">Acceder a la galería.</string>
     <string name="Game_Detail_CameraAcces">Acceder a la cámara.</string>
     <string name="Game_Detail_ImagePreview">Vista previa.</string>
     <string name="Game_Detail_GalleryAccesDescripcion">Añadir tablero desde galería.</string>
     <string name="Game_Detail_CameraAccesDescripcion">Añadir tablero desde cámara.</string>
     <string name="Game_Detail_Dados">Añadir</string>
-    <string name="Game_Detail_Fichas">Añadir fichas</string>
-    <string name="Game_Detail_AddDice">Añadir dados</string>
+    <string name="Game_Detail_Fichas">Añadir fichas - (Obligatorio)</string>
+    <string name="Game_Detail_AddDice">Añadir dados - (Obligatorio)</string>
     <string name="Game_Detail_ModifyDice">Modificar</string>
     <string name="Game_Detail_AddChip">Añadir</string>
     <string name="Game_Detail_ModifyChip">Modificar</string>
@@ -86,5 +86,8 @@
     <string name="title_activity_browse_picture">BrowsePicture</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_color_picker">ColorPickerActivity</string>
+    
+    <string name="Validations">Debes completar los datos obligatorios.</string>
+    <string name="WarningTitle">Atención.</string>
 
 </resources>

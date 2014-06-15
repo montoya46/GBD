@@ -6,7 +6,11 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
 import java.util.UUID;
+
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -238,9 +242,29 @@ public class GameDetail extends Activity {
 			_game.setBoardURL(file);
 			_game.setBoardThumbnailURL("tmb_"+file);
 		}
-		// Save the game
-		_game = gameDAO.setGame(_game);
-
+		
+		
+		
+		//Check if mandatory information has been filled out
+		if(_game.getName().isEmpty() || _game.getBoardURL().isEmpty() || _game.getBoardThumbnailURL().isEmpty() ||
+				_game.getDices().size() == 0 || _game.getChips().size() == 0){
+			new AlertDialog.Builder(this)
+		    .setTitle(R.string.WarningTitle)
+		    .setMessage(getResources().getString(R.string.Validations))
+		    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+		        public void onClick(DialogInterface dialog, int which) { 
+		            // continue with delete
+		        }
+		     })
+//		     .setIcon(android.R.drawable.ic_dialog_alert)
+		     .setIcon(R.drawable.ic_action_warning)
+		     .show();
+		}
+		else
+		{
+			// Save the game
+			_game = gameDAO.setGame(_game);	
+		}
 	}
 
 	private List<Chip> viewToEntityChips() {
